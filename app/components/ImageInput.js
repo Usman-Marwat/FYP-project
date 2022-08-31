@@ -21,7 +21,7 @@ export default function ImageInput({ imageUri, onChangeImage }) {
   const handlePress = () => {
     if (!imageUri) selectImage();
     else
-      Alert.alert("Delete", "Are you sure you wamt to delter this", [
+      Alert.alert("Delete", "Are you sure you wamt to delete this", [
         {
           text: "Yes",
           //   onPress: () => onChangeImage(),

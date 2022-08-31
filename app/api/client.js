@@ -4,15 +4,16 @@ import cache from "../utility/cache";
 import authStorage from "../auth/storage";
 
 const apiClient = create({
-  baseURL: "http://172.20.10.2:9001/api",
+  baseURL: "http://192.168.18.10:9001/api",
 });
-//adding Token for the protected routes on the server
+//adding Token for every request
 apiClient.addAsyncRequestTransform(async (request) => {
   const authToken = await authStorage.getToken();
   if (!authToken) return;
   request.headers["x-auth-token"] = authToken;
 });
 
+//changing implementation of default GET method
 const get = apiClient.get;
 apiClient.get = async (url, params, axiosConfig) => {
   const response = await get(url, params, axiosConfig);

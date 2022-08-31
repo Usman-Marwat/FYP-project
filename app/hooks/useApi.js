@@ -9,18 +9,18 @@ export default useApi = (apiFunc) => {
     setLoading(true);
     const response = await apiFunc(...args);
     setLoading(false);
-    //with these line breaks we are separating
+
+    //we will set data even if we have error or not
     if (!response.ok) {
       setError(true);
       return response;
     }
     // different stories in our code
     setError(false);
-    console.log(response.data);
     seData(response.data);
     return response;
 
-    // extra note: We can simplify the above code as
+    // extra note: We can simplify the above code starting from line 14 as
     /*
     setError(!response.ok);
     setData(response.data);

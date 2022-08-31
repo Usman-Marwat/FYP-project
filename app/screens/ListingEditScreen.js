@@ -106,11 +106,6 @@ function ListingEditScreen() {
 
   return (
     <Screen style={styles.container}>
-      <UploadScreen
-        onDone={() => setuploadVisible(false)}
-        progress={progress}
-        visible={uploadVisible}
-      />
       <Form
         initialValues={{
           title: "",
@@ -148,6 +143,11 @@ function ListingEditScreen() {
         />
         <SubmitButton title="Post" />
       </Form>
+      <UploadScreen
+        onDone={() => setuploadVisible(false)}
+        progress={progress}
+        visible={uploadVisible}
+      />
     </Screen>
   );
 }

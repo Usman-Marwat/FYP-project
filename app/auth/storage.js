@@ -19,6 +19,8 @@ const getToken = async () => {
   }
 };
 
+//We should not really use the getToken function in any screen because other modules using this function
+//then have to be reponsible to reponsible for decoding the token
 const getUser = async () => {
   const token = await getToken();
   return token ? jwtDecode(token) : null;

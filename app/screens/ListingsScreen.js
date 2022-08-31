@@ -25,36 +25,37 @@ function ListingsScreen({ navigation }) {
   }, []);
 
   return (
-    <Screen style={styles.screen}>
-      {error && (
-        <>
-          <AppText> Couldn't retrieve the listings</AppText>
-          <AppButton title="Retry" onPress={loadListings} />
-        </>
-      )}
+    <>
       <ActivityIndicator visible={loading} />
-      <FlatList
-        data={listings}
-        keyExtractor={(listing) => Math.random().toString()}
-        renderItem={({ item }) => (
-          <Card
-            title={item._doc ? item._doc.title : item.title}
-            subTitle={"$" + (item._doc ? item._doc.price : item.price)}
-            imageUrl={item.images[0].url}
-            onPress={() => navigation.navigate(routes.LISTING_DETAILS, item)}
-            thumbnailUrl={item.images[0].thumbnailUrl}
-          />
+      <Screen style={styles.screen}>
+        {error && (
+          <>
+            <AppText> Couldn't retrieve the listings</AppText>
+            <AppButton title="Retry" onPress={loadListings} />
+          </>
         )}
-        refreshing={refreshing}
-        onRefresh={loadListings}
-      />
-    </Screen>
+        <FlatList
+          data={listings}
+          keyExtractor={(listing) => Math.random().toString()}
+          renderItem={({ item }) => (
+            <Card
+              title={item._doc ? item._doc.title : item.title}
+              subTitle={"$" + (item._doc ? item._doc.price : item.price)}
+              imageUrl={item.images[0].url}
+              onPress={() => navigation.navigate(routes.LISTING_DETAILS, item)}
+              thumbnailUrl={item.images[0].thumbnailUrl}
+            />
+          )}
+          refreshing={refreshing}
+          onRefresh={loadListings}
+        />
+      </Screen>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   screen: {
-    padding: 20,
     backgroundColor: colors.light,
   },
 });

@@ -31,6 +31,11 @@ function RegisterScreen() {
     //userInfo is the objet that formik gives us
     const result = await registerApi.request(userInfo);
 
+    //if (!result.ok) returns true that means the result failed
+    //if result has data that means the server properly processed our request and sent us an error
+    // else if the server did not send us the data that means something unexpected happen
+    // maybe the server is offline or we do not have internet connection; we have offline notice
+    // to care of this but its good to show a generic error message
     if (!result.ok) {
       if (result.data) setError(result.data.error);
       else {
