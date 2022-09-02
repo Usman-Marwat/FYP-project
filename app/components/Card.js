@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import { View, StyleSheet, Text, TouchableWithoutFeedback } from "react-native";
 import { Image } from "react-native-expo-image-cache";
 
 import AppText from "./AppText";
@@ -13,11 +13,16 @@ function Card({
   thumbnailUrl,
   ...extraProps
 }) {
-  const { cardStyle, textAlign, imageStyle } = extraProps;
+  const { cardStyle, imageStyle, textAlign, heading } = extraProps;
 
   return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={[styles.card, cardStyle]}>
+        {heading && (
+          <Text style={{ color: colors.medium, fontSize: "17" }}>
+            {heading}
+          </Text>
+        )}
         <Image
           style={[styles.image, imageStyle]}
           tint="light"
