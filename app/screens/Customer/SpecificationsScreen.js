@@ -1,11 +1,25 @@
 import React, { useState } from "react";
-import { Dimensions, StyleSheet, Text, View, Image } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { ProfileHeader } from "@freakycoder/react-native-header-view";
 import Carousel from "react-native-reanimated-carousel";
-
 import DropDownPicker from "react-native-dropdown-picker";
-import Screen from "../../components/Screen";
+
 import AppText from "../../components/AppText";
+import Card from "../../components/Card";
+import Screen from "../../components/Screen";
+import AppButton from "../../components/AppButton";
+import Icon from "../../components/Icon";
+import colors from "../../config/colors";
+
+const width = Dimensions.get("window").width;
 
 const badgeDotColors = [
   "#e76f51",
@@ -16,14 +30,15 @@ const badgeDotColors = [
   "#00b4d8",
   "#e9c46a",
 ];
-
-const width = Dimensions.get("window").width;
-const keys = ["Aluminium", "Sand"];
+const keys = ["ALUMINIUM", "Sand", "Bajri", "Rock"];
 const material = [
   [
     { label: "Spain", value: "spain" },
     { label: "Madrid", value: "madrid" },
     { label: "Barcelona", value: "barcelona" },
+    { label: "s", value: "s" },
+    { label: "d", value: "d" },
+    { label: "a", value: "a" },
   ],
   [
     { label: "Italy", value: "italy" },
@@ -47,20 +62,14 @@ const SpecificationsScreen = () => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState([]);
   const [items, setItems] = useState(material[0]);
-  const [count, setCount] = useState(0);
 
   const handleCurrentItem = (index) => {
     setIndex(index);
     setValue(allValues[index]);
     setItems(material[index]);
-
-    // setValue(allValues[index]);
   };
 
   const handleValueChange = (value) => {
-    console.log("----------------------" + count + "--------------------");
-    setCount((prevCount) => prevCount + 1);
-
     // if the new value length >=1 or previous value was not zero
     if (value.length >= 1 || allValues[index].length >= 1)
       allValues[index] = value;
@@ -72,35 +81,49 @@ const SpecificationsScreen = () => {
       <ProfileHeader height={70} />
       <View>
         <Carousel
+          // style={{ borderWidth: 1 }}
           loop
           width={width}
-          height={width / 2}
+          height={width / 1.3}
           mode="parallax"
           pagingEnabled
           data={[...new Array(4).keys()]}
           scrollAnimationDuration={1000}
           onSnapToItem={handleCurrentItem}
           renderItem={({ index }) => (
-            <View
-              style={{
-                flex: 1,
-                borderWidth: 1,
-                justifyContent: "center",
-              }}
-            >
-              <Text style={{ textAlign: "center", fontSize: 30 }}>
-                {"blah" + index}
-              </Text>
-            </View>
+            <Card
+              cardStyle={styles.cardStyle}
+              imageUrl={imageUrl}
+              imageStyle={styles.imageStyle}
+              subTitle="200>"
+              title="Premiuim"
+              textAlign="center"
+            />
           )}
         />
       </View>
+
       <View style={styles.row}>
-        <AppText style={styles.titleText}> Aluminiuim</AppText>
         <DropDownPicker
+          ArrowDownIconComponent={({ style }) => (
+            <Icon
+              backgroundColor="#f5f5f5"
+              name="arrow-down"
+              iconColor="black"
+              style={style}
+            />
+          )}
+          translation={{
+            PLACEHOLDER: `                                      ${keys[index]}`,
+          }}
+          placeholderStyle={{
+            color: "grey",
+            fontWeight: "bold",
+          }}
           badgeDotColors={badgeDotColors}
           items={items}
           mode="BADGE"
+          maxHeight={170}
           value={value}
           setValue={setValue}
           onChangeValue={handleValueChange}
@@ -110,15 +133,24 @@ const SpecificationsScreen = () => {
           setItems={setItems}
           style={{
             borderColor: "white",
+            backgroundColor: "#f5f5f5",
           }}
           containerStyle={styles.dropDownPicker}
           dropDownContainerStyle={{
             marginHorizontal: 1,
             width: "99.3%",
+            backgroundColor: "#f5f5f5",
+            borderColor: "#f5f5f5",
           }}
           theme="DARK"
         />
       </View>
+      <TouchableOpacity
+        style={{ alignItems: "center", top: 175 }}
+        onPress={() => console.log("hi")}
+      >
+        <Icon name="check" backgroundColor={colors.primary} />
+      </TouchableOpacity>
     </Screen>
   );
 };
@@ -134,16 +166,27 @@ const styles = StyleSheet.create({
     height: 20,
   },
   row: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 30,
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 70,
   },
-  titleText: {
-    marginRight: 20,
-    width: "25%",
-    textAlign: "center",
+  cardStyle: {
+    marginHorizontal: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    //shadowprops
+    overflow: "visible",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.17,
+    shadowRadius: 10,
   },
 });
 
 //data={[...new Array(6).keys()]}
+
+const imageUrl =
+  "https://images.unsplash.com/photo-1661977597155-1277a81affcd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80";
