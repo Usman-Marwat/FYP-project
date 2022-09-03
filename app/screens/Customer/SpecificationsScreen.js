@@ -14,11 +14,12 @@ import Carousel from "react-native-reanimated-carousel";
 import DropDownPicker from "react-native-dropdown-picker";
 
 import AppText from "../../components/AppText";
-import Card from "../../components/Card";
-import Screen from "../../components/Screen";
 import AppButton from "../../components/AppButton";
-import Icon from "../../components/Icon";
+import Card from "../../components/Card";
 import colors from "../../config/colors";
+import Icon from "../../components/Icon";
+import Pagination from "../../components/Pagination";
+import Screen from "../../components/Screen";
 
 const width = Dimensions.get("window").width;
 
@@ -102,6 +103,12 @@ const SpecificationsScreen = () => {
             />
           )}
         />
+        <Pagination
+          activeDotColor={colors.medium}
+          curPage={index}
+          maxPage={allValues.length}
+          style={{ alignItems: "center", bottom: 30 }}
+        />
       </View>
 
       <View style={styles.row}>
@@ -122,50 +129,40 @@ const SpecificationsScreen = () => {
               size={42}
             />
           )}
+          badgeDotColors={badgeDotColors}
+          containerStyle={styles.dropDownPicker}
+          dropDownContainerStyle={styles.dropDownContainerStyle}
+          items={items}
+          listItemLabelStyle={{
+            color: colors.medium,
+          }}
+          mode="BADGE"
+          multiple={true}
+          open={open}
+          onChangeValue={handleValueChange}
+          placeholderStyle={{
+            color: colors.medium,
+            alignSelf: "center",
+          }}
+          maxHeight={170}
+          placeholder="Select the item(s)"
+          setValue={setValue}
+          value={value}
+          setOpen={setOpen}
+          setItems={setItems}
+          style={{
+            borderWidth: 0,
+            backgroundColor: colors.silver,
+          }}
+          theme="DARK"
           TickIconComponent={({ style }) => (
             <Icon
               backgroundColor={colors.medium}
               name="check"
               size={20}
-              style={{ marginRight: 10 }}
+              style={{ marginRight: 9.5 }}
             />
           )}
-          listItemLabelStyle={{
-            color: colors.medium,
-          }}
-          translation={{
-            PLACEHOLDER: `Select the item(s)`,
-          }}
-          placeholderStyle={{
-            color: colors.medium,
-            alignSelf: "center",
-          }}
-          badgeDotColors={badgeDotColors}
-          items={items}
-          mode="BADGE"
-          maxHeight={170}
-          value={value}
-          setValue={setValue}
-          onChangeValue={handleValueChange}
-          multiple={true}
-          open={open}
-          setOpen={setOpen}
-          setItems={setItems}
-          style={{
-            borderColor: "",
-            backgroundColor: colors.silver,
-          }}
-          containerStyle={styles.dropDownPicker}
-          dropDownContainerStyle={{
-            marginTop: 0.2,
-            marginHorizontal: 1,
-            width: "99.3%",
-            backgroundColor: colors.silver,
-            borderColor: colors.silver,
-            borderTopColor: colors.medium,
-            borderTopWidth: 0.3,
-          }}
-          theme="DARK"
         />
       </View>
       <TouchableOpacity
@@ -181,18 +178,6 @@ const SpecificationsScreen = () => {
 export default SpecificationsScreen;
 
 const styles = StyleSheet.create({
-  dropDownPicker: {
-    flex: 1,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-  row: {
-    paddingHorizontal: 30,
-    flexDirection: "row",
-    alignItems: "center",
-  },
   cardStyle: {
     marginHorizontal: 20,
     justifyContent: "center",
@@ -206,6 +191,27 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.17,
     shadowRadius: 10,
+  },
+  dropDownPicker: {
+    flex: 1,
+  },
+  dropDownContainerStyle: {
+    marginTop: 0.2,
+    marginHorizontal: 1,
+    width: "99.3%",
+    backgroundColor: colors.silver,
+    borderColor: colors.silver,
+    borderTopColor: colors.medium,
+    borderTopWidth: 0.2,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  row: {
+    paddingHorizontal: 30,
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
 
