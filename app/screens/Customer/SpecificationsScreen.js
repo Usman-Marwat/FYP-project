@@ -7,6 +7,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { ProfileHeader } from "@freakycoder/react-native-header-view";
 import Carousel from "react-native-reanimated-carousel";
@@ -88,7 +89,7 @@ const SpecificationsScreen = () => {
           mode="parallax"
           pagingEnabled
           data={[...new Array(4).keys()]}
-          scrollAnimationDuration={1000}
+          scrollAnimationDuration={700}
           onSnapToItem={handleCurrentItem}
           renderItem={({ index }) => (
             <Card
@@ -107,18 +108,37 @@ const SpecificationsScreen = () => {
         <DropDownPicker
           ArrowDownIconComponent={({ style }) => (
             <Icon
-              backgroundColor="#f5f5f5"
-              name="arrow-down"
-              iconColor="black"
-              style={style}
+              backgroundColor={colors.silver}
+              name="chevron-down"
+              iconColor={colors.medium}
+              size={42}
             />
           )}
+          ArrowUpIconComponent={({ style }) => (
+            <Icon
+              backgroundColor={colors.silver}
+              name="chevron-up"
+              iconColor="black"
+              size={42}
+            />
+          )}
+          TickIconComponent={({ style }) => (
+            <Icon
+              backgroundColor={colors.medium}
+              name="check"
+              size={20}
+              style={{ marginRight: 10 }}
+            />
+          )}
+          listItemLabelStyle={{
+            color: colors.medium,
+          }}
           translation={{
-            PLACEHOLDER: `                                      ${keys[index]}`,
+            PLACEHOLDER: `Select the item(s)`,
           }}
           placeholderStyle={{
-            color: "grey",
-            fontWeight: "bold",
+            color: colors.medium,
+            alignSelf: "center",
           }}
           badgeDotColors={badgeDotColors}
           items={items}
@@ -132,15 +152,18 @@ const SpecificationsScreen = () => {
           setOpen={setOpen}
           setItems={setItems}
           style={{
-            borderColor: "white",
-            backgroundColor: "#f5f5f5",
+            borderColor: "",
+            backgroundColor: colors.silver,
           }}
           containerStyle={styles.dropDownPicker}
           dropDownContainerStyle={{
+            marginTop: 0.2,
             marginHorizontal: 1,
             width: "99.3%",
-            backgroundColor: "#f5f5f5",
-            borderColor: "#f5f5f5",
+            backgroundColor: colors.silver,
+            borderColor: colors.silver,
+            borderTopColor: colors.medium,
+            borderTopWidth: 0.3,
           }}
           theme="DARK"
         />
@@ -149,7 +172,7 @@ const SpecificationsScreen = () => {
         style={{ alignItems: "center", top: 175 }}
         onPress={() => console.log("hi")}
       >
-        <Icon name="check" backgroundColor={colors.primary} />
+        <Icon name="check" size={45} backgroundColor={colors.primary} />
       </TouchableOpacity>
     </Screen>
   );
