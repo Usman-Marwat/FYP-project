@@ -34,6 +34,7 @@
     "react-native-apple-header": "^0.1.1",
     "react-native-classic-header": "^0.1.7",
     "react-native-component-separator": "^1.0.1",
+    "react-native-dropdown-picker": "^5.4.2",
     "react-native-elegant-header": "^0.1.0",
     "react-native-expo-image-cache": "^4.1.0",
     "react-native-gesture-handler": "~2.5.0",

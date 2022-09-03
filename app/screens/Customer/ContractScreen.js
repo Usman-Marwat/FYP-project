@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { ProfileHeader } from "@freakycoder/react-native-header-view";
 import { Left } from "react-native-component-separator";
 import RNBounceable from "@freakycoder/react-native-bounceable";
