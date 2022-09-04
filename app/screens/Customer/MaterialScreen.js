@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -86,6 +86,21 @@ const SpecificationsScreen = () => {
       setAllValues(currentAllValues);
     }
   };
+
+  useEffect(() => {
+    /* this hook will get called everytime when allValues has changed
+    perform some action which will get fired everytime when myArr gets updated
+    
+    We had to do this becasue setAllvalues() in handleValueChange() was not causing re-render
+    The callback method also did not work (it probably would have worked in class components)
+
+    This is because
+    Calling setState() in React is asynchronous, for various reasons (mainly performance). 
+    Under the covers React will batch multiple calls to setState() into a single state mutation, 
+    and then re-render the component a single time, rather than re-rendering for every state change. 
+    */
+    // console.log("Updated State", allValues);
+  }, [allValues]);
 
   return (
     <Screen>
