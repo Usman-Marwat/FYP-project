@@ -21,8 +21,6 @@ import Icon from "../../components/Icon";
 import Pagination from "../../components/Pagination";
 import Screen from "../../components/Screen";
 
-const width = Dimensions.get("window").width;
-
 const badgeDotColors = [
   "#e76f51",
   "#00b4d8",
@@ -56,13 +54,20 @@ const material = [
     { label: "Egypt", value: "Egypt" },
   ],
 ];
-const allValues = [["madrid"], ["rome"], ["Pakistan"], ["Morocco"]];
+
+const width = Dimensions.get("window").width;
 
 const SpecificationsScreen = () => {
+  const [allValues, setAllValues] = useState([
+    ["madrid"],
+    ["rome"],
+    ["Pakistan"],
+    ["Morocco"],
+  ]);
   const [index, setIndex] = useState(0);
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState([]);
+  const [value, setValue] = useState(allValues[0]);
   const [items, setItems] = useState(material[0]);
 
   const handleCurrentItem = (index) => {
@@ -73,9 +78,13 @@ const SpecificationsScreen = () => {
 
   const handleValueChange = (value) => {
     // if the new value length >=1 or previous value was not zero
-    if (value.length >= 1 || allValues[index].length >= 1)
-      allValues[index] = value;
-    console.log(allValues);
+    if (value.length >= 1 || allValues[index].length >= 1) {
+      const currentAllValues = [...allValues];
+      let currentValue = [...currentAllValues[index]];
+      currentValue = value;
+      currentAllValues[index] = currentValue;
+      setAllValues(currentAllValues);
+    }
   };
 
   return (
@@ -219,3 +228,6 @@ const styles = StyleSheet.create({
 
 const imageUrl =
   "https://images.unsplash.com/photo-1661977597155-1277a81affcd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80";
+
+// we should not call setValue inside handleValueChange() here because that is then causing infinite loop
+// setValue(allValues[index]);
