@@ -8,6 +8,7 @@ import Card from "../../components/Card";
 import colors from "../../config/colors";
 import ListItem from "../../components/ListItem";
 import Screen from "../../components/Screen";
+import routes from "../../navigation/routes";
 
 const ContractScreen = ({ navigation }) => {
   return (
@@ -33,7 +34,7 @@ const ContractScreen = ({ navigation }) => {
               subTitle="200>"
               title="Premiuim"
               textAlign="center"
-              onPress={() => navigation.navigate("Specifications")}
+              onPress={() => navigation.navigate(routes.MATERIAL)}
             />
           </RNBounceable>
           <RNBounceable>

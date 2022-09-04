@@ -20,6 +20,7 @@ import colors from "../../config/colors";
 import Icon from "../../components/Icon";
 import Pagination from "../../components/Pagination";
 import Screen from "../../components/Screen";
+import routes from "../../navigation/routes";
 
 const badgeDotColors = [
   "#e76f51",
@@ -57,7 +58,7 @@ const material = [
 
 const width = Dimensions.get("window").width;
 
-const SpecificationsScreen = () => {
+const SpecificationsScreen = ({ navigation }) => {
   const [allValues, setAllValues] = useState([
     ["madrid"],
     ["rome"],
@@ -191,7 +192,7 @@ const SpecificationsScreen = () => {
       </View>
       <TouchableOpacity
         style={{ alignItems: "center", top: 175 }}
-        onPress={() => console.log("hi")}
+        onPress={() => navigation.navigate(routes.SPECIFICATIONS)}
       >
         <Icon name="check" size={45} backgroundColor={colors.primary} />
       </TouchableOpacity>

@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import ContractScreen from "../../screens/Customer/ContractScreen";
-import SpecificationsScreen from "../../screens/Customer/SpecificationsScreen";
+import MaterialScreen from "../../screens/Customer/MaterialScreen";
+import SpecificationScreen from "../../screens/Customer/SpecificationsScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -11,7 +12,12 @@ export default function ContractNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Contract" component={ContractScreen} />
-      <Stack.Screen name="Specifications" component={SpecificationsScreen} />
+      <Stack.Screen name="Material" component={MaterialScreen} />
+      <Stack.Screen
+        options={{ headerShown: true }}
+        name="Specifications"
+        component={SpecificationScreen}
+      />
     </Stack.Navigator>
   );
 }
