@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  TextInput,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Transition, Transitioning } from "react-native-reanimated";
@@ -19,6 +20,7 @@ import {
 
 import colors from "../../config/colors";
 import Icon from "../../components/Icon";
+import AppTextInput from "../../components/AppTextInput";
 
 const data = [
   {
@@ -125,14 +127,20 @@ const SpecificationScreen = () => {
                   <Text style={[styles.heading, { color }]}>{category}</Text>
                   {index === currentIndex && (
                     <View style={styles.subCategoriesList}>
-                      {subCategories.map((subCategory) => (
-                        <Text
-                          key={subCategory}
-                          style={[styles.body, { color }]}
-                        >
-                          {subCategory}
-                        </Text>
+                      {subCategories.map((subCategory, index) => (
+                        <View key={subCategory}>
+                          <Text style={[styles.body, { color }]}>
+                            {subCategory}
+                          </Text>
+                        </View>
                       ))}
+                      <AppTextInput
+                        minHeight={50}
+                        placeholder="add Description"
+                        placeholderTextColor={colors.white}
+                        backgroundColor={color}
+                        width="90%"
+                      />
                     </View>
                   )}
                 </View>
@@ -170,6 +178,7 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     minHeight: 120,
+    // paddingHorizontal: 20,
     flexGrow: 1,
     shadowColor: "silver",
     shadowOffset: {
