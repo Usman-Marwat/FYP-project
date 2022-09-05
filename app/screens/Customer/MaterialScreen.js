@@ -58,6 +58,16 @@ const material = [
 
 const width = Dimensions.get("window").width;
 
+const shadow = {
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 1,
+  },
+  shadowOpacity: 0.17,
+  shadowRadius: 10,
+};
+
 const SpecificationsScreen = ({ navigation }) => {
   const [allValues, setAllValues] = useState([
     ["madrid"],
@@ -136,9 +146,9 @@ const SpecificationsScreen = ({ navigation }) => {
         />
       </View>
 
-      <View style={styles.row}>
+      <View style={[styles.row, shadow]}>
         <DropDownPicker
-          ArrowDownIconComponent={({ style }) => (
+          ArrowDownIconComponent={() => (
             <Icon
               backgroundColor={colors.silver}
               name="chevron-down"
@@ -146,7 +156,7 @@ const SpecificationsScreen = ({ navigation }) => {
               size={42}
             />
           )}
-          ArrowUpIconComponent={({ style }) => (
+          ArrowUpIconComponent={() => (
             <Icon
               backgroundColor={colors.silver}
               name="chevron-up"

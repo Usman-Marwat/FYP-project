@@ -13,11 +13,7 @@ export default function ContractNavigator() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Contract" component={ContractScreen} />
       <Stack.Screen name="Material" component={MaterialScreen} />
-      <Stack.Screen
-        options={{ headerShown: true }}
-        name="Specifications"
-        component={SpecificationScreen}
-      />
+      <Stack.Screen name="Specifications" component={SpecificationScreen} />
     </Stack.Navigator>
   );
 }

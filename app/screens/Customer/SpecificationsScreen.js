@@ -5,15 +5,21 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  Dimensions,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Transition, Transitioning } from "react-native-reanimated";
+import {
+  AppleHeader,
+  ClassicHeader,
+  ElegantHeader,
+  GorgeousHeader,
+  ModernHeader,
+  ProfileHeader,
+} from "@freakycoder/react-native-header-view";
 
-import Screen from "../../components/Screen";
 import colors from "../../config/colors";
+import Icon from "../../components/Icon";
 
-let screenHeight = Dimensions.get("window").height;
 const data = [
   {
     bg: colors.silver,
@@ -73,34 +79,6 @@ const data = [
       "Vacuum cleaners",
     ],
   },
-  {
-    bg: colors.silver,
-    color: colors.secondary,
-    category: "usman",
-    subCategories: [
-      "Air ",
-      "Stoves, hoods & ovens",
-      "Refrigerators",
-      "Coffee & Tea",
-      "Air conditioning",
-      "Grilling",
-      "Vacuum cleaners",
-    ],
-  },
-  {
-    bg: colors.silver,
-    color: colors.secondary,
-    category: "khan",
-    subCategories: [
-      "Air purrs",
-      "Stoves, hoods & ovens",
-      "Refrigerators",
-      "Coffee & Tea",
-      "Air conditioning",
-      "Grilling",
-      "Vacuum cleaners",
-    ],
-  },
 ];
 
 const transition = (
@@ -117,11 +95,13 @@ const SpecificationScreen = () => {
   const scrollView = useRef();
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
+      <ProfileHeader height={70} />
+
       <ScrollView
         ref={scrollView}
         onContentSizeChange={() => {
-          if (currentIndex == 6)
+          if (currentIndex == 4)
             return scrollView.current.scrollToEnd({ animated: true });
         }}
       >
@@ -161,6 +141,21 @@ const SpecificationScreen = () => {
           })}
         </Transitioning.View>
       </ScrollView>
+      <View style={styles.tagline}>
+        <Text>Add Specificatons</Text>
+      </View>
+      <View style={styles.row}>
+        <TouchableOpacity>
+          <Icon name="bookmark" size={35} backgroundColor={colors.medium} />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Icon name="table" size={50} backgroundColor={colors.medium} />
+        </TouchableOpacity>
+
+        <TouchableOpacity>
+          <Icon name="arrow-right" size={35} backgroundColor={colors.medium} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -174,9 +169,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   cardContainer: {
-    minHeight: 150,
+    minHeight: 120,
     flexGrow: 1,
-    shadowColor: colors.primary,
+    shadowColor: "silver",
     shadowOffset: {
       width: 0,
       height: 1,
@@ -190,8 +185,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   heading: {
-    fontSize: 38,
-    fontWeight: "900",
+    fontSize: 28,
+    fontWeight: "700",
     textTransform: "uppercase",
     letterSpacing: -2,
   },
@@ -200,7 +195,18 @@ const styles = StyleSheet.create({
     lineHeight: 20 * 1.5,
     textAlign: "center",
   },
+  row: {
+    flexDirection: "row",
+    paddingHorizontal: 30,
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 17,
+  },
   subCategoriesList: {
     marginTop: 20,
+  },
+  tagline: {
+    marginVertical: 20,
+    alignItems: "center",
   },
 });
