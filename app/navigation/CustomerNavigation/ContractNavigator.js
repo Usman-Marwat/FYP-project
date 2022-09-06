@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 
 import ContractScreen from "../../screens/Customer/ContractScreen";
 import MaterialScreen from "../../screens/Customer/MaterialScreen";
@@ -8,7 +9,7 @@ import SpecificationScreen from "../../screens/Customer/SpecificationsScreen";
 import FirmsList from "../../screens/Customer/FirmsList";
 import FirmsListDetailsScreen from "../../screens/Customer/FirmsListDetailsScreen";
 
-const Stack = createNativeStackNavigator();
+const Stack = createSharedElementStackNavigator();
 
 export default function ContractNavigator() {
   return (
@@ -20,6 +21,15 @@ export default function ContractNavigator() {
       <Stack.Screen
         name="FirmsListDetails"
         component={FirmsListDetailsScreen}
+        sharedElements={(route) => {
+          const { item } = route.params;
+          return [
+            { id: `item.${item.key}.bg` },
+            { id: `item.${item.key}.name` },
+            { id: `item.${item.key}.image` },
+            { id: "general.bg" },
+          ];
+        }}
       />
     </Stack.Navigator>
   );

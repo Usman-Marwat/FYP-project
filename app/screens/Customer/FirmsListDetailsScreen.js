@@ -8,11 +8,12 @@ import {
 } from "react-native";
 import React from "react";
 import * as Animatable from "react-native-animatable";
-import {
-  SharedElement,
-  SharedElementTransition,
-  nodeFromRef,
-} from "react-native-shared-element";
+// import {
+//   SharedElementTransition,
+//   nodeFromRef,
+// } from "react-native-shared-element";
+
+import { SharedElement } from "react-navigation-shared-element";
 
 import Icon from "../../components/Icon";
 import colors from "../../config/colors";
@@ -100,8 +101,6 @@ const FirmsListDetailsScreen = ({ navigation, route }) => {
   );
 };
 
-export default FirmsListDetailsScreen;
-
 const styles = StyleSheet.create({
   bg: {
     //make borderRadius to 0 instead of removing the property as whole
@@ -171,3 +170,15 @@ const styles = StyleSheet.create({
     marginBottom: SPACING,
   },
 });
+
+// FirmsListDetailsScreen.SharedElement = (route, otherRoute, showing) => {
+//   const { item } = route.params;
+//   return [
+//     { id: `item.${item.key}.bg` },
+//     { id: `item.${item.key}.name` },
+//     { id: `item.${item.key}.image` },
+//     { id: "general.bg" },
+//   ];
+// };
+
+export default FirmsListDetailsScreen;

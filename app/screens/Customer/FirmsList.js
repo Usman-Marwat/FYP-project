@@ -10,11 +10,12 @@ import {
 import React from "react";
 import niceColors from "nice-color-palettes";
 import { faker } from "@faker-js/faker";
-import {
-  SharedElement,
-  SharedElementTransition,
-  nodeFromRef,
-} from "react-native-shared-element";
+// import {
+//   SharedElement,
+//   SharedElementTransition,
+//   nodeFromRef,
+// } from "react-native-shared-element";
+import { SharedElement } from "react-navigation-shared-element";
 
 import Screen from "../../components/Screen";
 import routes from "../../navigation/routes";
