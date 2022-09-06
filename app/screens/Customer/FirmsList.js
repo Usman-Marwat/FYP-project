@@ -45,13 +45,15 @@ const fakerData = data.map((item, index) => ({
   }),
 }));
 
-const ITEM_HEIGHT = Dimensions.get("window").height * 0.18;
+const { height, width } = Dimensions.get("window");
+const ITEM_HEIGHT = height * 0.18;
+const SPACING = 10;
 
 const FirmsList = ({ navigation }) => {
   return (
     <Screen style={styles.container}>
       <FlatList
-        contentContainerStyle={{ padding: 10 }}
+        contentContainerStyle={{ padding: SPACING }}
         data={fakerData}
         keyExtractor={(item) => item.key}
         renderItem={({ item }) => {
@@ -61,11 +63,11 @@ const FirmsList = ({ navigation }) => {
                 navigation.navigate(routes.FIRMSLISTDETAILS, { item });
               }}
               style={{
-                marginBottom: 10,
+                marginBottom: SPACING,
                 height: ITEM_HEIGHT,
               }}
             >
-              <View style={{ flex: 1, padding: 10 }}>
+              <View style={{ flex: 1, padding: SPACING }}>
                 <View style={[styles.bg, { backgroundColor: item.color }]} />
                 <Text style={styles.name}>{item.name}</Text>
                 <Text style={styles.jobTitle}>{item.jobTitle}</Text>
@@ -75,6 +77,7 @@ const FirmsList = ({ navigation }) => {
           );
         }}
       />
+      <View style={styles.overlay} />
     </Screen>
   );
 };
@@ -95,7 +98,7 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     position: "absolute",
     bottom: 0,
-    right: 10,
+    right: SPACING,
   },
   jobTitle: {
     fontSize: 11,
@@ -104,5 +107,13 @@ const styles = StyleSheet.create({
   name: {
     fontWeight: "700",
     fontSize: 18,
+  },
+  overlay: {
+    position: "absolute",
+    width,
+    height,
+    backgroundColor: "red",
+    transform: [{ translateY: height }],
+    borderRadius: 32,
   },
 });
