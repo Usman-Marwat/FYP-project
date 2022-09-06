@@ -10,6 +10,12 @@ import {
 import React from "react";
 import niceColors from "nice-color-palettes";
 import { faker } from "@faker-js/faker";
+import {
+  SharedElement,
+  SharedElementTransition,
+  nodeFromRef,
+} from "react-native-shared-element";
+
 import Screen from "../../components/Screen";
 import routes from "../../navigation/routes";
 
@@ -68,16 +74,30 @@ const FirmsList = ({ navigation }) => {
               }}
             >
               <View style={{ flex: 1, padding: SPACING }}>
-                <View style={[styles.bg, { backgroundColor: item.color }]} />
-                <Text style={styles.name}>{item.name}</Text>
+                <SharedElement
+                  id={`item.${item.key}.bg`}
+                  style={StyleSheet.absoluteFillObject}
+                >
+                  <View style={[styles.bg, { backgroundColor: item.color }]} />
+                </SharedElement>
+                <SharedElement id={`item.${item.key}.name`}>
+                  <Text style={styles.name}>{item.name}</Text>
+                </SharedElement>
                 <Text style={styles.jobTitle}>{item.jobTitle}</Text>
-                <Image source={{ uri: item.image }} style={styles.image} />
+                <SharedElement
+                  id={`item.${item.key}.image`}
+                  style={styles.image}
+                >
+                  <Image source={{ uri: item.image }} style={styles.image} />
+                </SharedElement>
               </View>
             </TouchableOpacity>
           );
         }}
       />
-      <View style={styles.overlay} />
+      <SharedElement id="general.bg">
+        <View style={styles.overlay} />
+      </SharedElement>
     </Screen>
   );
 };

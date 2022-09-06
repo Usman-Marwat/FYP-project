@@ -8,6 +8,11 @@ import {
 } from "react-native";
 import React from "react";
 import * as Animatable from "react-native-animatable";
+import {
+  SharedElement,
+  SharedElementTransition,
+  nodeFromRef,
+} from "react-native-shared-element";
 
 import Icon from "../../components/Icon";
 import colors from "../../config/colors";
@@ -28,57 +33,69 @@ const FirmsListDetailsScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
-      <View style={[styles.bg, { backgroundColor: item.color }]} />
-      <Text style={styles.name}>{item.name}</Text>
-      <Image source={{ uri: item.image }} style={styles.image} />
-      <View style={styles.overlay}>
-        <ScrollView>
-          <View style={styles.iconRow}>
-            {detailsIcons.map((detail, index) => {
-              return (
-                <Animatable.View
-                  animation="bounceIn"
-                  delay={DURATION + index * 100}
-                  key={`${detail.icon}-${index}`}
-                >
-                  <Icon
-                    size={64}
-                    backgroundColor={detail.color}
-                    name={detail.icon}
-                  ></Icon>
-                </Animatable.View>
-              );
-            })}
-          </View>
-          <View style={{ flex: 1 }}>
-            {item.categories.map((category, index) => {
-              return (
-                <Animatable.View
-                  animation="fadeInUp"
-                  delay={DURATION * 2 + index * 200}
-                  key={category.key}
-                  style={{ marginVertical: SPACING }}
-                >
-                  <Text style={styles.title}>{category.title}</Text>
-                  {category.subcats.map((subcat, index) => {
-                    return (
-                      <View style={styles.list} key={index}>
-                        <View
-                          style={[
-                            styles.listItemDot,
-                            { backgroundColor: item.color },
-                          ]}
-                        />
-                        <Text style={styles.subTitle}>{subcat}</Text>
-                      </View>
-                    );
-                  })}
-                </Animatable.View>
-              );
-            })}
-          </View>
-        </ScrollView>
-      </View>
+      <SharedElement
+        id={`item.${item.key}.bg`}
+        style={StyleSheet.absoluteFillObject}
+      >
+        <View style={[styles.bg, { backgroundColor: item.color }]} />
+      </SharedElement>
+      <SharedElement id={`item.${item.key}.name`}>
+        <Text style={styles.name}>{item.name}</Text>
+      </SharedElement>
+      <SharedElement id={`item.${item.key}.image`}>
+        <Image source={{ uri: item.image }} style={styles.image} />
+      </SharedElement>
+
+      <SharedElement id="general.bg">
+        <View style={styles.overlay}>
+          <ScrollView>
+            <View style={styles.iconRow}>
+              {detailsIcons.map((detail, index) => {
+                return (
+                  <Animatable.View
+                    animation="bounceIn"
+                    delay={DURATION + index * 100}
+                    key={`${detail.icon}-${index}`}
+                  >
+                    <Icon
+                      size={64}
+                      backgroundColor={detail.color}
+                      name={detail.icon}
+                    ></Icon>
+                  </Animatable.View>
+                );
+              })}
+            </View>
+            <View style={{ flex: 1 }}>
+              {item.categories.map((category, index) => {
+                return (
+                  <Animatable.View
+                    animation="fadeInUp"
+                    delay={DURATION * 2 + index * 200}
+                    key={category.key}
+                    style={{ marginVertical: SPACING }}
+                  >
+                    <Text style={styles.title}>{category.title}</Text>
+                    {category.subcats.map((subcat, index) => {
+                      return (
+                        <View style={styles.list} key={index}>
+                          <View
+                            style={[
+                              styles.listItemDot,
+                              { backgroundColor: item.color },
+                            ]}
+                          />
+                          <Text style={styles.subTitle}>{subcat}</Text>
+                        </View>
+                      );
+                    })}
+                  </Animatable.View>
+                );
+              })}
+            </View>
+          </ScrollView>
+        </View>
+      </SharedElement>
     </View>
   );
 };
@@ -108,7 +125,7 @@ const styles = StyleSheet.create({
     height: ITEM_HEIGHT * 0.8,
     resizeMode: "contain",
     position: "absolute",
-    top: TOP_HEADER_HEIGHT - ITEM_HEIGHT * 0.8,
+    top: TOP_HEADER_HEIGHT - ITEM_HEIGHT * 0.8 + 10,
     right: SPACING,
   },
   jobTitle: {
