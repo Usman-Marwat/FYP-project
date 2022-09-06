@@ -15,6 +15,7 @@ import colors from "../../config/colors";
 import Icon from "../../components/Icon";
 import AppTextInput from "../../components/AppTextInput";
 import ContractTable from "../../components/ContractTable";
+import routes from "../../navigation/routes";
 
 const data = [
   {
@@ -85,7 +86,7 @@ const transition = (
   </Transition.Together>
 );
 
-const SpecificationScreen = () => {
+const SpecificationScreen = ({ navigation }) => {
   const [currentIndex, setCurrentIndex] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const ref = React.useRef();
@@ -155,7 +156,7 @@ const SpecificationScreen = () => {
           <Icon name="table" size={50} backgroundColor={colors.medium} />
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate(routes.FIRMSLIST)}>
           <Icon name="arrow-right" size={35} backgroundColor={colors.medium} />
         </TouchableOpacity>
       </View>
