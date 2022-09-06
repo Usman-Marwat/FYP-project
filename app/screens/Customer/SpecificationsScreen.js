@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,18 +9,12 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Transition, Transitioning } from "react-native-reanimated";
-import {
-  AppleHeader,
-  ClassicHeader,
-  ElegantHeader,
-  GorgeousHeader,
-  ModernHeader,
-  ProfileHeader,
-} from "@freakycoder/react-native-header-view";
+import { ProfileHeader } from "@freakycoder/react-native-header-view";
 
 import colors from "../../config/colors";
 import Icon from "../../components/Icon";
 import AppTextInput from "../../components/AppTextInput";
+import ContractTable from "../../components/ContractTable";
 
 const data = [
   {
@@ -92,7 +86,8 @@ const transition = (
 );
 
 const SpecificationScreen = () => {
-  const [currentIndex, setCurrentIndex] = React.useState(null);
+  const [currentIndex, setCurrentIndex] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
   const ref = React.useRef();
   const scrollView = useRef();
 
@@ -156,7 +151,7 @@ const SpecificationScreen = () => {
         <TouchableOpacity>
           <Icon name="bookmark" size={35} backgroundColor={colors.medium} />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setIsVisible(true)}>
           <Icon name="table" size={50} backgroundColor={colors.medium} />
         </TouchableOpacity>
 
@@ -164,6 +159,10 @@ const SpecificationScreen = () => {
           <Icon name="arrow-right" size={35} backgroundColor={colors.medium} />
         </TouchableOpacity>
       </View>
+      <ContractTable
+        isVisible={isVisible}
+        onModalVisible={() => setIsVisible(false)}
+      />
     </View>
   );
 };
