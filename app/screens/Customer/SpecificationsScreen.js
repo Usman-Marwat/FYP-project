@@ -163,6 +163,7 @@ const SpecificationScreen = () => {
         isVisible={isVisible}
         onModalVisible={() => setIsVisible(false)}
       />
+      <StatusBar hidden={false} />
     </View>
   );
 };
