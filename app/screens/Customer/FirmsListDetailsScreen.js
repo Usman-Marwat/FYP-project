@@ -7,7 +7,8 @@ import {
   ScrollView,
 } from "react-native";
 import React from "react";
-import { interpolate } from "react-native-reanimated";
+import * as Animatable from "react-native-animatable";
+
 import Icon from "../../components/Icon";
 import colors from "../../config/colors";
 
@@ -20,6 +21,7 @@ const detailsIcons = [
   { color: "#F3B000", icon: "trophy-outline" },
   { color: "#F2988F", icon: "account-edit" },
 ];
+const DURATION = 400;
 
 const FirmsListDetailsScreen = ({ navigation, route }) => {
   const { item } = route.params;
@@ -34,19 +36,29 @@ const FirmsListDetailsScreen = ({ navigation, route }) => {
           <View style={styles.iconRow}>
             {detailsIcons.map((detail, index) => {
               return (
-                <Icon
+                <Animatable.View
+                  animation="bounceIn"
+                  delay={DURATION + index * 100}
                   key={`${detail.icon}-${index}`}
-                  size={64}
-                  backgroundColor={detail.color}
-                  name={detail.icon}
-                ></Icon>
+                >
+                  <Icon
+                    size={64}
+                    backgroundColor={detail.color}
+                    name={detail.icon}
+                  ></Icon>
+                </Animatable.View>
               );
             })}
           </View>
           <View style={{ flex: 1 }}>
-            {item.categories.map((category) => {
+            {item.categories.map((category, index) => {
               return (
-                <View key={category.key} style={{ marginVertical: SPACING }}>
+                <Animatable.View
+                  animation="fadeInUp"
+                  delay={DURATION * 2 + index * 200}
+                  key={category.key}
+                  style={{ marginVertical: SPACING }}
+                >
                   <Text style={styles.title}>{category.title}</Text>
                   {category.subcats.map((subcat, index) => {
                     return (
@@ -61,7 +73,7 @@ const FirmsListDetailsScreen = ({ navigation, route }) => {
                       </View>
                     );
                   })}
-                </View>
+                </Animatable.View>
               );
             })}
           </View>
