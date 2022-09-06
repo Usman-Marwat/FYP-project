@@ -1,4 +1,11 @@
-import { Dimensions, StyleSheet, Text, View, Image } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+} from "react-native";
 import React from "react";
 import { interpolate } from "react-native-reanimated";
 import Icon from "../../components/Icon";
@@ -23,18 +30,42 @@ const FirmsListDetailsScreen = ({ navigation, route }) => {
       <Text style={styles.name}>{item.name}</Text>
       <Image source={{ uri: item.image }} style={styles.image} />
       <View style={styles.overlay}>
-        <View style={styles.iconRow}>
-          {detailsIcons.map((detail, index) => {
-            return (
-              <Icon
-                key={`${detail.icon}-${index}`}
-                size={64}
-                backgroundColor={detail.color}
-                name={detail.icon}
-              ></Icon>
-            );
-          })}
-        </View>
+        <ScrollView>
+          <View style={styles.iconRow}>
+            {detailsIcons.map((detail, index) => {
+              return (
+                <Icon
+                  key={`${detail.icon}-${index}`}
+                  size={64}
+                  backgroundColor={detail.color}
+                  name={detail.icon}
+                ></Icon>
+              );
+            })}
+          </View>
+          <View style={{ flex: 1 }}>
+            {item.categories.map((category) => {
+              return (
+                <View key={category.key} style={{ marginVertical: SPACING }}>
+                  <Text style={styles.title}>{category.title}</Text>
+                  {category.subcats.map((subcat, index) => {
+                    return (
+                      <View style={styles.list} key={index}>
+                        <View
+                          style={[
+                            styles.listItemDot,
+                            { backgroundColor: item.color },
+                          ]}
+                        />
+                        <Text style={styles.subTitle}>{subcat}</Text>
+                      </View>
+                    );
+                  })}
+                </View>
+              );
+            })}
+          </View>
+        </ScrollView>
       </View>
     </View>
   );
@@ -57,6 +88,8 @@ const styles = StyleSheet.create({
   iconRow: {
     flexDirection: "row",
     justifyContent: "space-evenly",
+    marginTop: SPACING,
+    marginBottom: SPACING + 32,
   },
   image: {
     width: ITEM_HEIGHT * 0.8,
@@ -69,6 +102,18 @@ const styles = StyleSheet.create({
   jobTitle: {
     fontSize: 11,
     opacity: 0.7,
+  },
+  list: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: SPACING / 2,
+    marginLeft: SPACING,
+  },
+  listItemDot: {
+    height: 8,
+    width: 8,
+    borderRadius: 4,
+    marginRight: SPACING,
   },
   name: {
     fontWeight: "700",
@@ -85,5 +130,15 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     padding: SPACING,
     paddingTop: 32 + SPACING,
+    flex: 1,
+  },
+  subTitle: {
+    fontSize: 14,
+    opacity: 0.8,
+  },
+  title: {
+    fontWeight: "700",
+    fontSize: 20,
+    marginBottom: SPACING,
   },
 });
