@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -50,10 +50,11 @@ const CustomDrawer = ({
   animate,
   animatedValue,
   fromCords,
-  onPress,
+  onCloseDrawer,
   toCords,
 }) => {
   const polygonRef = useRef();
+  const [selectedRoute, setSelectedRoute] = useState(routes[0]);
   useEffect(() => {
     animatedValue.addListener((value) => {
       if (polygonRef?.current) {
@@ -83,7 +84,7 @@ const CustomDrawer = ({
       }
     >
       <View style={styles.menuContainer}>
-        <TouchableOpacity onPress={onPress} style={styles.closeIcon}>
+        <TouchableOpacity onPress={onCloseDrawer} style={styles.closeIcon}>
           <Icon
             name="close"
             backgroundColor="transparent"
@@ -99,10 +100,18 @@ const CustomDrawer = ({
                 <AppButton
                   key={route}
                   title={route}
-                  onPress={onPress}
+                  onPress={() => {
+                    setSelectedRoute(route);
+                    onCloseDrawer();
+                  }}
                   color="transparent"
-                  style={{ padding: 0, alignItems: "flex-start" }}
-                  titleStyle={{ ...styles.button, color: colors[index] }}
+                  style={[styles.button]}
+                  titleStyle={{
+                    ...styles.buttonTitle,
+                    color: colors[index],
+                    textDecorationLine:
+                      route === selectedRoute ? "line-through" : "none",
+                  }}
                 />
               );
             })}
@@ -113,11 +122,11 @@ const CustomDrawer = ({
                 <AppButton
                   key={link}
                   title={link}
-                  onPress={onPress}
+                  onPress={onCloseDrawer}
                   color="transparent"
-                  style={{ padding: 0, alignItems: "flex-start" }}
+                  style={styles.button}
                   titleStyle={{
-                    ...styles.buttonSmall,
+                    ...styles.buttonSmallTitle,
                     color: colors[index + routes.length + 1],
                   }}
                 />
@@ -133,11 +142,12 @@ const CustomDrawer = ({
 export default CustomDrawer;
 
 const styles = StyleSheet.create({
-  button: {
+  button: { padding: 0, alignItems: "flex-start" },
+  buttonTitle: {
     fontSize: 34,
     lineHeight: 34 * 1.5,
   },
-  buttonSmall: {
+  buttonSmallTitle: {
     fontSize: 16,
     lineHeight: 16 * 1.5,
   },

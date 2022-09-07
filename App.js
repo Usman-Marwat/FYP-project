@@ -41,8 +41,9 @@ export default function App() {
   }, []);
 
   const translateX = animatedValue.y.interpolate({
-    inputRange: [0, height],
+    inputRange: [0, height * 0.17],
     outputRange: [100, 0],
+    extrapolate: "clamp",
   });
 
   return (
@@ -51,7 +52,7 @@ export default function App() {
         animate={animate}
         animatedValue={animatedValue}
         fromCords={fromCords}
-        onPress={handleCloseDrawer}
+        onCloseDrawer={handleCloseDrawer}
         toCords={toCords}
       />
       <AnimatedTouchable
