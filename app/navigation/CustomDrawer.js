@@ -8,6 +8,7 @@ import {
   Animated,
 } from "react-native";
 import Svg, { Polygon } from "react-native-svg";
+import MaskedView from "@react-native-masked-view/masked-view";
 
 import AppButton from "../components/AppButton";
 import Icon from "../components/Icon";
@@ -43,6 +44,7 @@ const colors = [
 // const fromCords = { x: 0, y: height };
 // const toCords = { x: width, y: 0 };
 const AnimatedPolygon = Animated.createAnimatedComponent(Polygon);
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
 const CustomDrawer = ({
   animate,
@@ -63,17 +65,32 @@ const CustomDrawer = ({
   });
 
   return (
-    <View style={styles.container}>
-      <Svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
-        <AnimatedPolygon
-          ref={polygonRef}
-          fill="red"
-          points={`0,0 ${fromCords.x},${fromCords.y} ${width}, ${height} 0, ${height}`}
-        />
-      </Svg>
+    <MaskedView
+      style={styles.container}
+      maskElement={
+        <Svg
+          width={width}
+          height={height}
+          viewBox={`0 0 ${width} ${height}`}
+          style={{ backgroundColor: "transparent" }}
+        >
+          <AnimatedPolygon
+            ref={polygonRef}
+            fill="red"
+            points={`0,0 ${fromCords.x},${fromCords.y} ${width}, ${height} 0, ${height}`}
+          />
+        </Svg>
+      }
+    >
       <View style={styles.menuContainer}>
         <TouchableOpacity onPress={onPress} style={styles.closeIcon}>
-          <Icon name="close" size={34} antDesign={true} />
+          <Icon
+            name="close"
+            backgroundColor="transparent"
+            iconColor="white"
+            size={34}
+            antDesign={true}
+          />
         </TouchableOpacity>
         <View style={styles.menu}>
           <View>
@@ -84,6 +101,7 @@ const CustomDrawer = ({
                   title={route}
                   onPress={onPress}
                   color="transparent"
+                  style={{ padding: 0, alignItems: "flex-start" }}
                   titleStyle={{ ...styles.button, color: colors[index] }}
                 />
               );
@@ -97,6 +115,7 @@ const CustomDrawer = ({
                   title={link}
                   onPress={onPress}
                   color="transparent"
+                  style={{ padding: 0, alignItems: "flex-start" }}
                   titleStyle={{
                     ...styles.buttonSmall,
                     color: colors[index + routes.length + 1],
@@ -107,7 +126,7 @@ const CustomDrawer = ({
           </View>
         </View>
       </View>
-    </View>
+    </MaskedView>
   );
 };
 

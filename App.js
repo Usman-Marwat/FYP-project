@@ -18,6 +18,8 @@ import Icon from "./app/components/Icon";
 
 const { width, height } = Dimensions.get("screen");
 
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
+
 export default function App() {
   const [fromCords] = useState({ x: 0, y: height });
   const [toCords] = useState({ x: width, y: 0 });
@@ -32,11 +34,16 @@ export default function App() {
   };
 
   const handleCloseDrawer = useCallback(() => {
-    //close animation
+    animate(0).start();
   }, []);
   const handleOpenDrawer = useCallback(() => {
     animate(1).start();
   }, []);
+
+  const translateX = animatedValue.y.interpolate({
+    inputRange: [0, height],
+    outputRange: [100, 0],
+  });
 
   return (
     <View style={styles.container}>
@@ -47,9 +54,18 @@ export default function App() {
         onPress={handleCloseDrawer}
         toCords={toCords}
       />
-      <TouchableOpacity onPress={handleOpenDrawer} style={styles.drawerIcon}>
-        <Icon antDesign={true} name="menufold" size={34} color="#222" />
-      </TouchableOpacity>
+      <AnimatedTouchable
+        onPress={handleOpenDrawer}
+        style={[styles.drawerIcon, { transform: [{ translateX: translateX }] }]}
+      >
+        <Icon
+          antDesign={true}
+          name="menufold"
+          backgroundColor="white"
+          size={34}
+          iconColor="#222"
+        />
+      </AnimatedTouchable>
     </View>
   );
 }
