@@ -124,10 +124,12 @@ const styles = StyleSheet.create({
   jobTitle: {
     fontSize: 11,
     opacity: 0.7,
+    marginTop: 32,
   },
   name: {
     fontWeight: "700",
-    fontSize: 18,
+    fontSize: 18 * 1.3,
+    position: "absolute",
   },
   overlay: {
     position: "absolute",

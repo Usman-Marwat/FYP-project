@@ -40,7 +40,10 @@ const FirmsListDetailsScreen = ({ navigation, route }) => {
       >
         <View style={[styles.bg, { backgroundColor: item.color }]} />
       </SharedElement>
-      <SharedElement id={`item.${item.key}.name`}>
+      <SharedElement
+        id={`item.${item.key}.name`}
+        style={{ alignItems: "flex-start" }}
+      >
         <Text style={styles.name}>{item.name}</Text>
       </SharedElement>
       <SharedElement id={`item.${item.key}.image`}>

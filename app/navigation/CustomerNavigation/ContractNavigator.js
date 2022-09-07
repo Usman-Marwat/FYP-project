@@ -25,7 +25,7 @@ export default function ContractNavigator() {
           const { item } = route.params;
           return [
             { id: `item.${item.key}.bg` },
-            { id: `item.${item.key}.name` },
+            { id: `item.${item.key}.name`, animation: "fade" },
             { id: `item.${item.key}.image` },
             { id: "general.bg" },
           ];
