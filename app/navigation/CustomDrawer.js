@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Dimensions,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
+  Animated,
 } from "react-native";
 import Svg, { Polygon } from "react-native-svg";
 
@@ -39,9 +40,37 @@ const colors = [
   "#53777a",
 ];
 
-const CustomDrawer = ({ onPress }) => {
+// const fromCords = { x: 0, y: height };
+// const toCords = { x: width, y: 0 };
+const AnimatedPolygon = Animated.createAnimatedComponent(Polygon);
+
+const CustomDrawer = ({
+  animate,
+  animatedValue,
+  fromCords,
+  onPress,
+  toCords,
+}) => {
+  const polygonRef = useRef();
+  useEffect(() => {
+    animatedValue.addListener((value) => {
+      if (polygonRef?.current) {
+        polygonRef.current.setNativeProps({
+          points: `0,0 ${value.x},${value.y} ${width}, ${height} 0, ${height}`,
+        });
+      }
+    });
+  });
+
   return (
     <View style={styles.container}>
+      <Svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
+        <AnimatedPolygon
+          ref={polygonRef}
+          fill="red"
+          points={`0,0 ${fromCords.x},${fromCords.y} ${width}, ${height} 0, ${height}`}
+        />
+      </Svg>
       <View style={styles.menuContainer}>
         <TouchableOpacity onPress={onPress} style={styles.closeIcon}>
           <Icon name="close" size={34} antDesign={true} />
