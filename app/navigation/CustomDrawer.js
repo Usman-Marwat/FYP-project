@@ -46,15 +46,19 @@ const colors = [
 const AnimatedPolygon = Animated.createAnimatedComponent(Polygon);
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
-const CustomDrawer = ({
-  animate,
-  animatedValue,
-  fromCords,
-  onCloseDrawer,
-  toCords,
-}) => {
+const CustomDrawer = ({ animatedValue, fromCords, onCloseDrawer }) => {
   const polygonRef = useRef();
   const [selectedRoute, setSelectedRoute] = useState(routes[0]);
+
+  const translateX = animatedValue.x.interpolate({
+    inputRange: [0, width],
+    outputRange: [-100, 0],
+  });
+  const opacity = animatedValue.x.interpolate({
+    inputRange: [0, width],
+    outputRange: [0, 1],
+  });
+
   useEffect(() => {
     animatedValue.addListener((value) => {
       if (polygonRef?.current) {
@@ -93,7 +97,12 @@ const CustomDrawer = ({
             antDesign={true}
           />
         </TouchableOpacity>
-        <View style={styles.menu}>
+        <Animated.View
+          style={[
+            styles.menu,
+            { opacity, transform: [{ translateX: translateX }] },
+          ]}
+        >
           <View>
             {routes.map((route, index) => {
               return (
@@ -133,7 +142,7 @@ const CustomDrawer = ({
               );
             })}
           </View>
-        </View>
+        </Animated.View>
       </View>
     </MaskedView>
   );

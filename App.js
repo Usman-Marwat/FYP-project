@@ -28,7 +28,7 @@ export default function App() {
   const animate = (toValue) => {
     return Animated.timing(animatedValue, {
       toValue: toValue === 1 ? toCords : fromCords,
-      duration: 2000,
+      duration: 700,
       useNativeDriver: true,
     });
   };
