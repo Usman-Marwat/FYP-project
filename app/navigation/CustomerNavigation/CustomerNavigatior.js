@@ -16,11 +16,23 @@ import Icon from "../../components/Icon";
 
 const DrawerNavigator = createDrawerNavigator();
 
+const { width, height } = Dimensions.get("screen");
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
+
 const CustomerNavigator = () => {
   return (
     <NavigationContainer>
       <DrawerNavigator.Navigator
-        screenOptions={{ headerShown: false }}
+        screenOptions={{
+          headerShown: false,
+          drawerStyle: {
+            backgroundColor: "transparent",
+            width: width,
+          },
+          drawerType: "permanent",
+          overlayColor: "transparent",
+        }}
+        overlayColor="transparent"
         drawerContent={(props) => {
           return (
             <CustomDrawer
@@ -51,9 +63,6 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
 });
-
-const { width, height } = Dimensions.get("screen");
-const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
 function Check({ navigation }) {
   // const translateX = animatedValue.y.interpolate({

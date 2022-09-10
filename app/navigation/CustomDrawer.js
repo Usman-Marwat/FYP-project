@@ -43,14 +43,16 @@ const colors = [
 ];
 
 const AnimatedPolygon = Animated.createAnimatedComponent(Polygon);
+const AnimatedMaskedView = Animated.createAnimatedComponent(MaskedView);
 
 const CustomDrawer = ({ navigation, selectedRoute, routes }) => {
   const drawerStatus = useDrawerStatus();
   const polygonRef = useRef();
   const [fromCords] = useState({ x: 0, y: height });
   const [toCords] = useState({ x: width, y: 0 });
-
+  const animatedWidth = useRef(new Animated.Value(0)).current;
   const animatedValue = useRef(new Animated.ValueXY(fromCords)).current;
+
   const animate = (toValue) => {
     return Animated.timing(animatedValue, {
       toValue: toValue === 1 ? toCords : fromCords,
@@ -60,14 +62,15 @@ const CustomDrawer = ({ navigation, selectedRoute, routes }) => {
   };
 
   const handleCloseDrawer = useCallback(() => {
-    //close Drawer
+    navigation.closeDrawer();
+    animate(0).start();
   }, []);
   const handleOpenDrawer = useCallback(() => {
     animate(1).start();
   }, []);
   const handleRoutePress = React.useCallback((route) => {
-    //close Drawer
-    //naviagte
+    navigation.navigate(route);
+    animate(0).start();
   }, []);
 
   const translateX = animatedValue.x.interpolate({
@@ -94,7 +97,7 @@ const CustomDrawer = ({ navigation, selectedRoute, routes }) => {
   });
 
   return (
-    <MaskedView
+    <AnimatedMaskedView
       style={styles.container}
       maskElement={
         <Svg
@@ -168,7 +171,7 @@ const CustomDrawer = ({ navigation, selectedRoute, routes }) => {
           </View>
         </Animated.View>
       </View>
-    </MaskedView>
+    </AnimatedMaskedView>
   );
 };
 
