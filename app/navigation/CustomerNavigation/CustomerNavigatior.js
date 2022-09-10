@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState, useRef } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
@@ -20,6 +20,10 @@ const { width, height } = Dimensions.get("screen");
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
 const CustomerNavigator = () => {
+  const [fromCords] = useState({ x: 0, y: height });
+  const [toCords] = useState({ x: width, y: 0 });
+  const animatedValue = useRef(new Animated.ValueXY(fromCords)).current;
+
   return (
     <NavigationContainer>
       <DrawerNavigator.Navigator
@@ -27,7 +31,7 @@ const CustomerNavigator = () => {
           headerShown: false,
           drawerStyle: {
             backgroundColor: "transparent",
-            width: width,
+            width: 0,
           },
           drawerType: "permanent",
           overlayColor: "transparent",
@@ -39,11 +43,24 @@ const CustomerNavigator = () => {
               navigation={props.navigation}
               routes={props.state.routeNames}
               selectedRoute={props.state.routeNames[props.state.index]}
+              fromCords={fromCords}
+              toCords={toCords}
+              animatedValue={animatedValue}
             />
           );
         }}
       >
-        <DrawerNavigator.Screen name="Check" component={Check} />
+        <DrawerNavigator.Screen name="Check">
+          {(props) => (
+            <Check
+              fromCords={fromCords}
+              toCords={toCords}
+              animatedValue={animatedValue}
+              {...props}
+            />
+          )}
+        </DrawerNavigator.Screen>
+
         <DrawerNavigator.Screen
           name="Contracts"
           component={ContractNavigator}
@@ -64,18 +81,18 @@ const styles = StyleSheet.create({
   },
 });
 
-function Check({ navigation }) {
-  // const translateX = animatedValue.y.interpolate({
-  //   inputRange: [0, height * 0.17],
-  //   outputRange: [100, 0],
-  //   extrapolate: "clamp",
-  // });
+function Check({ animatedValue, fromCords, navigation }) {
+  const translateX = animatedValue.y.interpolate({
+    inputRange: [0, height * 0.17],
+    outputRange: [100, 0],
+    extrapolate: "clamp",
+  });
 
   return (
     <View>
       <AnimatedTouchable
         onPress={() => navigation.openDrawer()}
-        style={styles.drawerIcon}
+        style={[styles.drawerIcon, { transform: [{ translateX: translateX }] }]}
       >
         <Icon
           antDesign={true}

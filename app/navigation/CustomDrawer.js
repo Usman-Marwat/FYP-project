@@ -41,24 +41,39 @@ const colors = [
   "#c02942",
   "#53777a",
 ];
-
+const DURATION = 1000;
 const AnimatedPolygon = Animated.createAnimatedComponent(Polygon);
 const AnimatedMaskedView = Animated.createAnimatedComponent(MaskedView);
 
-const CustomDrawer = ({ navigation, selectedRoute, routes }) => {
+const CustomDrawer = ({
+  animatedValue,
+  fromCords,
+  navigation,
+  selectedRoute,
+  routes,
+  toCords,
+}) => {
   const drawerStatus = useDrawerStatus();
   const polygonRef = useRef();
-  const [fromCords] = useState({ x: 0, y: height });
-  const [toCords] = useState({ x: width, y: 0 });
   const animatedWidth = useRef(new Animated.Value(0)).current;
-  const animatedValue = useRef(new Animated.ValueXY(fromCords)).current;
 
   const animate = (toValue) => {
-    return Animated.timing(animatedValue, {
-      toValue: toValue === 1 ? toCords : fromCords,
-      duration: 700,
-      useNativeDriver: true,
-    });
+    if (toValue === 1) {
+      animatedWidth.setValue(width);
+    }
+    const animations = [
+      Animated.timing(animatedValue, {
+        toValue: toValue === 1 ? toCords : fromCords,
+        duration: DURATION,
+        useNativeDriver: true,
+      }),
+      Animated.timing(animatedWidth, {
+        toValue: toValue === 1 ? width : 0,
+        duration: 0,
+        useNativeDriver: false,
+      }),
+    ];
+    return Animated.sequence(toValue === 0 ? animations : animations.reverse());
   };
 
   const handleCloseDrawer = useCallback(() => {
@@ -98,7 +113,7 @@ const CustomDrawer = ({ navigation, selectedRoute, routes }) => {
 
   return (
     <AnimatedMaskedView
-      style={styles.container}
+      style={[styles.container, { width: animatedWidth }]}
       maskElement={
         <Svg
           width={width}
