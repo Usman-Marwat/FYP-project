@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -14,15 +14,15 @@ import AppButton from "../components/AppButton";
 import Icon from "../components/Icon";
 
 const { width, height } = Dimensions.get("screen");
-const routes = [
-  "Get Started",
-  "Features",
-  "Tools",
-  "Services",
-  "Portfolio",
-  "Careers",
-  "Contact",
-];
+// const routes = [
+//   "Get Started",
+//   "Features",
+//   "Tools",
+//   "Services",
+//   "Portfolio",
+//   "Careers",
+//   "Contact",
+// ];
 const links = ["Follow us", "Quota", "Awesome link"];
 const colors = [
   "#69d2e7",
@@ -41,14 +41,32 @@ const colors = [
   "#53777a",
 ];
 
-// const fromCords = { x: 0, y: height };
-// const toCords = { x: width, y: 0 };
 const AnimatedPolygon = Animated.createAnimatedComponent(Polygon);
-const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
-const CustomDrawer = ({ animatedValue, fromCords, onCloseDrawer }) => {
+const CustomDrawer = ({ navigation, selectedRoute, routes }) => {
   const polygonRef = useRef();
-  const [selectedRoute, setSelectedRoute] = useState(routes[0]);
+  const [fromCords] = useState({ x: 0, y: height });
+  const [toCords] = useState({ x: width, y: 0 });
+
+  const animatedValue = useRef(new Animated.ValueXY(fromCords)).current;
+  const animate = (toValue) => {
+    return Animated.timing(animatedValue, {
+      toValue: toValue === 1 ? toCords : fromCords,
+      duration: 700,
+      useNativeDriver: true,
+    });
+  };
+
+  const handleCloseDrawer = useCallback(() => {
+    //close Drawer
+  }, []);
+  const handleOpenDrawer = useCallback(() => {
+    animate(1).start();
+  }, []);
+  const handleRoutePress = React.useCallback((route) => {
+    //close Drawer
+    //naviagte
+  }, []);
 
   const translateX = animatedValue.x.interpolate({
     inputRange: [0, width],
@@ -88,7 +106,7 @@ const CustomDrawer = ({ animatedValue, fromCords, onCloseDrawer }) => {
       }
     >
       <View style={styles.menuContainer}>
-        <TouchableOpacity onPress={onCloseDrawer} style={styles.closeIcon}>
+        <TouchableOpacity onPress={handleCloseDrawer} style={styles.closeIcon}>
           <Icon
             name="close"
             backgroundColor="transparent"
@@ -110,8 +128,8 @@ const CustomDrawer = ({ animatedValue, fromCords, onCloseDrawer }) => {
                   key={route}
                   title={route}
                   onPress={() => {
-                    setSelectedRoute(route);
-                    onCloseDrawer();
+                    handleRoutePress(route);
+                    handleCloseDrawer();
                   }}
                   color="transparent"
                   style={[styles.button]}
@@ -131,7 +149,7 @@ const CustomDrawer = ({ animatedValue, fromCords, onCloseDrawer }) => {
                 <AppButton
                   key={link}
                   title={link}
-                  onPress={onCloseDrawer}
+                  onPress={handleCloseDrawer}
                   color="transparent"
                   style={styles.button}
                   titleStyle={{

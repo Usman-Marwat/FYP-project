@@ -13,7 +13,6 @@ import routes from "../../navigation/routes";
 const ContractScreen = ({ navigation }) => {
   return (
     <Screen>
-      <ProfileHeader height={70} />
       <View style={styles.separator}>
         <Left borderColor="#e0e0e0" color="#616161">
           House Building

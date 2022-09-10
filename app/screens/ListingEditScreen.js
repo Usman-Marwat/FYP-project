@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import * as Yup from "yup";
 import {
   AppForm as Form,
-  AppFormField as FormField,
-  AppFormPicker as Picker,
+  AppFormField,
+  AppFormPicker,
   SubmitButton,
 } from "../components/forms";
 
@@ -102,8 +102,6 @@ function ListingEditScreen() {
     resetForm();
   };
 
-  // console.log("location returned");
-
   return (
     <Screen style={styles.container}>
       <Form
@@ -118,15 +116,15 @@ function ListingEditScreen() {
         validationSchema={validationSchema}
       >
         <FormImagePicker name="images" />
-        <FormField maxLength={255} name="title" placeholder="Title" />
-        <FormField
+        <AppFormField maxLength={255} name="title" placeholder="Title" />
+        <AppFormField
           keyboardType="numeric"
           maxLength={8}
           name="price"
           placeholder="Price"
           width={120}
         />
-        <Picker
+        <AppFormPicker
           items={categories}
           name="category"
           numberOfcolumns={3}
@@ -134,7 +132,7 @@ function ListingEditScreen() {
           placeholder="Category"
           width="50%"
         />
-        <FormField
+        <AppFormField
           maxLength={255}
           multiline
           name="description"
