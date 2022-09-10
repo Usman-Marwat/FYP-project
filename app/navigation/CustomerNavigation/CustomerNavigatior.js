@@ -1,23 +1,14 @@
-import {
-  StyleSheet,
-  Text,
-  Dimensions,
-  Animated,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Dimensions, Animated, View } from "react-native";
 import React, { useState, useRef } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import ContractNavigator from "./ContractNavigator";
 import CustomDrawer from "../CustomDrawer";
-import Icon from "../../components/Icon";
+import MenuFoldButton from "../MenuFoldButton";
 
 const DrawerNavigator = createDrawerNavigator();
-
 const { width, height } = Dimensions.get("screen");
-const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
 const CustomerNavigator = () => {
   const [fromCords] = useState({ x: 0, y: height });
@@ -36,7 +27,7 @@ const CustomerNavigator = () => {
           drawerType: "permanent",
           overlayColor: "transparent",
         }}
-        overlayColor="transparent"
+        // overlayColor="transparent"
         drawerContent={(props) => {
           return (
             <CustomDrawer
@@ -72,14 +63,7 @@ const CustomerNavigator = () => {
 
 export default CustomerNavigator;
 
-const styles = StyleSheet.create({
-  drawerIcon: {
-    position: "absolute",
-    top: 40,
-    right: 20,
-    backgroundColor: "transparent",
-  },
-});
+const styles = StyleSheet.create({});
 
 function Check({ animatedValue, fromCords, navigation }) {
   const translateX = animatedValue.y.interpolate({
@@ -90,18 +74,7 @@ function Check({ animatedValue, fromCords, navigation }) {
 
   return (
     <View>
-      <AnimatedTouchable
-        onPress={() => navigation.openDrawer()}
-        style={[styles.drawerIcon, { transform: [{ translateX: translateX }] }]}
-      >
-        <Icon
-          antDesign={true}
-          name="menufold"
-          backgroundColor="white"
-          size={34}
-          iconColor="#222"
-        />
-      </AnimatedTouchable>
+      <MenuFoldButton translateX={translateX} navigation={navigation} />
     </View>
   );
 }

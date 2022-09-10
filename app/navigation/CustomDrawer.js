@@ -41,6 +41,7 @@ const colors = [
   "#c02942",
   "#53777a",
 ];
+
 const DURATION = 1000;
 const AnimatedPolygon = Animated.createAnimatedComponent(Polygon);
 const AnimatedMaskedView = Animated.createAnimatedComponent(MaskedView);
