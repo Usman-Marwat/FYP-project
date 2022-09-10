@@ -13,7 +13,7 @@ import {
   SafeAreaView,
 } from "react-native";
 
-import React from "react";
+import React, { useRef } from "react";
 
 const { width, height } = Dimensions.get("screen");
 import { faker } from "@faker-js/faker";
@@ -36,16 +36,24 @@ const DATA = [...Array(30).keys()].map((_, i) => {
 
 const SPACING = 20;
 const AVATAR_SIZE = 70;
+const ITEM_SIZE = AVATAR_SIZE + SPACING * 3;
 
 const EmployeesList = () => {
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const scrollX = useRef(new Animated.Value(0)).current;
+
   return (
-    <Screen>
+    <Screen style={{ paddingTop: 50 }}>
       <Image
         source={{ uri: BG_IMG }}
         style={StyleSheet.absoluteFillObject}
         blurRadius={80}
       />
-      <FlatList
+      <Animated.FlatList
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY, x: scrollX } } }],
+          { useNativeDriver: true }
+        )}
         contentContainerStyle={{
           padding: SPACING,
           paddingTop: StatusBar.currentHeight || 42,
@@ -53,8 +61,34 @@ const EmployeesList = () => {
         data={DATA}
         keyExtractor={(item) => item.key}
         renderItem={({ item, index }) => {
+          const inputRange = [
+            -1,
+            0,
+            ITEM_SIZE * index,
+            ITEM_SIZE * (index + 2),
+          ];
+          const opcaityInputRange = [
+            -1,
+            0,
+            ITEM_SIZE * index,
+            ITEM_SIZE * (index + 0.7),
+          ];
+          const scale = scrollY.interpolate({
+            inputRange,
+            outputRange: [1, 1, 1, 0],
+          });
+          const opacity = scrollY.interpolate({
+            inputRange: opcaityInputRange,
+            outputRange: [1, 1, 1, 0],
+          });
+
           return (
-            <View style={styles.itemWrapper}>
+            <Animated.View
+              style={[
+                styles.itemWrapper,
+                { opacity, transform: [{ scale: scale }] },
+              ]}
+            >
               <Image source={{ uri: item.image }} style={styles.image} />
               <View style={{ flexShrink: 1 }}>
                 <Text style={{ fontSize: 22, fontWeight: "700" }}>
@@ -72,7 +106,7 @@ const EmployeesList = () => {
                   {item.email}
                 </Text>
               </View>
-            </View>
+            </Animated.View>
           );
         }}
       />
