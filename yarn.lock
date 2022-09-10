@@ -6266,13 +6266,6 @@ react-native-codegen@^0.69.2:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
-react-native-component-separator@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/react-native-component-separator/-/react-native-component-separator-1.0.1.tgz#a972f7218a30ffeddb1ef3535d027147c44b933a"
-  integrity sha512-d46kR8RIUKBRGPa2zwIBxmeHZUOywpT38jHAHcwDgo6pxV8EZd0vu33jDHlQQzayH/csQRg0Q3ja0sYDif1uuw==
-  dependencies:
-    prop-types "^15.7.2"
-
 react-native-dropdown-picker@^5.4.2:
   version "5.4.2"
   resolved "https://registry.yarnpkg.com/react-native-dropdown-picker/-/react-native-dropdown-picker-5.4.2.tgz#3d17de3d8a84cb8e74a2ffda6be417d287245b81"

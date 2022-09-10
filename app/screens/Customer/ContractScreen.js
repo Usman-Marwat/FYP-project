@@ -1,115 +1,120 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { ProfileHeader } from "@freakycoder/react-native-header-view";
-import { Left } from "react-native-component-separator";
 import RNBounceable from "@freakycoder/react-native-bounceable";
 
+import AppText from "../../components/AppTextGeneral";
 import Card from "../../components/Card";
 import colors from "../../config/colors";
 import ListItem from "../../components/ListItem";
 import Screen from "../../components/Screen";
 import routes from "../../navigation/routes";
+import MenuFoldButton from "../../navigation/MenuFoldButton";
+import { translateMenuFold } from "../../navigation/navigationAnimations";
+import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 
 const ContractScreen = ({ navigation }) => {
+  const { animatedValue } = useContext(DrawerAnimationContext);
+  const translateX = translateMenuFold(animatedValue);
+
   return (
-    <Screen>
-      <View style={styles.separator}>
-        <Left borderColor="#e0e0e0" color="#616161">
-          House Building
-        </Left>
-      </View>
-      <View>
-        <ScrollView
-          horizontal
-          contentContainerStyle={styles.contentContainer}
-          showsHorizontalScrollIndicator={false}
-        >
-          <RNBounceable>
-            <Card
-              cardStyle={styles.cardStyle}
-              heading="Premiuim"
-              imageUrl={imageUrl}
-              imageStyle={styles.imageStyle}
-              subTitle="200>"
-              title="Premiuim"
-              textAlign="center"
-              onPress={() => navigation.navigate(routes.MATERIAL)}
-            />
-          </RNBounceable>
-          <RNBounceable>
-            <Card
-              cardStyle={styles.cardStyle}
-              heading="Premiuim"
-              imageUrl={imageUrl}
-              imageStyle={styles.imageStyle}
-              subTitle="200>"
-              title="Premiuim"
-              textAlign="center"
-            />
-          </RNBounceable>
-          <RNBounceable>
-            <Card
-              cardStyle={styles.cardStyle}
-              heading="Premiuim"
-              imageUrl={imageUrl}
-              imageStyle={styles.imageStyle}
-              subTitle="200>"
-              title="Premiuim"
-              textAlign="center"
-            />
-          </RNBounceable>
-        </ScrollView>
-      </View>
-      <View style={styles.separator}>
-        <Left borderColor="white" color="#616161">
-          Renovation
-        </Left>
-      </View>
-      <View style={{ flex: 1 }}>
-        <ScrollView
-          contentContainerStyle={styles.contentContainer}
-          showsHorizontalScrollIndicator={false}
-          style={{ flex: 1 }}
-        >
-          <RNBounceable>
-            <View>
-              <ListItem
-                image={require("../../assets/pi.jpg")}
-                title="Usman Marwat"
-                subTitle="5 vitual shops"
+    <>
+      <MenuFoldButton navigation={navigation} translateX={translateX} />
+      <Screen>
+        <View style={styles.separator}>
+          <AppText>House Building</AppText>
+        </View>
+        <View>
+          <ScrollView
+            horizontal
+            contentContainerStyle={styles.contentContainer}
+            showsHorizontalScrollIndicator={false}
+          >
+            <RNBounceable>
+              <Card
+                cardStyle={styles.cardStyle}
+                heading="Premiuim"
+                imageUrl={imageUrl}
+                imageStyle={styles.imageStyle}
+                subTitle="200>"
+                title="Premiuim"
+                textAlign="center"
+                onPress={() => navigation.navigate(routes.MATERIAL)}
               />
-            </View>
-          </RNBounceable>
-          <RNBounceable>
-            <View>
-              <ListItem
-                image={require("../../assets/pi.jpg")}
-                title="Usman Marwat"
-                subTitle="5 vitual shops"
+            </RNBounceable>
+            <RNBounceable>
+              <Card
+                cardStyle={styles.cardStyle}
+                heading="Premiuim"
+                imageUrl={imageUrl}
+                imageStyle={styles.imageStyle}
+                subTitle="200>"
+                title="Premiuim"
+                textAlign="center"
               />
-            </View>
-          </RNBounceable>
-          <RNBounceable>
-            <View>
-              <ListItem
-                image={require("../../assets/pi.jpg")}
-                title="Usman Marwat"
-                subTitle="5 vitual shops"
+            </RNBounceable>
+            <RNBounceable>
+              <Card
+                cardStyle={styles.cardStyle}
+                heading="Premiuim"
+                imageUrl={imageUrl}
+                imageStyle={styles.imageStyle}
+                subTitle="200>"
+                title="Premiuim"
+                textAlign="center"
               />
-            </View>
-          </RNBounceable>
-          <RNBounceable>
-            <View>
-              <ListItem
-                image={require("../../assets/pi.jpg")}
-                title="Usman Marwat"
-                subTitle="5 vitual shops"
-              />
-            </View>
-          </RNBounceable>
-        </ScrollView>
-      </View>
-    </Screen>
+            </RNBounceable>
+          </ScrollView>
+        </View>
+        <View style={styles.separator}>
+          <AppText>Renovation</AppText>
+        </View>
+        <View style={{ flex: 1 }}>
+          <ScrollView
+            contentContainerStyle={styles.contentContainer}
+            showsHorizontalScrollIndicator={false}
+            style={{ flex: 1 }}
+          >
+            <RNBounceable>
+              <View>
+                <ListItem
+                  image={require("../../assets/pi.jpg")}
+                  title="Usman Marwat"
+                  subTitle="5 vitual shops"
+                />
+              </View>
+            </RNBounceable>
+            <RNBounceable>
+              <View>
+                <ListItem
+                  image={require("../../assets/pi.jpg")}
+                  title="Usman Marwat"
+                  subTitle="5 vitual shops"
+                />
+              </View>
+            </RNBounceable>
+            <RNBounceable>
+              <View>
+                <ListItem
+                  image={require("../../assets/pi.jpg")}
+                  title="Usman Marwat"
+                  subTitle="5 vitual shops"
+                />
+              </View>
+            </RNBounceable>
+            <RNBounceable>
+              <View>
+                <ListItem
+                  image={require("../../assets/pi.jpg")}
+                  title="Usman Marwat"
+                  subTitle="5 vitual shops"
+                />
+              </View>
+            </RNBounceable>
+          </ScrollView>
+        </View>
+      </Screen>
+    </>
   );
 };
 

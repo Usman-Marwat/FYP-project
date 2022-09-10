@@ -1,12 +1,7 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Animated,
-} from "react-native";
+import React, { useEffect, useContext, useRef, useCallback } from "react";
+import { StyleSheet, View, TouchableOpacity, Animated } from "react-native";
+import { Dimensions } from "react-native";
+
 import Svg, { Polygon } from "react-native-svg";
 import MaskedView from "@react-native-masked-view/masked-view";
 import { useDrawerStatus } from "@react-navigation/drawer";
@@ -14,6 +9,7 @@ import { makeAnimate, interpolateValues } from "./navigationAnimations";
 
 import AppButton from "../components/AppButton";
 import Icon from "../components/Icon";
+import DrawerAnimationContext from "../contexts/drawerAnimationContext";
 
 const { width, height } = Dimensions.get("screen");
 // const routes = [
@@ -46,18 +42,14 @@ const colors = [
 const AnimatedPolygon = Animated.createAnimatedComponent(Polygon);
 const AnimatedMaskedView = Animated.createAnimatedComponent(MaskedView);
 
-const CustomDrawer = ({
-  animatedValue,
-  fromCords,
-  navigation,
-  selectedRoute,
-  routes,
-  toCords,
-}) => {
+const CustomDrawer = ({ navigation, selectedRoute, routes }) => {
   const drawerStatus = useDrawerStatus();
   const polygonRef = useRef();
   const animatedWidth = useRef(new Animated.Value(0)).current;
 
+  const { animatedValue, fromCords, toCords } = useContext(
+    DrawerAnimationContext
+  );
   const { translateX, opacity } = interpolateValues(animatedValue);
   const animate = makeAnimate(animatedWidth, animatedValue, fromCords, toCords);
 

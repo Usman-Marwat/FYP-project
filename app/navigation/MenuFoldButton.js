@@ -27,8 +27,9 @@ export default MenuFoldButton;
 const styles = StyleSheet.create({
   drawerIcon: {
     position: "absolute",
-    top: 40,
+    top: 35,
     right: 20,
     backgroundColor: "transparent",
+    zIndex: 1,
   },
 });

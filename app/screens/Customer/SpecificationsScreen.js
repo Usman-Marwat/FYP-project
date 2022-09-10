@@ -93,9 +93,7 @@ const SpecificationScreen = ({ navigation }) => {
   const scrollView = useRef();
 
   return (
-    <View style={{ flex: 1 }}>
-      <ProfileHeader height={70} />
-
+    <>
       <ScrollView
         ref={scrollView}
         onContentSizeChange={() => {
@@ -165,7 +163,7 @@ const SpecificationScreen = ({ navigation }) => {
         onModalVisible={() => setIsVisible(false)}
       />
       <StatusBar hidden={false} />
-    </View>
+    </>
   );
 };
 
