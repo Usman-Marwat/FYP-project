@@ -4,4 +4,10 @@ export default Object.freeze({
   LOGIN: "Login",
   MESSAGES: "Messages",
   REGISTER: "Register",
+
+  CONTRACT: "Contract",
+  MATERIAL: "Material",
+  SPECIFICATIONS: "Specifications",
+  FIRMSLIST: "FirmsList",
+  FIRMSLISTDETAILS: "FirmsListDetails",
 });
