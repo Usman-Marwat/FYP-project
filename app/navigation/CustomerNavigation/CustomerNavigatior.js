@@ -6,6 +6,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import ContractNavigator from "./ContractNavigator";
 import CustomDrawer from "../CustomDrawer";
 import MenuFoldButton from "../MenuFoldButton";
+import { translateMenuFold } from "../navigationAnimations";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -66,11 +67,7 @@ export default CustomerNavigator;
 const styles = StyleSheet.create({});
 
 function Check({ animatedValue, fromCords, navigation }) {
-  const translateX = animatedValue.y.interpolate({
-    inputRange: [0, height * 0.17],
-    outputRange: [100, 0],
-    extrapolate: "clamp",
-  });
+  const translateX = translateMenuFold(animatedValue, height);
 
   return (
     <View>

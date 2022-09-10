@@ -10,6 +10,7 @@ import {
 import Svg, { Polygon } from "react-native-svg";
 import MaskedView from "@react-native-masked-view/masked-view";
 import { useDrawerStatus } from "@react-navigation/drawer";
+import { makeAnimate, interpolateValues } from "./navigationAnimations";
 
 import AppButton from "../components/AppButton";
 import Icon from "../components/Icon";
@@ -42,7 +43,6 @@ const colors = [
   "#53777a",
 ];
 
-const DURATION = 1000;
 const AnimatedPolygon = Animated.createAnimatedComponent(Polygon);
 const AnimatedMaskedView = Animated.createAnimatedComponent(MaskedView);
 
@@ -58,45 +58,17 @@ const CustomDrawer = ({
   const polygonRef = useRef();
   const animatedWidth = useRef(new Animated.Value(0)).current;
 
-  const animate = (toValue) => {
-    if (toValue === 1) {
-      animatedWidth.setValue(width);
-    }
-    const animations = [
-      Animated.timing(animatedValue, {
-        toValue: toValue === 1 ? toCords : fromCords,
-        duration: DURATION,
-        useNativeDriver: true,
-      }),
-      Animated.timing(animatedWidth, {
-        toValue: toValue === 1 ? width : 0,
-        duration: 0,
-        useNativeDriver: false,
-      }),
-    ];
-    return Animated.sequence(toValue === 0 ? animations : animations.reverse());
-  };
+  const { translateX, opacity } = interpolateValues(animatedValue);
+  const animate = makeAnimate(animatedWidth, animatedValue, fromCords, toCords);
 
   const handleCloseDrawer = useCallback(() => {
     navigation.closeDrawer();
     animate(0).start();
   }, []);
-  const handleOpenDrawer = useCallback(() => {
-    animate(1).start();
-  }, []);
   const handleRoutePress = React.useCallback((route) => {
     navigation.navigate(route);
     animate(0).start();
   }, []);
-
-  const translateX = animatedValue.x.interpolate({
-    inputRange: [0, width],
-    outputRange: [-100, 0],
-  });
-  const opacity = animatedValue.x.interpolate({
-    inputRange: [0, width],
-    outputRange: [0, 1],
-  });
 
   useEffect(() => {
     animate(drawerStatus === "open" ? 1 : 0).start();
