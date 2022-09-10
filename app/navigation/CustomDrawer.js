@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import Svg, { Polygon } from "react-native-svg";
 import MaskedView from "@react-native-masked-view/masked-view";
+import { useDrawerStatus } from "@react-navigation/drawer";
 
 import AppButton from "../components/AppButton";
 import Icon from "../components/Icon";
@@ -44,6 +45,7 @@ const colors = [
 const AnimatedPolygon = Animated.createAnimatedComponent(Polygon);
 
 const CustomDrawer = ({ navigation, selectedRoute, routes }) => {
+  const drawerStatus = useDrawerStatus();
   const polygonRef = useRef();
   const [fromCords] = useState({ x: 0, y: height });
   const [toCords] = useState({ x: width, y: 0 });
@@ -76,6 +78,10 @@ const CustomDrawer = ({ navigation, selectedRoute, routes }) => {
     inputRange: [0, width],
     outputRange: [0, 1],
   });
+
+  useEffect(() => {
+    animate(drawerStatus === "open" ? 1 : 0).start();
+  }, [drawerStatus]);
 
   useEffect(() => {
     animatedValue.addListener((value) => {

@@ -33,7 +33,7 @@ const CustomerNavigator = () => {
       >
         <DrawerNavigator.Screen name="Check" component={Check} />
         <DrawerNavigator.Screen
-          name="ContractNavigator"
+          name="Contracts"
           component={ContractNavigator}
         />
       </DrawerNavigator.Navigator>
