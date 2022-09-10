@@ -18,6 +18,7 @@ import React, { useRef } from "react";
 const { width, height } = Dimensions.get("screen");
 import { faker } from "@faker-js/faker";
 
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 import Screen from "../../components/Screen";
 
 faker.seed(10);
@@ -40,7 +41,6 @@ const ITEM_SIZE = AVATAR_SIZE + SPACING * 3;
 
 const EmployeesList = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
-  const scrollX = useRef(new Animated.Value(0)).current;
 
   return (
     <Screen style={{ paddingTop: 50 }}>
@@ -51,7 +51,7 @@ const EmployeesList = () => {
       />
       <Animated.FlatList
         onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY, x: scrollX } } }],
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           { useNativeDriver: true }
         )}
         contentContainerStyle={{
@@ -81,9 +81,8 @@ const EmployeesList = () => {
             inputRange: opcaityInputRange,
             outputRange: [1, 1, 1, 0],
           });
-
           return (
-            <Animated.View
+            <AnimatedTouchable
               style={[
                 styles.itemWrapper,
                 { opacity, transform: [{ scale: scale }] },
@@ -106,7 +105,7 @@ const EmployeesList = () => {
                   {item.email}
                 </Text>
               </View>
-            </Animated.View>
+            </AnimatedTouchable>
           );
         }}
       />
