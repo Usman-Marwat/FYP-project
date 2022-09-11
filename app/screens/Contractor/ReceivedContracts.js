@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   SafeAreaView,
+  ScrollView,
 } from "react-native";
 import React, { useState } from "react";
 import niceColors from "nice-color-palettes";
@@ -34,6 +35,7 @@ const tabs = ["All", "Building", "Plumbing", "Electrician", "Painting"];
 const fakerData = data.map((item, index) => ({
   ...item,
   key: faker.datatype.uuid(),
+  type: faker.commerce.product(),
   subType: faker.commerce.productName(),
   color: `${colors[index % colors.length]}66`,
   fullColor: colors[index % colors.length],
@@ -56,37 +58,93 @@ const ReceivedContracts = () => {
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <FlatList
-        data={tabs}
-        horizontal
-        style={{ backgroundColor: "red", flexGrow: 0 }}
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item, index) => `${item}-${index}`}
-        renderItem={({ item: tab }) => {
-          return (
-            <TouchableOpacity onPress={() => setSelectedTab(tab)}>
-              <View
-                style={[
-                  styles.pill,
-                  {
-                    backgroundColor:
-                      selectedTab === tab ? ORANGE : "transparent",
-                  },
-                ]}
-              >
-                <Text
+      <View>
+        <FlatList
+          data={tabs}
+          horizontal
+          style={{ flexGrow: 1, backgroundColor: "dodgerblue" }}
+          contentContainerStyle={{ padding: SPACING }}
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item, index) => `${item}-${index}`}
+          renderItem={({ item: tab }) => {
+            return (
+              <TouchableOpacity onPress={() => setSelectedTab(tab)}>
+                <View
                   style={[
-                    styles.pillText,
-                    { color: selectedTab === tab ? "white" : "#000" },
+                    styles.pill,
+                    {
+                      backgroundColor:
+                        selectedTab === tab ? ORANGE : "transparent",
+                    },
                   ]}
                 >
-                  {tab}
-                </Text>
+                  <Text
+                    style={[
+                      styles.pillText,
+                      { color: selectedTab === tab ? "white" : "#000" },
+                    ]}
+                  >
+                    {tab}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </View>
+      <View>
+        <FlatList
+          data={fakerData}
+          horizontal
+          contentContainerStyle={{ padding: SPACING }}
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item) => item.key}
+          renderItem={({ item }) => {
+            return (
+              <TouchableOpacity
+                onPress={() => {}}
+                style={{ height: CELL_WIDTH, width: CELL_WIDTH }}
+              >
+                <View style={{ flex: 1, padding: SPACING }}>
+                  <View
+                    style={[
+                      StyleSheet.absoluteFillObject,
+                      { backgroundColor: item.color, borderRadius: 16 },
+                    ]}
+                  >
+                    <Text style={styles.type}>{item.type}</Text>
+                    <Text style={styles.subType}>{item.subType}</Text>
+                  </View>
+                  <Image source={{ uri: item.image }} style={styles.image} />
+                </View>
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </View>
+      <View>
+        <FlatList
+          data={[...Array(20).keys()]}
+          keyExtractor={(item) => item}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => {
+            return (
+              <View
+                style={{
+                  height: 50,
+                  width: "80%",
+                  marginVertical: 30,
+                  backgroundColor: "coral",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Text>{item}</Text>
               </View>
-            </TouchableOpacity>
-          );
-        }}
-      />
+            );
+          }}
+        />
+      </View>
     </SafeAreaView>
   );
 };
