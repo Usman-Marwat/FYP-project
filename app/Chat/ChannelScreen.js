@@ -10,9 +10,9 @@ import {
 } from "stream-chat-expo";
 import { useRoute } from "@react-navigation/native";
 
-import { VoiceMessageAttachment } from "../components/VoiceMessageAttachment";
-import { CustomSendButton } from "../components/CustomSendButton";
-import { InputBox } from "../components/InputBox";
+import { VoiceMessageAttachment } from "./VoiceMessageAttachment";
+import { CustomSendButton } from "./CustomSendButton";
+import { InputBox } from "./InputBox";
 
 export default function ChannelScreen() {
   const [channel, setChannel] = useState(null);

@@ -8,7 +8,7 @@ import {
 import React, { useState, useContext } from "react";
 import { useChatContext } from "stream-chat-expo";
 
-import AuthContext from "../contexts/Authentication";
+import AuthContext from "./Authentication";
 
 export default function SignupScreen() {
   const [username, setUsername] = useState("");

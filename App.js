@@ -5,8 +5,8 @@ import { StreamChat } from "stream-chat";
 import { Chat, OverlayProvider } from "stream-chat-expo";
 import { NavigationContainer } from "@react-navigation/native";
 
-import AuthContext from "./contexts/Authentication";
-import RootNavigator from "./routes/RootNavigator";
+import AuthContext from "./app/Chat/Authentication";
+import RootNavigator from "./app/Chat/RootNavigator";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const Api_Key = "fnmp8yh8yfe2";

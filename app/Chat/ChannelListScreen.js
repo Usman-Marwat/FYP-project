@@ -2,9 +2,9 @@ import React, { useContext, useEffect } from "react";
 import { ChannelList, useChatContext } from "stream-chat-expo";
 import { StyleSheet, Text, View } from "react-native";
 
-import AuthContext from "../contexts/Authentication";
+import AuthContext from "./Authentication";
 
-import { ListPreviewMessage } from "../components/ListPreviewMessage";
+import { ListPreviewMessage } from "./ListPreviewMessage";
 
 const options = {
   state: true,

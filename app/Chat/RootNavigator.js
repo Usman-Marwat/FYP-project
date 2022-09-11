@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import AuthContext from "../contexts/Authentication";
+import AuthContext from "./Authentication";
 import BottomTabNavigator from "./BottomTabNavigator";
-import ChannelScreen from "../Screens/ChannelScreen";
-import SignupScreen from "../Screens/SignupScreen";
+import ChannelScreen from "./ChannelScreen";
+import SignupScreen from "./SignupScreen";
 
 const Stack = createStackNavigator();
 

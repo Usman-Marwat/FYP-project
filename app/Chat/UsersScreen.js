@@ -2,8 +2,8 @@ import { StyleSheet, View, FlatList } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 import { useChatContext } from "stream-chat-expo";
 
-import AuthContext from "../contexts/Authentication";
-import UserListItem from "../components/UserListItem";
+import AuthContext from "./Authentication";
+import UserListItem from "./UserListItem";
 
 export default function UsersScreen() {
   const [users, setUsers] = useState([]);

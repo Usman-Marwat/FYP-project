@@ -2,8 +2,8 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import ChannelListScreen from "../Screens/ChannelListScreen";
-import UsersScreen from "../Screens/UsersScreen";
+import ChannelListScreen from "./ChannelListScreen";
+import UsersScreen from "./UsersScreen";
 
 const Tab = createBottomTabNavigator();
 export default function BottomTabNavigator() {

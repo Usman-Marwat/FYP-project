@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import { useChatContext } from "stream-chat-expo";
 import { useNavigation } from "@react-navigation/native";
 
-import AuthContext from "../contexts/Authentication";
+import AuthContext from "./Authentication";
 
 export default function UserListItem({ user }) {
   const { client } = useChatContext();
