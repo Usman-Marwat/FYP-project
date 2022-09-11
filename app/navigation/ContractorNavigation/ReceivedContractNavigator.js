@@ -13,6 +13,14 @@ export default function ReceivedContractNavigator() {
       <Stack.Screen
         name="RecievedContractDetails"
         component={ReceivedContractDetails}
+        sharedElements={(route) => {
+          const { item } = route.params;
+          return [
+            { id: `item.${item.key}.bg` },
+            { id: `item.${item.key}.meta` },
+            { id: `item.${item.key}.image` },
+          ];
+        }}
       />
     </Stack.Navigator>
   );

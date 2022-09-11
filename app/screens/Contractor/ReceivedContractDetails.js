@@ -2,8 +2,9 @@ import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import * as Animatable from "react-native-animatable";
 
+import { SharedElement } from "react-navigation-shared-element";
+
 import Screen from "../../components/Screen";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 const { height, width } = Dimensions.get("window");
 const SPACING = 10;
@@ -28,18 +29,27 @@ const ReceivedContractDetails = ({ navigation, route }) => {
   const { item } = route.params;
   return (
     <Screen>
-      <View
-        style={[
-          StyleSheet.absoluteFillObject,
-          { backgroundColor: item.color, borderRadius: 16 },
-        ]}
-      />
-      <View style={styles.textContainer}>
-        <Text style={styles.type}>{item.type}</Text>
-        <Text style={styles.subType}>{item.subType}</Text>
-      </View>
+      <SharedElement
+        id={`item.${item.key}.bg`}
+        style={[StyleSheet.absoluteFillObject]}
+      >
+        <View
+          style={[
+            StyleSheet.absoluteFillObject,
+            { backgroundColor: item.color, borderRadius: 16 },
+          ]}
+        />
+      </SharedElement>
+      <SharedElement id={`item.${item.key}.meta`}>
+        <View style={styles.textContainer}>
+          <Text style={styles.type}>{item.type}</Text>
+          <Text style={styles.subType}>{item.subType}</Text>
+        </View>
+      </SharedElement>
       <View style={{ marginTop: height * 0.1 }}>
-        <Image source={{ uri: item.image }} style={styles.image} />
+        <SharedElement id={`item.${item.key}.image`}>
+          <Image source={{ uri: item.image }} style={styles.image} />
+        </SharedElement>
         <View
           style={{
             flexDirection: "row",

@@ -126,17 +126,35 @@ const ReceivedContracts = ({ navigation }) => {
                   style={styles.itemCell}
                 >
                   <View style={styles.itemContainer}>
-                    <View
-                      style={[
-                        StyleSheet.absoluteFillObject,
-                        { backgroundColor: item.color, borderRadius: 16 },
-                      ]}
-                    />
-                    <View style={styles.textContainer}>
-                      <Text style={styles.type}>{item.type}</Text>
-                      <Text style={styles.subType}>{item.subType}</Text>
-                    </View>
-                    <Image source={{ uri: item.image }} style={styles.image} />
+                    <SharedElement
+                      id={`item.${item.key}.bg`}
+                      style={[StyleSheet.absoluteFillObject]}
+                    >
+                      <View
+                        style={[
+                          StyleSheet.absoluteFillObject,
+                          { backgroundColor: item.color, borderRadius: 16 },
+                        ]}
+                      />
+                    </SharedElement>
+                    <SharedElement
+                      id={`item.${item.key}.meta`}
+                      style={StyleSheet.absoluteFillObject}
+                    >
+                      <View style={styles.textContainer}>
+                        <Text style={styles.type}>{item.type}</Text>
+                        <Text style={styles.subType}>{item.subType}</Text>
+                      </View>
+                    </SharedElement>
+                    <SharedElement
+                      id={`item.${item.key}.image`}
+                      style={styles.image}
+                    >
+                      <Image
+                        source={{ uri: item.image }}
+                        style={styles.image}
+                      />
+                    </SharedElement>
                   </View>
                 </TouchableOpacity>
               );
