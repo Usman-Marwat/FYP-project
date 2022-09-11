@@ -6,7 +6,7 @@ import ContractorNavigator from "./app/navigation/ContractorNavigation/Contracto
 import ReceivedContracts from "./app/screens/Contractor/ReceivedContracts";
 
 export default function App() {
-  return <ReceivedContracts />;
+  return <ContractorNavigator />;
 }
 
 const styles = StyleSheet.create({

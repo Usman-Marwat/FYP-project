@@ -7,6 +7,7 @@ import CustomDrawer from "../CustomDrawer";
 import MenuFoldButton from "../MenuFoldButton";
 import { translateMenuFold } from "../navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
+import ReceivedContractNavigator from "./ReceivedContractNavigator";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -44,6 +45,10 @@ const ContractorNavigator = () => {
           <DrawerNavigator.Screen name="Check" component={Check} />
 
           <DrawerNavigator.Screen name="Check2" component={Check2} />
+          <DrawerNavigator.Screen
+            name="ReceivedContractNavigator"
+            component={ReceivedContractNavigator}
+          />
         </DrawerNavigator.Navigator>
       </NavigationContainer>
     </DrawerAnimationContext.Provider>
