@@ -1,24 +1,11 @@
 import React, { useCallback, useEffect, useState, useRef } from "react";
-import {
-  Animated,
-  Button,
-  Dimensions,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 
-import ContractNavigator from "./app/navigation/CustomerNavigation/ContractNavigator";
-import navigationTheme from "./app/navigation/navigationTheme";
-
-import CustomDrawer from "./app/navigation/CustomDrawer";
-import CustomerNavigator from "./app/navigation/CustomerNavigation/CustomerNavigatior";
-import Icon from "./app/components/Icon";
+import ContractorNavigator from "./app/navigation/ContractorNavigation/ContractorNavigator";
 
 export default function App() {
-  return <CustomerNavigator />;
+  return <ContractorNavigator />;
 }
 
 const styles = StyleSheet.create({
