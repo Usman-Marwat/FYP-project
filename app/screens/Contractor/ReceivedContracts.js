@@ -6,8 +6,9 @@ import {
   Text,
   TouchableOpacity,
   View,
+  SafeAreaView,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import niceColors from "nice-color-palettes";
 import { faker } from "@faker-js/faker";
 import { SharedElement } from "react-navigation-shared-element";
@@ -52,13 +53,53 @@ const CELL_WIDTH = width * 0.64;
 const CELL_HEIGHT = CELL_WIDTH * 1.4;
 
 const ReceivedContracts = () => {
+  const [selectedTab, setSelectedTab] = useState(tabs[0]);
   return (
-    <View>
-      <Text>ReceivedContracts</Text>
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <FlatList
+        data={tabs}
+        horizontal
+        style={{ backgroundColor: "red", flexGrow: 0 }}
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item, index) => `${item}-${index}`}
+        renderItem={({ item: tab }) => {
+          return (
+            <TouchableOpacity onPress={() => setSelectedTab(tab)}>
+              <View
+                style={[
+                  styles.pill,
+                  {
+                    backgroundColor:
+                      selectedTab === tab ? ORANGE : "transparent",
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.pillText,
+                    { color: selectedTab === tab ? "white" : "#000" },
+                  ]}
+                >
+                  {tab}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          );
+        }}
+      />
+    </SafeAreaView>
   );
 };
 
 export default ReceivedContracts;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  pill: {
+    paddingHorizontal: SPACING,
+    paddingVertical: SPACING / 2,
+    borderRadius: 12,
+  },
+  pillText: {
+    fontWeight: "700",
+  },
+});
