@@ -53,7 +53,7 @@ const ORANGE = "#FB9B06";
 const SPACING = 10;
 const CELL_WIDTH = width * 0.64;
 const CELL_HEIGHT = CELL_WIDTH * 1.4;
-
+const FULL_SIZE = CELL_WIDTH + SPACING * 2;
 const ReceivedContracts = () => {
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   return (
@@ -99,19 +99,19 @@ const ReceivedContracts = () => {
           contentContainerStyle={{ padding: SPACING }}
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => item.key}
+          snapToInterval={FULL_SIZE}
+          decelerationRate="fast"
           renderItem={({ item }) => {
             return (
-              <TouchableOpacity
-                onPress={() => {}}
-                style={{ height: CELL_WIDTH, width: CELL_WIDTH }}
-              >
-                <View style={{ flex: 1, padding: SPACING }}>
+              <TouchableOpacity onPress={() => {}} style={styles.itemCell}>
+                <View style={styles.itemContainer}>
                   <View
                     style={[
                       StyleSheet.absoluteFillObject,
                       { backgroundColor: item.color, borderRadius: 16 },
                     ]}
-                  >
+                  />
+                  <View style={styles.textContainer}>
                     <Text style={styles.type}>{item.type}</Text>
                     <Text style={styles.subType}>{item.subType}</Text>
                   </View>
@@ -152,6 +152,23 @@ const ReceivedContracts = () => {
 export default ReceivedContracts;
 
 const styles = StyleSheet.create({
+  itemCell: {
+    height: CELL_WIDTH,
+    width: CELL_WIDTH,
+    margin: SPACING,
+  },
+  itemContainer: {
+    flex: 1,
+    padding: SPACING,
+    justifyContent: "center",
+  },
+  image: {
+    width: CELL_WIDTH * 0.5,
+    height: CELL_WIDTH * 0.5,
+    alignSelf: "center",
+    resizeMode: "contain",
+    position: "absolute",
+  },
   pill: {
     paddingHorizontal: SPACING,
     paddingVertical: SPACING / 2,
@@ -159,5 +176,14 @@ const styles = StyleSheet.create({
   },
   pillText: {
     fontWeight: "700",
+  },
+  subType: {
+    color: "grey",
+  },
+  type: { fontWeight: "800" },
+  textContainer: {
+    position: "absolute",
+    left: SPACING,
+    top: SPACING,
   },
 });
