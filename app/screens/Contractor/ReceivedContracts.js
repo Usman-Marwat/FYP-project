@@ -6,8 +6,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  SafeAreaView,
-  ScrollView,
 } from "react-native";
 import React, { useState, useContext } from "react";
 import niceColors from "nice-color-palettes";
@@ -54,8 +52,8 @@ const fakerData = data.map((item, index) => ({
   description: [...Array(2).keys()]
     .map(faker.commerce.productDescription)
     .join(". "),
-  price: `$${(faker.random.numeric(200) + 50) / 100}`,
-  subcategories: faker.helpers.shuffle(data).slice(0, 3),
+  price: `$${(faker.random.numeric(200) + 50) / 10}`.substring(0, 7),
+  subCategories: faker.helpers.shuffle(data).slice(0, 3),
 }));
 
 const { height, width } = Dimensions.get("window");
@@ -121,7 +119,12 @@ const ReceivedContracts = ({ navigation }) => {
             decelerationRate="fast"
             renderItem={({ item }) => {
               return (
-                <TouchableOpacity onPress={() => {}} style={styles.itemCell}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("RecievedContractDetails", { item });
+                  }}
+                  style={styles.itemCell}
+                >
                   <View style={styles.itemContainer}>
                     <View
                       style={[
