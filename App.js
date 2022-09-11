@@ -1,28 +1,42 @@
-import React, { useCallback, useEffect, useState, useRef } from "react";
-import {
-  Animated,
-  Button,
-  Dimensions,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import "react-native-gesture-handler";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, SafeAreaView } from "react-native";
+import { StreamChat } from "stream-chat";
+import { Chat, OverlayProvider } from "stream-chat-expo";
 import { NavigationContainer } from "@react-navigation/native";
 
-import ContractNavigator from "./app/navigation/CustomerNavigation/ContractNavigator";
-import navigationTheme from "./app/navigation/navigationTheme";
+import AuthContext from "./contexts/Authentication";
+import RootNavigator from "./routes/RootNavigator";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import CustomDrawer from "./app/navigation/CustomDrawer";
-import CustomerNavigator from "./app/navigation/CustomerNavigation/CustomerNavigatior";
-import Icon from "./app/components/Icon";
+const Api_Key = "fnmp8yh8yfe2";
+const client = StreamChat.getInstance(Api_Key);
 
 export default function App() {
-  return <CustomerNavigator />;
+  const [userId, setUserId] = useState("");
+
+  useEffect(() => {
+    return () => client.disconnectUser();
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ userId, setUserId }}>
+      <OverlayProvider>
+        <SafeAreaView style={styles.container}>
+          <Chat client={client}>
+            <NavigationContainer>
+              <RootNavigator />
+            </NavigationContainer>
+          </Chat>
+        </SafeAreaView>
+      </OverlayProvider>
+    </AuthContext.Provider>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
   },
 });
