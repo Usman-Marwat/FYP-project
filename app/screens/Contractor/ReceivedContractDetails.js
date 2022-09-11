@@ -1,12 +1,30 @@
 import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
+import * as Animatable from "react-native-animatable";
+
 import Screen from "../../components/Screen";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const { height, width } = Dimensions.get("window");
 const SPACING = 10;
 const CELL_WIDTH = width * 0.64;
 
-const ReceivedContractDetails = ({ navigatio, route }) => {
+const DURATION = 400;
+const animation = {
+  0: { opacity: 0, translateY: 100 },
+  1: { opacity: 1, translateY: 0 },
+};
+const createAnimation = (from) => ({
+  0: { opacity: 0, translateY: -100, translateX: from },
+  1: { opacity: 1, translateY: 0, translateX: 0 },
+});
+const animations = [
+  createAnimation(100),
+  createAnimation(0),
+  createAnimation(-100),
+];
+
+const ReceivedContractDetails = ({ navigation, route }) => {
   const { item } = route.params;
   return (
     <Screen>
@@ -31,7 +49,11 @@ const ReceivedContractDetails = ({ navigatio, route }) => {
         >
           {item.subCategories.map((subCategory, index) => {
             return (
-              <View
+              <Animatable.View
+                animation={animations[index]}
+                delay={DURATION}
+                useNativeDriver
+                iterationCount={3}
                 key={index}
                 style={{
                   backgroundColor: "white",
@@ -43,14 +65,28 @@ const ReceivedContractDetails = ({ navigatio, route }) => {
                   style={styles.iconImage}
                   source={{ uri: subCategory.image }}
                 />
-              </View>
+              </Animatable.View>
             );
           })}
         </View>
       </View>
       <View style={{ padding: SPACING }}>
-        <Text style={styles.price}>{item.price}</Text>
-        <Text style={styles.description}>{item.description}</Text>
+        <Animatable.Text
+          useNativeDriver
+          animation={animation}
+          delay={DURATION + 300}
+          style={styles.price}
+        >
+          {item.price}
+        </Animatable.Text>
+        <Animatable.Text
+          useNativeDriver
+          animation={animation}
+          delay={DURATION + 400}
+          style={styles.description}
+        >
+          {item.description}
+        </Animatable.Text>
       </View>
     </Screen>
   );
@@ -62,7 +98,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 14,
     lineHeight: 20,
-    opacity: 0.7,
+    color: "rgba(0,0,0,0.7)",
   },
   image: {
     width: CELL_WIDTH * 0.7,
@@ -70,6 +106,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     resizeMode: "contain",
     marginVertical: SPACING * 4,
+    zIndex: 2,
   },
   iconImage: {
     width: 32,
