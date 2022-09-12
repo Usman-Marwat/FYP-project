@@ -1,9 +1,15 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React from "react";
 import { faker } from "@faker-js/faker";
 import { SharedElement } from "react-navigation-shared-element";
 import Screen from "../../components/Screen";
-import { FlatList } from "react-native-gesture-handler";
 import routes from "../../navigation/routes";
 
 faker.seed(1);

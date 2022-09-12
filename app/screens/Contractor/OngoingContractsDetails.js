@@ -6,14 +6,20 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
 } from "react-native";
 import React from "react";
 import niceColors from "nice-color-palettes";
 import { AntDesign } from "@expo/vector-icons";
 import { SharedElement } from "react-navigation-shared-element";
+import * as Animatable from "react-native-animatable";
 
 import Screen from "../../components/Screen";
+
+const AnimatableScrollview = Animatable.createAnimatableComponent(ScrollView);
+const animation = {
+  0: { opacity: 0, translateX: 50 },
+  1: { opacity: 1, translateX: 0 },
+};
 
 const { height, width } = Dimensions.get("window");
 const SPACING = 10;
@@ -45,7 +51,10 @@ const OngoingContractsDetails = ({ navigation, route }) => {
         </SharedElement>
       </View>
 
-      <ScrollView
+      <AnimatableScrollview
+        useNativeDriver
+        animation={animation}
+        delay={400}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ padding: SPACING }}
@@ -59,9 +68,18 @@ const OngoingContractsDetails = ({ navigation, route }) => {
             ></View>
           );
         })}
-      </ScrollView>
+      </AnimatableScrollview>
       {buttons.map((text, index) => {
-        return <RowButton key={index} text={text} />;
+        return (
+          <Animatable.View
+            useNativeDriver
+            animation={animation}
+            delay={300 + (index + 1) * 100}
+            key={index}
+          >
+            <RowButton text={text} />
+          </Animatable.View>
+        );
       })}
     </View>
   );
