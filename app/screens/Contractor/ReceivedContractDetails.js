@@ -29,7 +29,7 @@ const ReceivedContractDetails = ({ navigation, route }) => {
   const { item } = route.params;
 
   return (
-    <Screen>
+    <View>
       <SharedElement
         id={`item.${item.key}.bg`}
         style={[
@@ -91,7 +91,7 @@ const ReceivedContractDetails = ({ navigation, route }) => {
           {item.description}
         </Animatable.Text>
       </View>
-    </Screen>
+    </View>
   );
 };
 

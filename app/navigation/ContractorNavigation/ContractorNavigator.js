@@ -8,6 +8,8 @@ import MenuFoldButton from "../MenuFoldButton";
 import { translateMenuFold } from "../navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import ReceivedContractNavigator from "./ReceivedContractNavigator";
+import OngoingContractsNavigator from "./OngoingContractsNavigator";
+import EmployeesList from "../../screens/Contractor/EmployeesList";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -44,10 +46,14 @@ const ContractorNavigator = () => {
         >
           <DrawerNavigator.Screen name="Check" component={Check} />
 
-          <DrawerNavigator.Screen name="Check2" component={Check2} />
+          <DrawerNavigator.Screen name="Employees" component={EmployeesList} />
           <DrawerNavigator.Screen
-            name="ReceivedContractNavigator"
+            name="ReceivedContract"
             component={ReceivedContractNavigator}
+          />
+          <DrawerNavigator.Screen
+            name="OngoingContracts"
+            component={OngoingContractsNavigator}
           />
         </DrawerNavigator.Navigator>
       </NavigationContainer>

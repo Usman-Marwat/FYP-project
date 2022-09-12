@@ -73,7 +73,7 @@ const ReceivedContracts = ({ navigation }) => {
   return (
     <>
       <MenuFoldButton translateX={translateX} navigation={navigation} />
-      <Screen style={{ paddingTop: 40 }}>
+      <View style={{ paddingTop: 50 }}>
         <View>
           <FlatList
             data={tabs}
@@ -184,7 +184,7 @@ const ReceivedContracts = ({ navigation }) => {
             }}
           />
         </View>
-      </Screen>
+      </View>
     </>
   );
 };

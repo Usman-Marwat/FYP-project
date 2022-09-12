@@ -6,11 +6,15 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { faker } from "@faker-js/faker";
 import { SharedElement } from "react-navigation-shared-element";
+
 import Screen from "../../components/Screen";
 import routes from "../../navigation/routes";
+import MenuFoldButton from "../../navigation/MenuFoldButton";
+import { translateMenuFold } from "../../navigation/navigationAnimations";
+import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 
 faker.seed(1);
 
@@ -38,10 +42,16 @@ const ITEM_SIZE = 120;
 const BG_COLOR = "#C1CEE077";
 
 const OngoingContracts = ({ navigation }) => {
+  const { animatedValue } = useContext(DrawerAnimationContext);
+  const translateX = translateMenuFold(animatedValue);
+
   return (
     <View>
+      <MenuFoldButton translateX={translateX} navigation={navigation} />
+
       <FlatList
         contentContainerStyle={{ padding: SPACING }}
+        style={{ paddingTop: 70 }}
         data={fakerData}
         keyExtractor={(item) => item.key}
         renderItem={({ item }) => {

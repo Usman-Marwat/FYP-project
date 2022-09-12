@@ -13,13 +13,17 @@ import {
   SafeAreaView,
 } from "react-native";
 
-import React, { useRef } from "react";
-
-const { width, height } = Dimensions.get("screen");
+import React, { useRef, useContext } from "react";
 import { faker } from "@faker-js/faker";
 
-const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
+import MenuFoldButton from "../../navigation/MenuFoldButton";
+import { translateMenuFold } from "../../navigation/navigationAnimations";
+import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import Screen from "../../components/Screen";
+
+const { width, height } = Dimensions.get("screen");
+
+const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
 faker.seed(10);
 
@@ -39,11 +43,14 @@ const SPACING = 20;
 const AVATAR_SIZE = 70;
 const ITEM_SIZE = AVATAR_SIZE + SPACING * 3;
 
-const EmployeesList = () => {
+const EmployeesList = ({ navigation }) => {
   const scrollY = useRef(new Animated.Value(0)).current;
+  const { animatedValue } = useContext(DrawerAnimationContext);
+  const translateX = translateMenuFold(animatedValue);
 
   return (
     <Screen style={{ paddingTop: 50 }}>
+      <MenuFoldButton translateX={translateX} navigation={navigation} />
       <Image
         source={{ uri: BG_IMG }}
         style={StyleSheet.absoluteFillObject}
