@@ -5,6 +5,7 @@ import { faker } from "@faker-js/faker";
 import { SharedElement } from "react-navigation-shared-element";
 import Screen from "../../components/Screen";
 import { FlatList } from "react-native-gesture-handler";
+import routes from "../../navigation/routes";
 
 faker.seed(1);
 const buttons = ["Get a free serveice", "Save 10% and buy now!"];
@@ -32,7 +33,7 @@ const fakerData = data.map((item, index) => ({
 const ITEM_SIZE = 120;
 const BG_COLOR = "#C1CEE077";
 
-const OngoingContracts = () => {
+const OngoingContracts = ({ navigation }) => {
   return (
     <Screen>
       <FlatList
@@ -41,7 +42,11 @@ const OngoingContracts = () => {
         keyExtractor={(item) => item.key}
         renderItem={({ item }) => {
           return (
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate(routes.ONGOING_CONTRACTS_DETAILS, { item })
+              }
+            >
               <View style={styles.item}>
                 <View>
                   <Text style={styles.model}>{item.model}</Text>
