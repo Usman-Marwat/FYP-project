@@ -4,9 +4,10 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import ContractorNavigator from "./app/navigation/ContractorNavigation/ContractorNavigator";
 import ReceivedContracts from "./app/screens/Contractor/ReceivedContracts";
+import OngoingContracts from "./app/screens/Contractor/OngoingContracts";
 
 export default function App() {
-  return <ContractorNavigator />;
+  return <OngoingContracts />;
 }
 
 const styles = StyleSheet.create({
