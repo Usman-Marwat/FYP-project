@@ -1,6 +1,5 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import niceColors from "nice-color-palettes";
 import { faker } from "@faker-js/faker";
 import { SharedElement } from "react-navigation-shared-element";
 import Screen from "../../components/Screen";
@@ -8,8 +7,7 @@ import { FlatList } from "react-native-gesture-handler";
 import routes from "../../navigation/routes";
 
 faker.seed(1);
-const buttons = ["Get a free serveice", "Save 10% and buy now!"];
-const colors = niceColors[1];
+
 const SPACING = 10;
 const data = [
   { image: "https://cdn-icons-png.flaticon.com/512/8360/8360483.png" },
