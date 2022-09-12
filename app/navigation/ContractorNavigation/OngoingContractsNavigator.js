@@ -16,9 +16,9 @@ const OngoingContractsNavigator = () => {
         sharedElements={(route) => {
           const { item } = route.params;
           return [
-            { id: `item.${item.key}.bg` },
+            { id: `item.${item.key}.modal` },
             { id: `item.${item.key}.image` },
-            { id: `item.${item.key}.meta`, animation: "fade" },
+            { id: `item.${item.key}.description` },
           ];
         }}
       />

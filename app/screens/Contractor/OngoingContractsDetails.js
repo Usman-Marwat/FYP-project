@@ -6,10 +6,12 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import React from "react";
 import niceColors from "nice-color-palettes";
 import { AntDesign } from "@expo/vector-icons";
+import { SharedElement } from "react-navigation-shared-element";
 
 import Screen from "../../components/Screen";
 
@@ -21,12 +23,28 @@ const buttons = ["Get a free serveice", "Save 10% and buy now!"];
 const OngoingContractsDetails = ({ navigation, route }) => {
   const { item } = route.params;
   return (
-    <Screen>
-      <Image source={{ uri: item.image }} style={styles.image} />
+    <View>
+      <SharedElement id={`item.${item.key}.image`} style={styles.image}>
+        <Image
+          source={{ uri: item.image }}
+          style={{
+            resizeMode: "contain",
+            width: width * 2.1,
+            height: width * 0.7,
+          }}
+        />
+      </SharedElement>
       <View style={styles.meta}>
-        <Text style={styles.model}>{item.model}</Text>
-        <Text style={styles.description}>{item.description}</Text>
+        <SharedElement id={`item.${item.key}.modal`}>
+          <Text numberOfLines={1} adjustsFontSizeToFit style={styles.model}>
+            {item.model}
+          </Text>
+        </SharedElement>
+        <SharedElement id={`item.${item.key}.description`}>
+          <Text style={styles.description}>{item.description}</Text>
+        </SharedElement>
       </View>
+
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -45,7 +63,7 @@ const OngoingContractsDetails = ({ navigation, route }) => {
       {buttons.map((text, index) => {
         return <RowButton key={index} text={text} />;
       })}
-    </Screen>
+    </View>
   );
 };
 
@@ -55,11 +73,12 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 12,
     opacity: 0.7,
+    position: "absolute",
+    top: SPACING + 30,
   },
   image: {
     width: width * 2.1,
-    height: width * 0.9,
-    resizeMode: "contain",
+    height: width * 0.7,
   },
   meta: {
     position: "absolute",
@@ -70,6 +89,7 @@ const styles = StyleSheet.create({
   model: {
     fontSize: 32,
     fontWeight: "700",
+    position: "absolute",
   },
   swatch: {
     height: 56,

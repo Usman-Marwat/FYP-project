@@ -33,7 +33,7 @@ const BG_COLOR = "#C1CEE077";
 
 const OngoingContracts = ({ navigation }) => {
   return (
-    <Screen>
+    <View>
       <FlatList
         contentContainerStyle={{ padding: SPACING }}
         data={fakerData}
@@ -47,16 +47,28 @@ const OngoingContracts = ({ navigation }) => {
             >
               <View style={styles.item}>
                 <View>
-                  <Text style={styles.model}>{item.model}</Text>
-                  <Text style={styles.description}>{item.description}</Text>
+                  <SharedElement id={`item.${item.key}.modal`}>
+                    <Text style={styles.model}>{item.model}</Text>
+                  </SharedElement>
+                  <SharedElement id={`item.${item.key}.description`}>
+                    <Text style={styles.description}>{item.description}</Text>
+                  </SharedElement>
                 </View>
-                <Image source={{ uri: item.image }} style={styles.image} />
+                <SharedElement
+                  id={`item.${item.key}.image`}
+                  style={styles.image}
+                >
+                  <Image
+                    source={{ uri: item.image }}
+                    style={{ flex: 1, resizeMode: "contain" }}
+                  />
+                </SharedElement>
               </View>
             </TouchableOpacity>
           );
         }}
       />
-    </Screen>
+    </View>
   );
 };
 
@@ -66,6 +78,8 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 12,
     opacity: 0.7,
+    position: "absolute",
+    top: SPACING + 17,
   },
   item: {
     height: ITEM_SIZE * 1.7,
@@ -79,12 +93,12 @@ const styles = StyleSheet.create({
     height: ITEM_SIZE * 1.2,
     width: "100%",
     position: "absolute",
-    resizeMode: "contain",
     bottom: 10,
     right: "-30%",
   },
   model: {
     fontSize: 18,
     fontWeight: "700",
+    position: "absolute",
   },
 });
