@@ -17,8 +17,8 @@ export default function ReceivedContractNavigator() {
           const { item } = route.params;
           return [
             { id: `item.${item.key}.bg` },
-            { id: `item.${item.key}.meta` },
             { id: `item.${item.key}.image` },
+            { id: `item.${item.key}.meta`, animation: "fade" },
           ];
         }}
       />

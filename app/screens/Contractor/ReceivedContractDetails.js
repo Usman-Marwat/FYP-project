@@ -27,18 +27,17 @@ const animations = [
 
 const ReceivedContractDetails = ({ navigation, route }) => {
   const { item } = route.params;
+
   return (
     <Screen>
       <SharedElement
         id={`item.${item.key}.bg`}
-        style={[StyleSheet.absoluteFillObject]}
+        style={[
+          StyleSheet.absoluteFillObject,
+          { backgroundColor: item.color, borderRadius: 16 },
+        ]}
       >
-        <View
-          style={[
-            StyleSheet.absoluteFillObject,
-            { backgroundColor: item.color, borderRadius: 16 },
-          ]}
-        />
+        <View style={[StyleSheet.absoluteFillObject]} />
       </SharedElement>
       <SharedElement id={`item.${item.key}.meta`}>
         <View style={styles.textContainer}>
@@ -47,16 +46,10 @@ const ReceivedContractDetails = ({ navigation, route }) => {
         </View>
       </SharedElement>
       <View style={{ marginTop: height * 0.1 }}>
-        <SharedElement id={`item.${item.key}.image`}>
+        <SharedElement id={`item.${item.key}.image`} style={styles.image}>
           <Image source={{ uri: item.image }} style={styles.image} />
         </SharedElement>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-evenly",
-            marginBottom: SPACING * 3,
-          }}
-        >
+        <View style={styles.iconImageContainer}>
           {item.subCategories.map((subCategory, index) => {
             return (
               <Animatable.View
@@ -115,8 +108,14 @@ const styles = StyleSheet.create({
     height: CELL_WIDTH * 0.7,
     alignSelf: "center",
     resizeMode: "contain",
-    marginVertical: SPACING * 4,
+    marginVertical: SPACING * 2,
+    marginBottom: SPACING * 4,
     zIndex: 2,
+  },
+  iconImageContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    marginBottom: SPACING * 3,
   },
   iconImage: {
     width: 32,
