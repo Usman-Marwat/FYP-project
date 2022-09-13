@@ -1,21 +1,23 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import {
+  Animated,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   ScrollView,
-  TextInput,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Transition, Transitioning } from "react-native-reanimated";
-import { ProfileHeader } from "@freakycoder/react-native-header-view";
 
 import colors from "../../config/colors";
 import Icon from "../../components/Icon";
 import AppTextInput from "../../components/AppTextInput";
 import ContractTable from "../../components/ContractTable";
 import routes from "../../navigation/routes";
+import MenuFoldButton from "../../navigation/MenuFoldButton";
+import { translateMenuFold } from "../../navigation/navigationAnimations";
+import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 
 const data = [
   {
@@ -92,14 +94,36 @@ const SpecificationScreen = ({ navigation }) => {
   const ref = React.useRef();
   const scrollView = useRef();
 
+  const { animatedValue } = useContext(DrawerAnimationContext);
+  const translateX = translateMenuFold(animatedValue);
+
+  const scrollY = useRef(new Animated.Value(0)).current;
+
   return (
     <>
-      <ScrollView
-        ref={scrollView}
-        onContentSizeChange={() => {
-          if (currentIndex == 4)
-            return scrollView.current.scrollToEnd({ animated: true });
+      <MenuFoldButton navigation={navigation} translateX={translateX} />
+
+      <View
+        style={{
+          height: 70,
+          width: "100%",
+          backgroundColor: "white",
+          alignItems: "center",
+          justifyContent: "center",
         }}
+      >
+        <Text>Add Specificatons</Text>
+      </View>
+      <Animated.ScrollView
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: true }
+        )}
+        ref={scrollView}
+        // onContentSizeChange={() => {
+        //   if (currentIndex == 4)
+        //     return scrollView.current.scrollToEnd({ animated: true });
+        // }}
       >
         <Transitioning.View
           ref={ref}
@@ -107,6 +131,17 @@ const SpecificationScreen = ({ navigation }) => {
           style={styles.container}
         >
           {data.map(({ bg, color, category, subCategories }, index) => {
+            const inputRange = [-1, 0, 150 * index, 150 * (index + 2)];
+            const opcaityInputRange = [-1, 0, 150 * index, 150 * (index + 0.7)];
+            const scale = scrollY.interpolate({
+              inputRange,
+              outputRange: [1, 1, 1, 0],
+            });
+            const opacity = scrollY.interpolate({
+              inputRange: opcaityInputRange,
+              outputRange: [1, 1, 1, 0],
+            });
+
             return (
               <TouchableOpacity
                 key={category}
@@ -114,7 +149,10 @@ const SpecificationScreen = ({ navigation }) => {
                   ref.current.animateNextTransition();
                   setCurrentIndex(index === currentIndex ? null : index);
                 }}
-                style={styles.cardContainer}
+                style={[
+                  styles.cardContainer,
+                  { opacity, transform: [{ scale: scale }] },
+                ]}
                 activeOpacity={0.9}
               >
                 <View style={[styles.card, { backgroundColor: bg }]}>
@@ -142,16 +180,14 @@ const SpecificationScreen = ({ navigation }) => {
             );
           })}
         </Transitioning.View>
-      </ScrollView>
-      <View style={styles.tagline}>
-        <Text>Add Specificatons</Text>
-      </View>
+      </Animated.ScrollView>
+
       <View style={styles.row}>
         <TouchableOpacity>
           <Icon name="bookmark" size={35} backgroundColor={colors.medium} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => setIsVisible(true)}>
-          <Icon name="table" size={50} backgroundColor={colors.medium} />
+          <Icon name="grid" size={50} backgroundColor={colors.medium} />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => navigation.navigate(routes.FIRMSLIST)}>
@@ -176,7 +212,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   cardContainer: {
-    minHeight: 120,
+    minHeight: 150,
     // paddingHorizontal: 20,
     flexGrow: 1,
     shadowColor: "silver",

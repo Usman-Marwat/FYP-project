@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from "react-native";
-import { ProfileHeader } from "@freakycoder/react-native-header-view";
+import { Dimensions, StyleSheet, View, TouchableOpacity } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import DropDownPicker from "react-native-dropdown-picker";
 
@@ -68,7 +58,7 @@ const shadow = {
   shadowRadius: 10,
 };
 
-const SpecificationsScreen = ({ navigation }) => {
+const MaterialScreen = ({ navigation }) => {
   const [allValues, setAllValues] = useState([
     ["madrid"],
     ["rome"],
@@ -115,7 +105,6 @@ const SpecificationsScreen = ({ navigation }) => {
 
   return (
     <Screen>
-      <ProfileHeader height={70} />
       <View>
         <Carousel
           // style={{ borderWidth: 1 }}
@@ -210,7 +199,7 @@ const SpecificationsScreen = ({ navigation }) => {
   );
 };
 
-export default SpecificationsScreen;
+export default MaterialScreen;
 
 const styles = StyleSheet.create({
   cardStyle: {
