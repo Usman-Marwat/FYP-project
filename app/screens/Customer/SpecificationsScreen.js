@@ -5,7 +5,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Transition, Transitioning } from "react-native-reanimated";
@@ -18,6 +17,7 @@ import routes from "../../navigation/routes";
 import MenuFoldButton from "../../navigation/MenuFoldButton";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
+import Header from "../../components/Header";
 
 const data = [
   {
@@ -78,6 +78,20 @@ const data = [
       "Vacuum cleaners",
     ],
   },
+  {
+    bg: colors.silver,
+    color: colors.secondary,
+    category: "Homeware2",
+    subCategories: [
+      "Air purifiers",
+      "Stoves, hoods & ovens",
+      "Refrigerators",
+      "Coffee & Tea",
+      "Air conditioning",
+      "Grilling",
+      "Vacuum cleaners",
+    ],
+  },
 ];
 
 const transition = (
@@ -101,38 +115,32 @@ const SpecificationScreen = ({ navigation }) => {
 
   return (
     <>
-      <MenuFoldButton navigation={navigation} translateX={translateX} />
-
-      <View
-        style={{
-          height: 70,
-          width: "100%",
-          backgroundColor: "white",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Text>Add Specificatons</Text>
-      </View>
+      <Header navigation={navigation} translateX={translateX} />
       <Animated.ScrollView
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           { useNativeDriver: true }
         )}
         ref={scrollView}
+        // style={{ paddingVertical: 150 }}
         // onContentSizeChange={() => {
         //   if (currentIndex == 4)
         //     return scrollView.current.scrollToEnd({ animated: true });
         // }}
+        showsHorizontalScrollIndicator={false}
       >
         <Transitioning.View
           ref={ref}
           transition={transition}
           style={styles.container}
         >
+          <View
+            key={Math.random().toString()}
+            style={{ width: "100%", height: 100, borderBottomWidth: 0.2 }}
+          />
           {data.map(({ bg, color, category, subCategories }, index) => {
-            const inputRange = [-1, 0, 150 * index, 150 * (index + 2)];
-            const opcaityInputRange = [-1, 0, 150 * index, 150 * (index + 0.7)];
+            const inputRange = [-1, 0, 130 * index, 130 * (index + 2)];
+            const opcaityInputRange = [-1, 0, 130 * index, 130 * (index + 0.7)];
             const scale = scrollY.interpolate({
               inputRange,
               outputRange: [1, 1, 1, 0],
@@ -241,10 +249,12 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
+    backgroundColor: colors.white,
     paddingHorizontal: 30,
+    paddingTop: 10,
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 17,
+    marginBottom: 7,
   },
   subCategoriesList: {
     marginTop: 20,
