@@ -1,7 +1,7 @@
 import { Animated, Dimensions } from "react-native";
 
 const { width, height } = Dimensions.get("screen");
-const DURATION = 1000;
+const DURATION = 400;
 
 export const translateMenuFold = (animatedValue) => {
   const translateX = animatedValue.y.interpolate({

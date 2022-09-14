@@ -9,17 +9,14 @@ import {
 import Carousel from "react-native-reanimated-carousel";
 import DropDownPicker from "react-native-dropdown-picker";
 
-import AppText from "../../components/AppText";
-import AppButton from "../../components/AppButton";
 import Card from "../../components/Card";
 import colors from "../../config/colors";
+import Header from "../../components/Header";
 import Icon from "../../components/Icon";
 import Pagination from "../../components/Pagination";
-import Screen from "../../components/Screen";
 import routes from "../../navigation/routes";
-import Header from "../../components/Header";
-import { translateMenuFold } from "../../navigation/navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
+import { translateMenuFold } from "../../navigation/navigationAnimations";
 import Tagline from "../../components/Tagline";
 
 const width = Dimensions.get("window").width;
@@ -42,37 +39,63 @@ const badgeDotColors = [
   "#00b4d8",
   "#e9c46a",
 ];
-const keys = ["Cement", "Steel", ""];
+const keys = [
+  {
+    name: "Cement",
+    imageUrl:
+      "https://images.unsplash.com/photo-1560435650-7ec2e17ba926?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
+  },
+  {
+    name: "Bricks",
+    imageUrl:
+      "https://images.unsplash.com/photo-1633821051688-fc558b716185?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8YnJpY2tzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
+  },
+  {
+    name: "Steel",
+    imageUrl:
+      "https://images.unsplash.com/photo-1530863506128-dc9eb5c3e0fc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDF8fGNvbnN0cnVjdGlvbiUyMHN0ZWVsfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
+  },
+  // {
+  //   name: "Wires",
+  //   imageUrl:
+  //     "https://images.unsplash.com/photo-1518181835702-6eef8b4b2113?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
+  // },
+  {
+    name: "Doors",
+    imageUrl:
+      "https://images.unsplash.com/photo-1601084213767-04a4dba01dbb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8ODZ8fHJvb20lMjBkb29yc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60",
+  },
+];
 const material = [
   [
-    { label: "Spain", value: "spain" },
-    { label: "Madrid", value: "madrid" },
+    { label: "Lakki", value: "lakki" },
+    { label: "Fauji", value: "fauji" },
     { label: "Barcelona", value: "barcelona" },
     { label: "s", value: "s" },
     { label: "d", value: "d" },
     { label: "a", value: "a" },
   ],
   [
-    { label: "Italy", value: "italy" },
-    { label: "Rome", value: "rome" },
-    { label: "Finland", value: "finland" },
+    { label: "Brick1", value: "brick1" },
+    { label: "Brick2", value: "brick2" },
+    { label: "Brick3", value: "brick3" },
   ],
   [
-    { label: "Pakistan", value: "Pakistan" },
-    { label: "India", value: "India" },
+    { label: "Steel1", value: "steel1" },
+    { label: "Steel2", value: "steel2" },
   ],
   [
-    { label: "Morocco", value: "Morocco" },
-    { label: "Egypt", value: "Egypt" },
+    { label: "Door1", value: "door1" },
+    { label: "Door2", value: "door2" },
   ],
 ];
 
 const MaterialScreen = ({ navigation }) => {
   const [allValues, setAllValues] = useState([
-    ["madrid"],
-    ["rome"],
-    ["Pakistan"],
-    ["Morocco"],
+    ["lakki"],
+    ["Brick1"],
+    ["Steel1"],
+    ["Door1"],
   ]);
   const [index, setIndex] = useState(0);
 
@@ -118,7 +141,7 @@ const MaterialScreen = ({ navigation }) => {
   return (
     <View>
       <Header navigation={navigation} translateX={translateX} />
-      <Tagline />
+      <Tagline heading="Choose Materials" />
       <View>
         <Carousel
           loop
@@ -126,16 +149,16 @@ const MaterialScreen = ({ navigation }) => {
           height={width / 1.3}
           mode="parallax"
           pagingEnabled
-          data={[...new Array(4).keys()]}
+          data={keys}
           scrollAnimationDuration={700}
           onSnapToItem={handleCurrentItem}
           renderItem={({ index }) => (
             <Card
               cardStyle={styles.cardStyle}
-              imageUrl={imageUrl}
+              imageUrl={keys[index].imageUrl}
               imageStyle={styles.imageStyle}
               subTitle="200>"
-              title="Premiuim"
+              title={keys[index].name}
               textAlign="center"
             />
           )}
@@ -143,7 +166,7 @@ const MaterialScreen = ({ navigation }) => {
         <Pagination
           activeDotColor={colors.medium}
           curPage={index}
-          maxPage={allValues.length}
+          maxPage={keys.length}
           style={{ alignItems: "center", bottom: 30 }}
         />
       </View>

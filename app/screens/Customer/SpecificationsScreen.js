@@ -130,7 +130,6 @@ const SpecificationScreen = ({ navigation }) => {
           { useNativeDriver: true }
         )}
         ref={scrollView}
-        // style={{ paddingVertical: 150 }}
         // onContentSizeChange={() => {
         //   if (currentIndex == 4)
         //     return scrollView.current.scrollToEnd({ animated: true });
@@ -142,7 +141,7 @@ const SpecificationScreen = ({ navigation }) => {
           transition={transition}
           style={styles.container}
         >
-          <Tagline />
+          <Tagline heading="Add Specifications" />
 
           {data.map(({ bg, color, category, subCategories }, index) => {
             const inputRange = [-1, 0, 150 * index, 150 * (index + 2)];
@@ -185,7 +184,8 @@ const SpecificationScreen = ({ navigation }) => {
                         placeholder="add Description"
                         placeholderTextColor={colors.white}
                         backgroundColor={color}
-                        width="90%"
+                        width="97%"
+                        value={descriptions[index]}
                         onChangeText={(text) =>
                           handleAddDescriotion(text, index)
                         }

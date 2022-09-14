@@ -12,15 +12,7 @@ import Icon from "../components/Icon";
 import DrawerAnimationContext from "../contexts/drawerAnimationContext";
 
 const { width, height } = Dimensions.get("screen");
-// const routes = [
-//   "Get Started",
-//   "Features",
-//   "Tools",
-//   "Services",
-//   "Portfolio",
-//   "Careers",
-//   "Contact",
-// ];
+
 const links = ["Follow us", "Quota", "Awesome link"];
 const colors = [
   "#69d2e7",

@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import colors from "../config/colors";
 
-const Tagline = () => {
+const Tagline = ({ heading }) => {
   return (
     <View
       style={{
@@ -16,7 +16,7 @@ const Tagline = () => {
       }}
     >
       <Text style={{ fontWeight: "700", fontSize: 15, color: colors.primary }}>
-        Select Material
+        {heading}
       </Text>
     </View>
   );
