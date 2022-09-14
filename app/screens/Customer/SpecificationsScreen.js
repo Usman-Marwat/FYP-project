@@ -179,8 +179,8 @@ const SpecificationScreen = ({ navigation, route }) => {
                   </Text>
                   {index === currentIndex && (
                     <View style={styles.subCategoriesList}>
-                      {allValues.map((value, index) => (
-                        <View key={index}>
+                      {allValues[index].map((value, j) => (
+                        <View key={j}>
                           <Text
                             style={[styles.body, { color: data[index].color }]}
                           >

@@ -29,7 +29,6 @@ const shadow = {
   shadowOpacity: 0.17,
   shadowRadius: 10,
 };
-
 const badgeDotColors = [
   "#e76f51",
   "#00b4d8",
@@ -85,24 +84,40 @@ const material = [
     { label: "Steel2", value: "steel2" },
   ],
   [
-    { label: "Gate", value: "gate" },
-    { label: "Gate1", value: "gate1", parent: "gate" },
+    { label: "Gate", value: "gate", disabled: "disabled" },
+    {
+      label: "Gate1",
+      value: { name: "Gate1", parent: "Gate" },
+      parent: "gate",
+    },
 
-    { label: "Room Doors", value: "roomDoors" },
-    { label: "Door2", value: "door2", parent: "roomDoors" },
+    { label: "Room Doors", value: "roomDoors", disabled: "disabled" },
+    {
+      label: "Door2",
+      value: { name: "Door2", parent: "Room Doors" },
+      parent: "roomDoors",
+    },
 
-    { label: "Washroom Doors", value: "washroomDoors" },
-    { label: "Door3", value: "door3", parent: "washroomDoors" },
-    { label: "Door4", value: "door4", parent: "washroomDoors" },
+    { label: "Washroom Doors", value: "washroomDoors", disabled: "disabled" },
+    {
+      label: "Door3",
+      value: { name: "Door3", parent: "Washroom Doors" },
+      parent: "washroomDoors",
+    },
+    {
+      label: "Door4",
+      value: { name: "Door4", parent: "Washroom Doors" },
+      parent: "washroomDoors",
+    },
   ],
 ];
 
 const MaterialScreen = ({ navigation }) => {
   const [allValues, setAllValues] = useState([
     ["lakki"],
-    ["Brick1"],
-    ["Steel1"],
-    ["Door1"],
+    ["brick1"],
+    ["steel1"],
+    [],
   ]);
   const [index, setIndex] = useState(0);
 
@@ -142,7 +157,7 @@ const MaterialScreen = ({ navigation }) => {
     Under the covers React will batch multiple calls to setState() into a single state mutation, 
     and then re-render the component a single time, rather than re-rendering for every state change. 
     */
-    // console.log("Updated State", allValues);
+    console.log("Updated State", allValues);
   }, [allValues]);
 
   return (
@@ -177,6 +192,7 @@ const MaterialScreen = ({ navigation }) => {
         <DropDownPicker
           badgeDotColors={badgeDotColors}
           items={items}
+          itemKey="label"
           dropDownContainerStyle={styles.dropDownContainerStyle}
           listItemLabelStyle={styles.itemLabel}
           mode="BADGE"
