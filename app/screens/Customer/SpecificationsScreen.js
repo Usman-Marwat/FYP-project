@@ -136,7 +136,7 @@ const SpecificationScreen = ({ navigation }) => {
         >
           <View
             key={Math.random().toString()}
-            style={{ width: "100%", height: 100, borderBottomWidth: 0.2 }}
+            style={{ width: "100%", height: 100 }}
           />
           {data.map(({ bg, color, category, subCategories }, index) => {
             const inputRange = [-1, 0, 130 * index, 130 * (index + 2)];
@@ -191,15 +191,36 @@ const SpecificationScreen = ({ navigation }) => {
       </Animated.ScrollView>
 
       <View style={styles.row}>
-        <TouchableOpacity>
-          <Icon name="bookmark" size={35} backgroundColor={colors.medium} />
+        <TouchableOpacity style={styles.shadow}>
+          <Icon
+            name="bookmark"
+            iconColor="#222"
+            size={35}
+            backgroundColor={colors.white}
+          />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setIsVisible(true)}>
-          <Icon name="grid" size={50} backgroundColor={colors.medium} />
+        <TouchableOpacity
+          style={styles.shadow}
+          onPress={() => setIsVisible(true)}
+        >
+          <Icon
+            name="grid"
+            iconColor="#222"
+            size={50}
+            backgroundColor={colors.white}
+          />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => navigation.navigate(routes.FIRMSLIST)}>
-          <Icon name="arrow-right" size={35} backgroundColor={colors.medium} />
+        <TouchableOpacity
+          style={styles.shadow}
+          onPress={() => navigation.navigate(routes.FIRMSLIST)}
+        >
+          <Icon
+            name="arrow-right"
+            iconColor="#222"
+            size={35}
+            backgroundColor={colors.white}
+          />
         </TouchableOpacity>
       </View>
       <ContractTable
@@ -249,15 +270,29 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    backgroundColor: colors.white,
+    backgroundColor: "transparent",
     paddingHorizontal: 30,
-    paddingTop: 10,
+    paddingVertical: 10,
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 7,
+
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   subCategoriesList: {
     marginTop: 20,
+  },
+  shadow: {
+    // backgroundColor: "white",
+    shadowColor: "black",
+    shadowOffset: {
+      width: 0,
+      height: -3,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 5,
   },
   tagline: {
     marginVertical: 20,

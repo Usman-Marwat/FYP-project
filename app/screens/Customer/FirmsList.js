@@ -6,8 +6,9 @@ import {
   Text,
   TouchableOpacity,
   View,
+  SafeAreaView,
 } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import niceColors from "nice-color-palettes";
 import { faker } from "@faker-js/faker";
 // import {
@@ -19,6 +20,9 @@ import { SharedElement } from "react-navigation-shared-element";
 
 import Screen from "../../components/Screen";
 import routes from "../../navigation/routes";
+import Header from "../../components/Header";
+import { translateMenuFold } from "../../navigation/navigationAnimations";
+import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 
 faker.seed(1);
 const colors = [
@@ -57,8 +61,11 @@ const ITEM_HEIGHT = height * 0.18;
 const SPACING = 10;
 
 const FirmsList = ({ navigation }) => {
+  const { animatedValue } = useContext(DrawerAnimationContext);
+  const translateX = translateMenuFold(animatedValue);
   return (
-    <Screen style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <Header navigation={navigation} translateX={translateX} />
       <FlatList
         contentContainerStyle={{ padding: SPACING }}
         data={fakerData}
@@ -99,7 +106,7 @@ const FirmsList = ({ navigation }) => {
       <SharedElement id="general.bg">
         <View style={styles.overlay} />
       </SharedElement>
-    </Screen>
+    </SafeAreaView>
   );
 };
 
