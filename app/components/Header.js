@@ -14,19 +14,22 @@ import Icon from "./Icon";
 import BackButton from "../navigation/BackButton";
 const { height, width } = Dimensions.get("window");
 
-const Header = ({ navigation, translateX }) => {
+const Header = ({ navigation, translateX, heading }) => {
   return (
     <View style={[styles.headerContainer, styles.shadow]}>
       <BackButton navigation={navigation} />
-      <View style={[styles.holder]}>
-        <Text style={[styles.title]}>Add Specificatons</Text>
-      </View>
+      {heading && (
+        <View style={[styles.holder]}>
+          <Text style={[styles.title]}>{heading}</Text>
+        </View>
+      )}
+
       <MenuFoldButton
         navigation={navigation}
         translateX={translateX}
         menuFoldPosition="relative"
       />
-
+      {/* 
       <View
         style={[
           {
@@ -40,7 +43,7 @@ const Header = ({ navigation, translateX }) => {
           },
           styles.shadow,
         ]}
-      />
+      /> */}
     </View>
   );
 };
@@ -57,7 +60,6 @@ const styles = StyleSheet.create({
     width: "100%",
     paddingTop: 20,
     paddingHorizontal: 17,
-    borderBottomWidth: 0.2,
     borderBottomColor: "silver",
 
     position: "absolute",

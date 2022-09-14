@@ -1,5 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Dimensions, StyleSheet, View, TouchableOpacity } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import {
+  Dimensions,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import DropDownPicker from "react-native-dropdown-picker";
 
@@ -11,6 +17,21 @@ import Icon from "../../components/Icon";
 import Pagination from "../../components/Pagination";
 import Screen from "../../components/Screen";
 import routes from "../../navigation/routes";
+import Header from "../../components/Header";
+import { translateMenuFold } from "../../navigation/navigationAnimations";
+import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
+import Tagline from "../../components/Tagline";
+
+const width = Dimensions.get("window").width;
+const shadow = {
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 1,
+  },
+  shadowOpacity: 0.17,
+  shadowRadius: 10,
+};
 
 const badgeDotColors = [
   "#e76f51",
@@ -21,7 +42,7 @@ const badgeDotColors = [
   "#00b4d8",
   "#e9c46a",
 ];
-const keys = ["ALUMINIUM", "Sand", "Bajri", "Rock"];
+const keys = ["Cement", "Steel", ""];
 const material = [
   [
     { label: "Spain", value: "spain" },
@@ -46,18 +67,6 @@ const material = [
   ],
 ];
 
-const width = Dimensions.get("window").width;
-
-const shadow = {
-  shadowColor: "#000",
-  shadowOffset: {
-    width: 0,
-    height: 1,
-  },
-  shadowOpacity: 0.17,
-  shadowRadius: 10,
-};
-
 const MaterialScreen = ({ navigation }) => {
   const [allValues, setAllValues] = useState([
     ["madrid"],
@@ -70,6 +79,9 @@ const MaterialScreen = ({ navigation }) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(allValues[0]);
   const [items, setItems] = useState(material[0]);
+
+  const { animatedValue } = useContext(DrawerAnimationContext);
+  const translateX = translateMenuFold(animatedValue);
 
   const handleCurrentItem = (index) => {
     setIndex(index);
@@ -104,10 +116,11 @@ const MaterialScreen = ({ navigation }) => {
   }, [allValues]);
 
   return (
-    <Screen>
+    <View>
+      <Header navigation={navigation} translateX={translateX} />
+      <Tagline />
       <View>
         <Carousel
-          // style={{ borderWidth: 1 }}
           loop
           width={width}
           height={width / 1.3}
@@ -195,7 +208,7 @@ const MaterialScreen = ({ navigation }) => {
       >
         <Icon name="check" size={45} backgroundColor={colors.primary} />
       </TouchableOpacity>
-    </Screen>
+    </View>
   );
 };
 

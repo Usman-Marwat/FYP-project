@@ -18,6 +18,7 @@ import MenuFoldButton from "../../navigation/MenuFoldButton";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import Header from "../../components/Header";
+import Tagline from "../../components/Tagline";
 
 const data = [
   {
@@ -141,10 +142,8 @@ const SpecificationScreen = ({ navigation }) => {
           transition={transition}
           style={styles.container}
         >
-          <View
-            key={Math.random().toString()}
-            style={{ width: "100%", height: 100 }}
-          />
+          <Tagline />
+
           {data.map(({ bg, color, category, subCategories }, index) => {
             const inputRange = [-1, 0, 150 * index, 150 * (index + 2)];
             const opcaityInputRange = [-1, 0, 150 * index, 150 * (index + 0.7)];
