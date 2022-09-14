@@ -163,16 +163,36 @@ const MaterialScreen = ({ navigation }) => {
             />
           )}
         />
-        <Pagination
-          activeDotColor={colors.medium}
-          curPage={index}
-          maxPage={keys.length}
-          style={{ alignItems: "center", bottom: 30 }}
-        />
+        <Pagination curPage={index} maxPage={keys.length} />
       </View>
 
       <View style={[styles.row, shadow]}>
         <DropDownPicker
+          badgeDotColors={badgeDotColors}
+          items={items}
+          dropDownContainerStyle={styles.dropDownContainerStyle}
+          listItemLabelStyle={styles.itemLabel}
+          mode="BADGE"
+          multiple={true}
+          open={open}
+          onChangeValue={handleValueChange}
+          placeholderStyle={styles.placeholderStyle}
+          maxHeight={170}
+          placeholder="Select the item(s)"
+          setValue={setValue}
+          value={value}
+          setOpen={setOpen}
+          setItems={setItems}
+          style={styles.dropDownPicker}
+          theme="DARK"
+          TickIconComponent={({ style }) => (
+            <Icon
+              backgroundColor={colors.medium}
+              name="check"
+              size={20}
+              style={{ marginRight: 9.5 }}
+            />
+          )}
           ArrowDownIconComponent={() => (
             <Icon
               backgroundColor={colors.silver}
@@ -189,45 +209,13 @@ const MaterialScreen = ({ navigation }) => {
               size={42}
             />
           )}
-          badgeDotColors={badgeDotColors}
-          containerStyle={styles.dropDownPicker}
-          dropDownContainerStyle={styles.dropDownContainerStyle}
-          items={items}
-          listItemLabelStyle={{
-            color: colors.medium,
-          }}
-          mode="BADGE"
-          multiple={true}
-          open={open}
-          onChangeValue={handleValueChange}
-          placeholderStyle={{
-            color: colors.medium,
-            alignSelf: "center",
-          }}
-          maxHeight={170}
-          placeholder="Select the item(s)"
-          setValue={setValue}
-          value={value}
-          setOpen={setOpen}
-          setItems={setItems}
-          style={{
-            borderWidth: 0,
-            backgroundColor: colors.silver,
-          }}
-          theme="DARK"
-          TickIconComponent={({ style }) => (
-            <Icon
-              backgroundColor={colors.medium}
-              name="check"
-              size={20}
-              style={{ marginRight: 9.5 }}
-            />
-          )}
         />
       </View>
       <TouchableOpacity
         style={{ alignItems: "center", top: 175 }}
-        onPress={() => navigation.navigate(routes.SPECIFICATIONS)}
+        onPress={() =>
+          navigation.navigate(routes.SPECIFICATIONS, { keys, allValues })
+        }
       >
         <Icon name="check" size={45} backgroundColor={colors.primary} />
       </TouchableOpacity>
@@ -252,13 +240,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.17,
     shadowRadius: 10,
   },
+
   dropDownPicker: {
-    flex: 1,
+    borderWidth: 0,
+    backgroundColor: colors.silver,
   },
+
   dropDownContainerStyle: {
-    marginTop: 0.2,
-    marginHorizontal: 1,
-    width: "99.3%",
+    marginTop: 1,
     backgroundColor: colors.silver,
     borderColor: colors.silver,
     borderTopColor: colors.medium,
@@ -268,6 +257,13 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
   },
+  itemLabel: {
+    color: colors.medium,
+  },
+  placeholderStyle: {
+    color: colors.medium,
+    alignSelf: "center",
+  },
   row: {
     paddingHorizontal: 30,
     flexDirection: "row",
@@ -276,9 +272,6 @@ const styles = StyleSheet.create({
 });
 
 //data={[...new Array(6).keys()]}
-
-const imageUrl =
-  "https://images.unsplash.com/photo-1661977597155-1277a81affcd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80";
 
 // we should not call setValue inside handleValueChange() here because that is then causing infinite loop
 // setValue(allValues[index]);
