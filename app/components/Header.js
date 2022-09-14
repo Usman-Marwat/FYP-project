@@ -11,20 +11,13 @@ import React from "react";
 import MenuFoldButton from "../navigation/MenuFoldButton";
 import colors from "../config/colors";
 import Icon from "./Icon";
+import BackButton from "../navigation/BackButton";
 const { height, width } = Dimensions.get("window");
 
 const Header = ({ navigation, translateX }) => {
   return (
     <View style={[styles.headerContainer, styles.shadow]}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Icon
-          antDesign={true}
-          name="arrowleft"
-          backgroundColor="white"
-          size={35}
-          iconColor="#222"
-        />
-      </TouchableOpacity>
+      <BackButton navigation={navigation} />
       <View style={[styles.holder]}>
         <Text style={[styles.title]}>Add Specificatons</Text>
       </View>
