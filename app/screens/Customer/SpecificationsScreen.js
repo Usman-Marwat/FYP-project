@@ -103,10 +103,13 @@ const transition = (
   </Transition.Together>
 );
 
-const SpecificationScreen = ({ navigation }) => {
+const SpecificationScreen = ({ navigation, route }) => {
   const [currentIndex, setCurrentIndex] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const [descriptions, setDescriptions] = useState([]);
+  const [keys, setKeys] = useState(route.params.keys);
+  console.log(keys);
+  const [allValues, setAllValues] = useState(route.params.allValues);
 
   const ref = React.useRef();
   const scrollView = useRef();
@@ -121,6 +124,20 @@ const SpecificationScreen = ({ navigation }) => {
     setDescriptions(currentDescriptions);
   };
 
+  const calculateAnimations = (index) => {
+    const inputRange = [-1, 0, 150 * index, 150 * (index + 2)];
+    const opcaityInputRange = [-1, 0, 150 * index, 150 * (index + 0.7)];
+    const scale = scrollY.interpolate({
+      inputRange,
+      outputRange: [1, 1, 1, 0],
+    });
+    const opacity = scrollY.interpolate({
+      inputRange: opcaityInputRange,
+      outputRange: [1, 1, 1, 0],
+    });
+    return { inputRange, opcaityInputRange, scale, opacity };
+  };
+
   return (
     <>
       <Header navigation={navigation} translateX={translateX} />
@@ -130,10 +147,6 @@ const SpecificationScreen = ({ navigation }) => {
           { useNativeDriver: true }
         )}
         ref={scrollView}
-        // onContentSizeChange={() => {
-        //   if (currentIndex == 4)
-        //     return scrollView.current.scrollToEnd({ animated: true });
-        // }}
         showsHorizontalScrollIndicator={false}
       >
         <Transitioning.View
@@ -141,23 +154,13 @@ const SpecificationScreen = ({ navigation }) => {
           transition={transition}
           style={styles.container}
         >
-          <Tagline heading="Add Specifications" />
+          <Tagline heading="Add Specifications" headingColor="black" />
 
-          {data.map(({ bg, color, category, subCategories }, index) => {
-            const inputRange = [-1, 0, 150 * index, 150 * (index + 2)];
-            const opcaityInputRange = [-1, 0, 150 * index, 150 * (index + 0.7)];
-            const scale = scrollY.interpolate({
-              inputRange,
-              outputRange: [1, 1, 1, 0],
-            });
-            const opacity = scrollY.interpolate({
-              inputRange: opcaityInputRange,
-              outputRange: [1, 1, 1, 0],
-            });
-
+          {keys.map(({ name, image }, index) => {
+            const { scale, opacity } = calculateAnimations(index);
             return (
               <TouchableOpacity
-                key={category}
+                key={name}
                 onPress={() => {
                   ref.current.animateNextTransition();
                   setCurrentIndex(index === currentIndex ? null : index);
@@ -168,14 +171,20 @@ const SpecificationScreen = ({ navigation }) => {
                 ]}
                 activeOpacity={0.9}
               >
-                <View style={[styles.card, { backgroundColor: bg }]}>
-                  <Text style={[styles.heading, { color }]}>{category}</Text>
+                <View
+                  style={[styles.card, { backgroundColor: data[index].bg }]}
+                >
+                  <Text style={[styles.heading, { color: data[index].color }]}>
+                    {name}
+                  </Text>
                   {index === currentIndex && (
                     <View style={styles.subCategoriesList}>
-                      {subCategories.map((subCategory, index) => (
-                        <View key={subCategory}>
-                          <Text style={[styles.body, { color }]}>
-                            {subCategory}
+                      {allValues.map((value, index) => (
+                        <View key={index}>
+                          <Text
+                            style={[styles.body, { color: data[index].color }]}
+                          >
+                            {value}
                           </Text>
                         </View>
                       ))}
@@ -183,7 +192,7 @@ const SpecificationScreen = ({ navigation }) => {
                         minHeight={50}
                         placeholder="add Description"
                         placeholderTextColor={colors.white}
-                        backgroundColor={color}
+                        backgroundColor={data[index].color}
                         width="97%"
                         value={descriptions[index]}
                         onChangeText={(text) =>
