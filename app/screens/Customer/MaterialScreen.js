@@ -85,8 +85,15 @@ const material = [
     { label: "Steel2", value: "steel2" },
   ],
   [
-    { label: "Door1", value: "door1" },
-    { label: "Door2", value: "door2" },
+    { label: "Gate", value: "gate" },
+    { label: "Gate1", value: "gate1", parent: "gate" },
+
+    { label: "Room Doors", value: "roomDoors" },
+    { label: "Door2", value: "door2", parent: "roomDoors" },
+
+    { label: "Washroom Doors", value: "washroomDoors" },
+    { label: "Door3", value: "door3", parent: "washroomDoors" },
+    { label: "Door4", value: "door4", parent: "washroomDoors" },
   ],
 ];
 
