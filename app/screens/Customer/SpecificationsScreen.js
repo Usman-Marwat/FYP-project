@@ -105,13 +105,20 @@ const transition = (
 const SpecificationScreen = ({ navigation }) => {
   const [currentIndex, setCurrentIndex] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [descriptions, setDescriptions] = useState([]);
+
   const ref = React.useRef();
   const scrollView = useRef();
-
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
-
   const scrollY = useRef(new Animated.Value(0)).current;
+
+  //calling handle description againand again is not costly becasue its not changing the UI
+  const handleAddDescriotion = (text, index) => {
+    const currentDescriptions = descriptions;
+    currentDescriptions[index] = text;
+    setDescriptions(currentDescriptions);
+  };
 
   return (
     <>
@@ -139,8 +146,8 @@ const SpecificationScreen = ({ navigation }) => {
             style={{ width: "100%", height: 100 }}
           />
           {data.map(({ bg, color, category, subCategories }, index) => {
-            const inputRange = [-1, 0, 130 * index, 130 * (index + 2)];
-            const opcaityInputRange = [-1, 0, 130 * index, 130 * (index + 0.7)];
+            const inputRange = [-1, 0, 150 * index, 150 * (index + 2)];
+            const opcaityInputRange = [-1, 0, 150 * index, 150 * (index + 0.7)];
             const scale = scrollY.interpolate({
               inputRange,
               outputRange: [1, 1, 1, 0],
@@ -180,6 +187,9 @@ const SpecificationScreen = ({ navigation }) => {
                         placeholderTextColor={colors.white}
                         backgroundColor={color}
                         width="90%"
+                        onChangeText={(text) =>
+                          handleAddDescriotion(text, index)
+                        }
                       />
                     </View>
                   )}
