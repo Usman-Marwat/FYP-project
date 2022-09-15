@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import {
   Animated,
   StyleSheet,
@@ -6,7 +6,6 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import { StatusBar } from "expo-status-bar";
 import { Transition, Transitioning } from "react-native-reanimated";
 
 import colors from "../../config/colors";
@@ -20,6 +19,7 @@ import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import Header from "../../components/Header";
 import Tagline from "../../components/Tagline";
 import MaterialInput from "../../components/MaterialInput";
+import _ from "lodash";
 
 const data = [
   {
@@ -138,6 +138,23 @@ const SpecificationScreen = ({ navigation, route }) => {
     });
     return { inputRange, opcaityInputRange, scale, opacity };
   };
+
+  // const [, updateState] = React.useState();
+  // const forceUpdate = React.useCallback(() => updateState({}), []);
+  const addMaterial = (MaterialData) => {
+    const newAllValues = _.cloneDeep(allValues);
+    const newKeys = _.cloneDeep(keys);
+    newAllValues.push([
+      { name: MaterialData.material, parent: MaterialData.category },
+    ]);
+    newKeys.push({ name: MaterialData.material });
+    setKeys(newKeys);
+    setAllValues(newAllValues);
+  };
+
+  useEffect(() => {
+    console.log(allValues);
+  }, [allValues]);
 
   return (
     <>
@@ -288,6 +305,7 @@ const SpecificationScreen = ({ navigation, route }) => {
       <MaterialInput
         modalVisible={isVisible}
         onModalVisible={() => setIsVisible(!isVisible)}
+        onValuesChange={addMaterial}
       />
       <ContractTable
         isVisible={isTableVisible}

@@ -50,7 +50,13 @@ export default function ImageInput({ imageUri, onChangeImage }) {
   return (
     <TouchableWithoutFeedback onPress={handlePress}>
       <View style={styles.container}>
-        {!imageUri && <MaterialCommunityIcons name="camera" size={40} />}
+        {!imageUri && (
+          <MaterialCommunityIcons
+            color={colors.medium}
+            name="camera"
+            size={40}
+          />
+        )}
         {imageUri && <Image source={{ uri: imageUri }} style={styles.image} />}
       </View>
     </TouchableWithoutFeedback>

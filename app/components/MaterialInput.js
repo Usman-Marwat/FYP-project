@@ -6,6 +6,8 @@ import {
   Modal,
   SafeAreaView,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import React from "react";
 import * as Yup from "yup";
@@ -20,66 +22,78 @@ import FormImagePicker from "./forms/FormImagePicker";
 import colors from "../config/colors";
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().required().min(1).label("Title"),
-  price: Yup.number().required().min(1).label("Price"),
+  material: Yup.string().required().min(1).label("Material Name"),
+  category: Yup.string().required().min(1).label("Category"),
 });
 
-const MaterialInput = ({ modalVisible, onModalVisible }) => {
-  const handleSubmit = () => {};
+const MaterialInput = ({ modalVisible, onModalVisible, onValuesChange }) => {
+  const handleSubmit = (MaterialData, { resetForm }) => {
+    onValuesChange(MaterialData);
+    onModalVisible(!modalVisible);
+  };
+
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={modalVisible}
-      onRequestClose={() => {
-        Alert.alert("Modal has been closed.");
-        onModalVisible(!modalVisible);
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss();
       }}
     >
-      <SafeAreaView style={styles.modalContainer}>
-        <TouchableOpacity
-          style={styles.closeButton}
-          onPress={() => onModalVisible(!modalVisible)}
-        ></TouchableOpacity>
-        <View style={styles.setModalDimensions("80%", "100%")}>
-          <Text style={styles.boldText}>Add a new Material</Text>
-          <Form
-            initialValues={{
-              material: "",
-              category: "",
-              description: "",
-              images: [],
-            }}
-            onSubmit={handleSubmit}
-            validationSchema={validationSchema}
-          >
-            <AppFormField
-              width={"70%"}
-              name="material"
-              placeholder="Material"
-              backgroundColor={colors.light}
-            />
-            <AppFormField
-              name="category"
-              placeholder="Category"
-              width={"50%"}
-            />
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          onModalVisible(!modalVisible);
+        }}
+      >
+        <SafeAreaView style={styles.modalContainer}>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={() => onModalVisible(!modalVisible)}
+          ></TouchableOpacity>
+          <View style={styles.setModalDimensions("75%", "100%")}>
+            <Text style={styles.boldText}>Add a new Material</Text>
+            <Form
+              initialValues={{
+                material: "",
+                category: "",
+                description: "",
+                images: [],
+              }}
+              onSubmit={handleSubmit}
+              validationSchema={validationSchema}
+            >
+              <AppFormField
+                width={"70%"}
+                icon="ornament"
+                name="material"
+                placeholder="Material Name"
+                backgroundColor={colors.light}
+              />
+              <AppFormField
+                icon="apps"
+                name="category"
+                placeholder="Category"
+                width={"50%"}
+              />
 
-            <AppFormField
-              minHeight={120}
-              multiline
-              name="description"
-              numberOfLines={3}
-              placeholder="Description"
-            />
-            <FormImagePicker name="images" />
-            <View style={styles.buttonContainer}>
-              <SubmitButton title="Add" />
-            </View>
-          </Form>
-        </View>
-      </SafeAreaView>
-    </Modal>
+              <AppFormField
+                minHeight={90}
+                multiline
+                name="description"
+                numberOfLines={3}
+                placeholder="Description"
+              />
+              <FormImagePicker name="images" />
+              <View style={styles.buttonContainer}>
+                <SubmitButton title="Add" />
+              </View>
+            </Form>
+          </View>
+        </SafeAreaView>
+      </Modal>
+    </TouchableWithoutFeedback>
   );
 };
 
