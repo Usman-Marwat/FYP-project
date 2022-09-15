@@ -13,7 +13,6 @@ import Icon from "../../components/Icon";
 import AppTextInput from "../../components/AppTextInput";
 import ContractTable from "../../components/ContractTable";
 import routes from "../../navigation/routes";
-import MenuFoldButton from "../../navigation/MenuFoldButton";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import Header from "../../components/Header";
@@ -26,74 +25,26 @@ const data = [
   {
     bg: colors.silver,
     color: "#3F5B98",
-    category: "Healthcare",
-    subCategories: ["Skincare", "Personal care", "Health", "Eye care"],
   },
   {
     bg: colors.silver,
     color: "#FCBE4A",
-    category: "Food & Drink",
-    subCategories: [
-      "Fruits & Vegetables",
-      "Frozen Food",
-      "Bakery",
-      "Snacks & Desserts",
-      "Beverages",
-      "Alcoholic beverages",
-      "Noodles & Pasta",
-      "Rice & Cooking oil",
-    ],
   },
   {
     bg: colors.silver,
     color: "#FD5963",
-    category: "Beauty",
-    subCategories: ["Skincare", "Makeup", "Nail care", "Perfume"],
   },
   {
     bg: colors.silver,
     color: "#FECBCD",
-    category: "Baby & Kids",
-    subCategories: [
-      "Toys",
-      "Trolleys",
-      "LEGO®",
-      "Electronics",
-      "Puzzles",
-      "Costumes",
-      "Food",
-      "Hygiene & Care",
-      "Child's room",
-      "Feeding accessories",
-    ],
   },
   {
     bg: colors.silver,
     color: colors.secondary,
-    category: "Homeware",
-    subCategories: [
-      "Air purifiers",
-      "Stoves, hoods & ovens",
-      "Refrigerators",
-      "Coffee & Tea",
-      "Air conditioning",
-      "Grilling",
-      "Vacuum cleaners",
-    ],
   },
   {
     bg: colors.silver,
     color: colors.secondary,
-    category: "Homeware2",
-    subCategories: [
-      "Air purifiers",
-      "Stoves, hoods & ovens",
-      "Refrigerators",
-      "Coffee & Tea",
-      "Air conditioning",
-      "Grilling",
-      "Vacuum cleaners",
-    ],
   },
 ];
 
@@ -133,7 +84,6 @@ const SpecificationScreen = ({ navigation, route }) => {
     if (imageUris == undefined) imagesUris2[index] = [uri];
     else imageUris.push(uri);
     setImagesUris(imagesUris2);
-    console.log(imagesUris);
   };
 
   const calculateAnimations = (index) => {
@@ -161,7 +111,9 @@ const SpecificationScreen = ({ navigation, route }) => {
     setAllValues(newAllValues);
   };
 
-  useEffect(() => {}, [allValues, imagesUris]);
+  useEffect(() => {
+    console.log(imagesUris);
+  }, [allValues, imagesUris]);
 
   return (
     <>
@@ -246,12 +198,9 @@ const SpecificationScreen = ({ navigation, route }) => {
                         );
                       })}
 
-                      <Text>Add Description</Text>
                       <AppTextInput
                         minHeight={80}
                         placeholder="add Description"
-                        placeholderTextColor={colors.white}
-                        backgroundColor={data[index].color}
                         width="97%"
                         value={descriptions[index]}
                         onChangeText={(text) =>
@@ -336,7 +285,7 @@ const styles = StyleSheet.create({
   },
   accordianContent: {
     alignItems: "flex-start",
-    marginTop: 20,
+    top: -20,
   },
   body: {
     fontSize: 20,
@@ -350,14 +299,13 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     minHeight: 150,
-    // paddingHorizontal: 20,
     flexGrow: 1,
     shadowColor: "silver",
     shadowOffset: {
       width: 0,
       height: 1,
     },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.5,
     shadowRadius: 10,
   },
   card: {
@@ -376,12 +324,13 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     textTransform: "uppercase",
     letterSpacing: -2,
+    marginVertical: 30,
   },
   list: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 10 / 2,
-    marginLeft: 40,
+    marginBottom: 20,
+    marginLeft: 30,
   },
   listItemDot: {
     height: 8,
@@ -409,7 +358,6 @@ const styles = StyleSheet.create({
   },
 
   shadow: {
-    // backgroundColor: "white",
     shadowColor: "black",
     shadowOffset: {
       width: 0,

@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Modal, StyleSheet, View, ScrollView } from "react-native";
+import {
+  Modal,
+  StyleSheet,
+  View,
+  ScrollView,
+  FlatList,
+  Text,
+} from "react-native";
 import { Table, Row, Rows } from "react-native-table-component";
 import AppButton from "./AppButton";
 
@@ -26,39 +33,88 @@ export default ContractTable = ({ isVisible, onModalVisible }) => {
     tableData.push(rowData);
   }
 
+  // return (
+  //   <Modal visible={isVisible}>
+  //     <AppButton onPress={onModalVisible} />
+  //     <View style={styles.container}>
+  //       <ScrollView horizontal={true}>
+  //         <View>
+  //           <Table borderStyle={{ borderWidth: 1, borderColor: "#C1C0B9" }}>
+  //             <Row
+  //               data={tableHead}
+  //               widthArr={widthArr}
+  //               style={styles.header}
+  //               textStyle={styles.text}
+  //             />
+  //           </Table>
+  //           <ScrollView style={styles.dataWrapper}>
+  //             <Table borderStyle={{ borderWidth: 1, borderColor: "#C1C0B9" }}>
+  //               {tableData.map((rowData, index) => (
+  //                 <Row
+  //                   key={index}
+  //                   data={rowData}
+  //                   widthArr={widthArr}
+  //                   style={[
+  //                     styles.row,
+  //                     index % 2 && { backgroundColor: "#F7F6E7" },
+  //                   ]}
+  //                   textStyle={styles.text}
+  //                 />
+  //               ))}
+  //             </Table>
+  //           </ScrollView>
+  //         </View>
+  //       </ScrollView>
+  //     </View>
+  //   </Modal>
+  // );
+
   return (
     <Modal visible={isVisible}>
-      <AppButton onPress={onModalVisible} />
-      <View style={styles.container}>
-        <ScrollView horizontal={true}>
-          <View>
-            <Table borderStyle={{ borderWidth: 1, borderColor: "#C1C0B9" }}>
-              <Row
-                data={tableHead}
-                widthArr={widthArr}
-                style={styles.header}
-                textStyle={styles.text}
-              />
-            </Table>
-            <ScrollView style={styles.dataWrapper}>
-              <Table borderStyle={{ borderWidth: 1, borderColor: "#C1C0B9" }}>
-                {tableData.map((rowData, index) => (
-                  <Row
-                    key={index}
-                    data={rowData}
-                    widthArr={widthArr}
-                    style={[
-                      styles.row,
-                      index % 2 && { backgroundColor: "#F7F6E7" },
-                    ]}
-                    textStyle={styles.text}
-                  />
-                ))}
-              </Table>
-            </ScrollView>
-          </View>
-        </ScrollView>
-      </View>
+      <AppButton onPress={onModalVisible} title="Close" />
+
+      <FlatList
+        contentContainerStyle={{ alignSelf: "flex-start" }}
+        numColumns={Math.ceil(10)}
+        data={[...new Array(20).keys()]}
+        keyExtractor={(item) => item}
+        renderItem={({ item }) => {
+          return (
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "center",
+                width: 200,
+                height: 200,
+                backgroundColor: "red",
+                margin: 2,
+              }}
+            >
+              <ScrollView scrollEnabled={true}>
+                <Text>{1}</Text>
+                <Text>{2}</Text>
+                <Text>{3}</Text>
+                <Text>{4}</Text>
+                <Text>{5}</Text>
+                <Text>{6}</Text>
+                <Text>{7}</Text>
+                <Text>{8}</Text>
+                <Text>{9}</Text>
+                <Text>{10}</Text>
+                <Text>{11}</Text>
+                <Text>{12}</Text>
+                <Text>{13}</Text>
+                <Text>{14}</Text>
+                <Text>{14}</Text>
+                <Text>{14}</Text>
+                <Text>{14}</Text>
+                <Text>{14}</Text>
+                <Text>{14}</Text>
+              </ScrollView>
+            </View>
+          );
+        }}
+      />
     </Modal>
   );
 };
