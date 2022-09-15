@@ -19,6 +19,7 @@ import { translateMenuFold } from "../../navigation/navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import Header from "../../components/Header";
 import Tagline from "../../components/Tagline";
+import MaterialInput from "../../components/MaterialInput";
 
 const data = [
   {
@@ -105,6 +106,7 @@ const transition = (
 
 const SpecificationScreen = ({ navigation, route }) => {
   const [currentIndex, setCurrentIndex] = useState(null);
+  const [isTableVisible, setIsTableVisible] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [descriptions, setDescriptions] = useState([]);
   const [keys, setKeys] = useState(route.params.keys);
@@ -187,7 +189,6 @@ const SpecificationScreen = ({ navigation, route }) => {
                                 { backgroundColor: data[index].color },
                               ]}
                             />
-
                             <View>
                               <Text
                                 style={[
@@ -239,6 +240,15 @@ const SpecificationScreen = ({ navigation, route }) => {
               </TouchableOpacity>
             );
           })}
+          <View style={styles.emptyCardContainer}>
+            <TouchableOpacity
+              style={[styles.shadow, { shadowColor: colors.medium }]}
+              onPress={() => setIsVisible(!isVisible)}
+            >
+              <Icon name="plus" size={55} backgroundColor={colors.secondary} />
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={[styles.cardContainer]}></TouchableOpacity>
         </Transitioning.View>
       </Animated.ScrollView>
 
@@ -253,7 +263,7 @@ const SpecificationScreen = ({ navigation, route }) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.shadow}
-          onPress={() => setIsVisible(true)}
+          onPress={() => setIsTableVisible(true)}
         >
           <Icon
             name="grid"
@@ -275,11 +285,14 @@ const SpecificationScreen = ({ navigation, route }) => {
           />
         </TouchableOpacity>
       </View>
-      <ContractTable
-        isVisible={isVisible}
-        onModalVisible={() => setIsVisible(false)}
+      <MaterialInput
+        modalVisible={isVisible}
+        onModalVisible={() => setIsVisible(!isVisible)}
       />
-      <StatusBar hidden={false} />
+      <ContractTable
+        isVisible={isTableVisible}
+        onModalVisible={() => setIsTableVisible(false)}
+      />
     </>
   );
 };
@@ -320,6 +333,12 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  emptyCardContainer: {
+    height: 150,
+    alignItems: "center",
+    justifyContent: "center",
+    borderTopWidth: 0.4,
   },
   heading: {
     fontSize: 28,

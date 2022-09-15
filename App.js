@@ -9,6 +9,9 @@ import {
 
 import CustomerNavigator from "./app/navigation/CustomerNavigation/CustomerNavigatior";
 import Icon from "./app/components/Icon";
+import LoginScreen from "./app/screens/LoginScreen";
+import AuthNavigator from "./app/navigation/AuthNavigator";
+import { NavigationContainer } from "@react-navigation/native";
 
 export default function App() {
   return <CustomerNavigator />;
