@@ -20,6 +20,7 @@ import Header from "../../components/Header";
 import Tagline from "../../components/Tagline";
 import MaterialInput from "../../components/MaterialInput";
 import _ from "lodash";
+import ImageInputList from "../../components/ImageInputList";
 
 const data = [
   {
@@ -109,6 +110,7 @@ const SpecificationScreen = ({ navigation, route }) => {
   const [isTableVisible, setIsTableVisible] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [descriptions, setDescriptions] = useState([]);
+  const [imagesUris, setImagesUris] = useState([]);
   const [keys, setKeys] = useState(route.params.keys);
   const [allValues, setAllValues] = useState(route.params.allValues);
 
@@ -125,6 +127,15 @@ const SpecificationScreen = ({ navigation, route }) => {
     setDescriptions(currentDescriptions);
   };
 
+  const handleAddImage = (uri, index) => {
+    const imagesUris2 = _.cloneDeep(imagesUris);
+    const imageUris = imagesUris2[index];
+    if (imageUris == undefined) imagesUris2[index] = [uri];
+    else imageUris.push(uri);
+    setImagesUris(imagesUris2);
+    console.log(imagesUris);
+  };
+
   const calculateAnimations = (index) => {
     const inputRange = [-1, 0, 150 * index, 150 * (index + 2)];
     const opcaityInputRange = [-1, 0, 150 * index, 150 * (index + 0.7)];
@@ -139,8 +150,6 @@ const SpecificationScreen = ({ navigation, route }) => {
     return { inputRange, opcaityInputRange, scale, opacity };
   };
 
-  // const [, updateState] = React.useState();
-  // const forceUpdate = React.useCallback(() => updateState({}), []);
   const addMaterial = (MaterialData) => {
     const newAllValues = _.cloneDeep(allValues);
     const newKeys = _.cloneDeep(keys);
@@ -152,9 +161,7 @@ const SpecificationScreen = ({ navigation, route }) => {
     setAllValues(newAllValues);
   };
 
-  useEffect(() => {
-    console.log(allValues);
-  }, [allValues]);
+  useEffect(() => {}, [allValues, imagesUris]);
 
   return (
     <>
@@ -189,9 +196,7 @@ const SpecificationScreen = ({ navigation, route }) => {
                 ]}
                 activeOpacity={0.9}
               >
-                <View
-                  style={[styles.card, { backgroundColor: data[index].bg }]}
-                >
+                <View style={[styles.card, { backgroundColor: colors.white }]}>
                   <Text style={[styles.heading, { color: data[index].color }]}>
                     {name}
                   </Text>
@@ -240,6 +245,8 @@ const SpecificationScreen = ({ navigation, route }) => {
                           </View>
                         );
                       })}
+
+                      <Text>Add Description</Text>
                       <AppTextInput
                         minHeight={80}
                         placeholder="add Description"
@@ -251,6 +258,12 @@ const SpecificationScreen = ({ navigation, route }) => {
                           handleAddDescriotion(text, index)
                         }
                       />
+                      <View style={styles.scrollViewContainer}>
+                        <ImageInputList
+                          imageUris={imagesUris[index]}
+                          onAddImage={(uri) => handleAddImage(uri, index)}
+                        />
+                      </View>
                     </View>
                   )}
                 </View>
@@ -408,5 +421,9 @@ const styles = StyleSheet.create({
   tagline: {
     marginVertical: 20,
     alignItems: "center",
+  },
+  scrollViewContainer: {
+    height: 120,
+    width: 400,
   },
 });
