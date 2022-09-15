@@ -108,7 +108,6 @@ const SpecificationScreen = ({ navigation, route }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [descriptions, setDescriptions] = useState([]);
   const [keys, setKeys] = useState(route.params.keys);
-  console.log(keys);
   const [allValues, setAllValues] = useState(route.params.allValues);
 
   const ref = React.useRef();
@@ -178,16 +177,51 @@ const SpecificationScreen = ({ navigation, route }) => {
                     {name}
                   </Text>
                   {index === currentIndex && (
-                    <View style={styles.subCategoriesList}>
-                      {allValues[index].map((value, j) => (
-                        <View key={j}>
-                          <Text
-                            style={[styles.body, { color: data[index].color }]}
-                          >
-                            {value}
-                          </Text>
-                        </View>
-                      ))}
+                    <View style={styles.accordianContent}>
+                      {allValues[index].map((value, j) => {
+                        return value.parent ? (
+                          <View style={styles.list} key={j}>
+                            <View
+                              style={[
+                                styles.listItemDot,
+                                { backgroundColor: data[index].color },
+                              ]}
+                            />
+
+                            <View>
+                              <Text
+                                style={[
+                                  styles.body,
+                                  { color: data[index].color },
+                                ]}
+                              >
+                                {value.name}
+                                <Text style={styles.parent}>
+                                  {" - " + value.parent}
+                                </Text>
+                              </Text>
+                            </View>
+                          </View>
+                        ) : (
+                          <View style={styles.list} key={j}>
+                            <View
+                              style={[
+                                styles.listItemDot,
+                                { backgroundColor: data[index].color },
+                              ]}
+                            />
+                            <Text
+                              key={j}
+                              style={[
+                                styles.body,
+                                { color: data[index].color },
+                              ]}
+                            >
+                              {value}
+                            </Text>
+                          </View>
+                        );
+                      })}
                       <AppTextInput
                         minHeight={50}
                         placeholder="add Description"
@@ -253,6 +287,18 @@ const SpecificationScreen = ({ navigation, route }) => {
 export default SpecificationScreen;
 
 const styles = StyleSheet.create({
+  accordianText: {
+    marginLeft: 50,
+  },
+  accordianContent: {
+    alignItems: "flex-start",
+    marginTop: 20,
+  },
+  body: {
+    fontSize: 20,
+    lineHeight: 20 * 1.5,
+    textAlign: "center",
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -281,10 +327,22 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     letterSpacing: -2,
   },
-  body: {
-    fontSize: 20,
-    lineHeight: 20 * 1.5,
-    textAlign: "center",
+  list: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10 / 2,
+    marginLeft: 40,
+  },
+  listItemDot: {
+    height: 8,
+    width: 8,
+    borderRadius: 4,
+    marginRight: 10,
+  },
+  parent: {
+    lineHeight: 12,
+    fontSize: 10.7,
+    color: colors.medium,
   },
   row: {
     flexDirection: "row",
@@ -299,9 +357,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
   },
-  subCategoriesList: {
-    marginTop: 20,
-  },
+
   shadow: {
     // backgroundColor: "white",
     shadowColor: "black",

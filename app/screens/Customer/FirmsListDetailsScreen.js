@@ -181,14 +181,4 @@ const styles = StyleSheet.create({
   },
 });
 
-// FirmsListDetailsScreen.SharedElement = (route, otherRoute, showing) => {
-//   const { item } = route.params;
-//   return [
-//     { id: `item.${item.key}.bg` },
-//     { id: `item.${item.key}.name` },
-//     { id: `item.${item.key}.image` },
-//     { id: "general.bg" },
-//   ];
-// };
-
 export default FirmsListDetailsScreen;
