@@ -224,7 +224,7 @@ const SpecificationScreen = ({ navigation, route }) => {
                         );
                       })}
                       <AppTextInput
-                        minHeight={50}
+                        minHeight={80}
                         placeholder="add Description"
                         placeholderTextColor={colors.white}
                         backgroundColor={data[index].color}
