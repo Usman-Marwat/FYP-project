@@ -107,7 +107,6 @@ const SpecificationScreen = ({ navigation, route }) => {
   };
 
   const addMaterial = (MaterialData) => {
-    console.log(MaterialData);
     const newAllValues = _.cloneDeep(allValues);
     const newKeys = _.cloneDeep(keys);
     newAllValues.push([
@@ -125,10 +124,10 @@ const SpecificationScreen = ({ navigation, route }) => {
   //   console.log("hi");
   // });
 
-  useEffect(() => {
-    console.log("The images URis are ");
-    console.log(imagesUris);
-  }, [allValues, imagesUris]);
+  // useEffect(() => {
+  //   // console.log("The images URis are ");
+  //   // console.log(imagesUris);
+  // }, [allValues, imagesUris]);
 
   return (
     <>
@@ -289,6 +288,10 @@ const SpecificationScreen = ({ navigation, route }) => {
         onValuesChange={addMaterial}
       />
       <ContractTable
+        allValues={allValues}
+        descriptions={descriptions}
+        imageUris={imagesUris}
+        keys={keys}
         isVisible={isTableVisible}
         onModalVisible={() => setIsTableVisible(false)}
       />
