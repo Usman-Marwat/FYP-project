@@ -116,6 +116,7 @@ const material = [
 const MaterialScreen = ({ navigation }) => {
   const [allValues, setAllValues] = useState([["lakki"]]);
   const [keysValues, setKeysValues] = useState([]);
+  const [imagesUris, setImagesUris] = useState([]);
 
   const [index, setIndex] = useState(0);
 
@@ -129,10 +130,13 @@ const MaterialScreen = ({ navigation }) => {
   const setDefaults = () => {
     let allValues2 = _.cloneDeep(allValues);
     let keysValues2 = _.cloneDeep(keysValues);
+    let imagesUris2 = _.cloneDeep(imagesUris);
     allValues2 = [[], [], [], []];
-    keysValues2 = [];
+    keysValues2 = [undefined, undefined, undefined, undefined];
+    imagesUris2 = [undefined, undefined, undefined, undefined];
     setAllValues(allValues2);
     setKeysValues(keysValues2);
+    setImagesUris(imagesUris2);
   };
   useEffect(() => {
     setDefaults();
@@ -265,7 +269,11 @@ const MaterialScreen = ({ navigation }) => {
       <TouchableOpacity
         style={{ alignItems: "center", top: 175 }}
         onPress={() =>
-          navigation.navigate(routes.SPECIFICATIONS, { keysValues, allValues })
+          navigation.navigate(routes.SPECIFICATIONS, {
+            allValues,
+            imagesUris,
+            keysValues,
+          })
         }
       >
         <Icon name="check" size={45} backgroundColor={colors.primary} />

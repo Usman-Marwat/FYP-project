@@ -61,7 +61,7 @@ const SpecificationScreen = ({ navigation, route }) => {
   const [isTableVisible, setIsTableVisible] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [descriptions, setDescriptions] = useState([]);
-  const [imagesUris, setImagesUris] = useState([]);
+  const [imagesUris, setImagesUris] = useState(route.params.imagesUris);
   const [keys, setKeys] = useState(route.params.keysValues);
   const [allValues, setAllValues] = useState(route.params.allValues);
 
