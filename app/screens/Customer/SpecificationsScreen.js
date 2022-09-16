@@ -62,7 +62,7 @@ const SpecificationScreen = ({ navigation, route }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [descriptions, setDescriptions] = useState([]);
   const [imagesUris, setImagesUris] = useState([]);
-  const [keys, setKeys] = useState(route.params.keys);
+  const [keys, setKeys] = useState(route.params.keysValues);
   const [allValues, setAllValues] = useState(route.params.allValues);
 
   const ref = React.useRef();
@@ -133,11 +133,12 @@ const SpecificationScreen = ({ navigation, route }) => {
         >
           <Tagline heading="Add Specifications" headingColor="black" />
 
-          {keys.map(({ name, image }, index) => {
+          {keys.map((key, index) => {
             const { scale, opacity } = calculateAnimations(index);
+            if (key === undefined) return null;
             return (
               <TouchableOpacity
-                key={name}
+                key={index}
                 onPress={() => {
                   ref.current.animateNextTransition();
                   setCurrentIndex(index === currentIndex ? null : index);
@@ -150,7 +151,7 @@ const SpecificationScreen = ({ navigation, route }) => {
               >
                 <View style={[styles.card, { backgroundColor: colors.white }]}>
                   <Text style={[styles.heading, { color: data[index].color }]}>
-                    {name}
+                    {key}
                   </Text>
                   {index === currentIndex && (
                     <View style={styles.accordianContent}>

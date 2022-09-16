@@ -120,7 +120,12 @@ const MaterialScreen = ({ navigation }) => {
     ["steel1"],
     [],
   ]);
-  const [keysValues, setKeysValues] = useState([]);
+  const [keysValues, setKeysValues] = useState([
+    "Cement",
+    "Bricks",
+    "Steel",
+    undefined,
+  ]);
   const [index, setIndex] = useState(0);
 
   const [open, setOpen] = useState(false);
@@ -137,9 +142,9 @@ const MaterialScreen = ({ navigation }) => {
   };
 
   const handleValueChange = (value) => {
-    // if the new value length >=1 or previous value was not zero
-    if (_.isEqual(value, allValues[index])) return;
+    // if (_.isEqual(value, allValues[index])) return;
 
+    // if the new value length >=1 or previous value was not zero
     if (value.length >= 1 || allValues[index].length >= 1) {
       const currentAllValues = [...allValues];
       let currentValue = [...currentAllValues[index]];
@@ -153,13 +158,11 @@ const MaterialScreen = ({ navigation }) => {
   const handleKeysValuesChange = () => {
     let kyesValues2 = _.cloneDeep(keysValues);
     let keyValue = kyesValues2[index];
-    keyValue = [keys[index].name];
+    if (allValues[index].length >= 1) keyValue = keys[index].name;
+    else keyValue = undefined;
     kyesValues2[index] = keyValue;
     console.log("The key value is ", keyValue);
     setKeysValues(kyesValues2);
-    // if (imageUris == undefined) imagesUris2[index] = [uri];
-    // else imageUris.push(uri);
-    // setImagesUris(imagesUris2);
   };
 
   useEffect(() => {
@@ -255,7 +258,7 @@ const MaterialScreen = ({ navigation }) => {
       <TouchableOpacity
         style={{ alignItems: "center", top: 175 }}
         onPress={() =>
-          navigation.navigate(routes.SPECIFICATIONS, { keys, allValues })
+          navigation.navigate(routes.SPECIFICATIONS, { keysValues, allValues })
         }
       >
         <Icon name="check" size={45} backgroundColor={colors.primary} />
