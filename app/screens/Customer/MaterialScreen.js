@@ -114,18 +114,9 @@ const material = [
 ];
 
 const MaterialScreen = ({ navigation }) => {
-  const [allValues, setAllValues] = useState([
-    ["lakki"],
-    ["brick1"],
-    ["steel1"],
-    [],
-  ]);
-  const [keysValues, setKeysValues] = useState([
-    "Cement",
-    "Bricks",
-    "Steel",
-    undefined,
-  ]);
+  const [allValues, setAllValues] = useState([["lakki"]]);
+  const [keysValues, setKeysValues] = useState([]);
+
   const [index, setIndex] = useState(0);
 
   const [open, setOpen] = useState(false);
@@ -134,6 +125,18 @@ const MaterialScreen = ({ navigation }) => {
 
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
+
+  const setDefaults = () => {
+    let allValues2 = _.cloneDeep(allValues);
+    let keysValues2 = _.cloneDeep(keysValues);
+    allValues2 = [["lakki"], ["brick1"], ["steel1"], []];
+    keysValues2 = ["Cement", "Bricks", "Steel", undefined];
+    setAllValues(allValues2);
+    setKeysValues(keysValues2);
+  };
+  useEffect(() => {
+    setDefaults();
+  }, []);
 
   const handleCurrentItem = (index) => {
     setIndex(index);
