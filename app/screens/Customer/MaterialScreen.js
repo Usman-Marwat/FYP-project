@@ -151,35 +151,39 @@ const MaterialScreen = ({ navigation }) => {
       currentValue = value;
       currentAllValues[index] = currentValue;
       setAllValues(currentAllValues);
-      handleKeysValuesChange();
+
+      //we need to pass the current all values. Otherwise in the keysValueChange()
+      //if we do if(allValues[index].length>0), allValues refers to previous state
+      // The reason is because the function was registered/declared with the previous "allValues"
+      handleKeysValuesChange(currentAllValues);
     }
   };
 
-  const handleKeysValuesChange = () => {
-    let kyesValues2 = _.cloneDeep(keysValues);
-    let keyValue = kyesValues2[index];
-    if (allValues[index].length >= 1) keyValue = keys[index].name;
+  const handleKeysValuesChange = (currentAllValues) => {
+    let keysValues2 = _.cloneDeep(keysValues);
+    let keyValue = keysValues2[index];
+    if (currentAllValues[index].length > 0) keyValue = keys[index].name;
     else keyValue = undefined;
-    kyesValues2[index] = keyValue;
-    console.log("The key value is ", keyValue);
-    setKeysValues(kyesValues2);
+    keysValues2[index] = keyValue;
+    setKeysValues(keysValues2);
   };
 
-  useEffect(() => {
-    /* this hook will get called everytime when allValues has changed
-    perform some action which will get fired everytime when myArr gets updated
-    
-    We had to do this becasue setAllvalues() in handleValueChange() was not causing re-render
-    The callback method also did not work (it probably would have worked in class components)
+  // useEffect(() => {
+  //   /* this hook will get called everytime when allValues has changed
+  //   perform some action which will get fired everytime when myArr gets updated
 
-    This is because
-    Calling setState() in React is asynchronous, for various reasons (mainly performance). 
-    Under the covers React will batch multiple calls to setState() into a single state mutation, 
-    and then re-render the component a single time, rather than re-rendering for every state change. 
-    */
-    console.log("All Values ----------------- \n", allValues);
-    console.log("Updated State ----------------- \n", keysValues);
-  }, [allValues, keysValues]);
+  //   We had to do this becasue setAllvalues() in handleValueChange() was not causing re-render
+  //   The callback method also did not work (it probably would have worked in class components)
+
+  //   This is because
+  //   Calling setState() in React is asynchronous, for various reasons (mainly performance).
+  //   Under the covers React will batch multiple calls to setState() into a single state mutation,
+  //   and then re-render the component a single time, rather than re-rendering for every state change.
+  //   */
+  //   console.log("All Values ----------------- \n", allValues);
+  //   console.log("Updated State ----------------- \n", keysValues);
+  //   // setCount((prevCount) => prevCount + 1);
+  // });
 
   return (
     <View>
