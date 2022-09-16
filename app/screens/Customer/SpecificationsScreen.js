@@ -72,17 +72,23 @@ const SpecificationScreen = ({ navigation, route }) => {
   const scrollY = useRef(new Animated.Value(0)).current;
 
   //calling handle description againand again is not costly becasue its not changing the UI
-  const handleAddDescriotion = (text, index) => {
+  //check that using useEffect
+  const handleAddDescription = (text, index) => {
     const currentDescriptions = descriptions;
     currentDescriptions[index] = text;
     setDescriptions(currentDescriptions);
   };
 
-  const handleAddImage = (uri, index) => {
+  const handleAddImage = (uri, index, newMaterial = true) => {
     const imagesUris2 = _.cloneDeep(imagesUris);
-    const imageUris = imagesUris2[index];
-    if (imageUris == undefined) imagesUris2[index] = [uri];
-    else imageUris.push(uri);
+    if (newMaterial)
+      Array.isArray(uri) ? imagesUris2.push(uri) : imagesUris2.push([uri]);
+    else {
+      let imageUris = imagesUris2[index];
+      imageUris === undefined
+        ? (imagesUris2[index] = [uri])
+        : imageUris.push(uri);
+    }
     setImagesUris(imagesUris2);
   };
 
@@ -101,17 +107,26 @@ const SpecificationScreen = ({ navigation, route }) => {
   };
 
   const addMaterial = (MaterialData) => {
+    console.log(MaterialData);
     const newAllValues = _.cloneDeep(allValues);
     const newKeys = _.cloneDeep(keys);
     newAllValues.push([
       { name: MaterialData.material, parent: MaterialData.category },
     ]);
-    newKeys.push({ name: MaterialData.material });
+    newKeys.push(MaterialData.material);
+    handleAddDescription(MaterialData.description, newAllValues.length - 1);
+    handleAddImage(MaterialData.images);
+
     setKeys(newKeys);
     setAllValues(newAllValues);
   };
 
+  // useEffect(() => {
+  //   console.log("hi");
+  // });
+
   useEffect(() => {
+    console.log("The images URis are ");
     console.log(imagesUris);
   }, [allValues, imagesUris]);
 
@@ -201,17 +216,20 @@ const SpecificationScreen = ({ navigation, route }) => {
 
                       <AppTextInput
                         minHeight={80}
+                        multiline
                         placeholder="add Description"
                         width="97%"
                         value={descriptions[index]}
                         onChangeText={(text) =>
-                          handleAddDescriotion(text, index)
+                          handleAddDescription(text, index)
                         }
                       />
                       <View style={styles.scrollViewContainer}>
                         <ImageInputList
                           imageUris={imagesUris[index]}
-                          onAddImage={(uri) => handleAddImage(uri, index)}
+                          onAddImage={(uri) =>
+                            handleAddImage(uri, index, false)
+                          }
                         />
                       </View>
                     </View>
