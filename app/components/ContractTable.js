@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Table, Row, Rows } from "react-native-table-component";
 import AppButton from "./AppButton";
+import ImageInputList from "./ImageInputList";
 
 export default ContractTable = ({ isVisible, onModalVisible }) => {
   const [tableHead] = useState([
@@ -90,7 +91,11 @@ export default ContractTable = ({ isVisible, onModalVisible }) => {
                 margin: 2,
               }}
             >
-              <ScrollView scrollEnabled={true}>
+              <ScrollView
+                scrollEnabled={true}
+                // horizontal
+                style={{ backgroundColor: "yellow", flex: 1 }}
+              >
                 <Text>{1}</Text>
                 <Text>{2}</Text>
                 <Text>{3}</Text>
@@ -110,6 +115,12 @@ export default ContractTable = ({ isVisible, onModalVisible }) => {
                 <Text>{14}</Text>
                 <Text>{14}</Text>
                 <Text>{14}</Text>
+                <ImageInputList
+                  imageUris={[
+                    "https://images.unsplash.com/photo-1663167289057-a07f174a0ed7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=900&q=60",
+                    "https://images.unsplash.com/photo-1663167289057-a07f174a0ed7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=900&q=60",
+                  ]}
+                />
               </ScrollView>
             </View>
           );

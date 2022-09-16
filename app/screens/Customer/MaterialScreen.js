@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import DropDownPicker from "react-native-dropdown-picker";
+import _ from "lodash";
 
 import Card from "../../components/Card";
 import colors from "../../config/colors";
@@ -119,6 +120,7 @@ const MaterialScreen = ({ navigation }) => {
     ["steel1"],
     [],
   ]);
+  const [keysValues, setKeysValues] = useState([]);
   const [index, setIndex] = useState(0);
 
   const [open, setOpen] = useState(false);
@@ -136,13 +138,28 @@ const MaterialScreen = ({ navigation }) => {
 
   const handleValueChange = (value) => {
     // if the new value length >=1 or previous value was not zero
+    if (_.isEqual(value, allValues[index])) return;
+
     if (value.length >= 1 || allValues[index].length >= 1) {
       const currentAllValues = [...allValues];
       let currentValue = [...currentAllValues[index]];
       currentValue = value;
       currentAllValues[index] = currentValue;
       setAllValues(currentAllValues);
+      handleKeysValuesChange();
     }
+  };
+
+  const handleKeysValuesChange = () => {
+    let kyesValues2 = _.cloneDeep(keysValues);
+    let keyValue = kyesValues2[index];
+    keyValue = [keys[index].name];
+    kyesValues2[index] = keyValue;
+    console.log("The key value is ", keyValue);
+    setKeysValues(kyesValues2);
+    // if (imageUris == undefined) imagesUris2[index] = [uri];
+    // else imageUris.push(uri);
+    // setImagesUris(imagesUris2);
   };
 
   useEffect(() => {
@@ -157,8 +174,9 @@ const MaterialScreen = ({ navigation }) => {
     Under the covers React will batch multiple calls to setState() into a single state mutation, 
     and then re-render the component a single time, rather than re-rendering for every state change. 
     */
-    console.log("Updated State", allValues);
-  }, [allValues]);
+    console.log("All Values ----------------- \n", allValues);
+    console.log("Updated State ----------------- \n", keysValues);
+  }, [allValues, keysValues]);
 
   return (
     <View>
