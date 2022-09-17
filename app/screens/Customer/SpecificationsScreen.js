@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Transition, Transitioning } from "react-native-reanimated";
+import niceColors from "nice-color-palettes";
 
 import colors from "../../config/colors";
 import Icon from "../../components/Icon";
@@ -21,31 +22,19 @@ import MaterialInput from "../../components/MaterialInput";
 import _ from "lodash";
 import ImageInputList from "../../components/ImageInputList";
 
-const data = [
-  {
-    bg: colors.silver,
-    color: "#3F5B98",
-  },
-  {
-    bg: colors.silver,
-    color: "#FCBE4A",
-  },
-  {
-    bg: colors.silver,
-    color: "#FD5963",
-  },
-  {
-    bg: colors.silver,
-    color: "#FECBCD",
-  },
-  {
-    bg: colors.silver,
-    color: colors.secondary,
-  },
-  {
-    bg: colors.silver,
-    color: colors.secondary,
-  },
+const colorsPalette = [
+  "#3F5B98",
+  ...niceColors[39],
+  "#FCBE4A",
+  "#FD5963",
+  "#FECBCD",
+  ...niceColors[8],
+  ...niceColors[10].slice(1, 5),
+  ...niceColors[6],
+  ...niceColors[14],
+  ...niceColors[21].slice(1, 3),
+  ...niceColors[41],
+  ...niceColors[50].slice(0, 3),
 ];
 
 const transition = (
@@ -132,10 +121,10 @@ const SpecificationScreen = ({ navigation, route }) => {
   //   console.log("hi");
   // });
 
-  useEffect(() => {
-    // console.log("The images URis are ");
-    console.log(imagesUris);
-  }, [allValues, imagesUris]);
+  // useEffect(() => {
+  //   console.log("The images URis are ");
+  //   console.log(imagesUris);
+  // }, [allValues, imagesUris]);
 
   return (
     <>
@@ -172,7 +161,12 @@ const SpecificationScreen = ({ navigation, route }) => {
                 activeOpacity={0.9}
               >
                 <View style={[styles.card, { backgroundColor: colors.white }]}>
-                  <Text style={[styles.heading, { color: data[index].color }]}>
+                  <Text
+                    style={[
+                      styles.heading,
+                      { color: colorsPalette[index % colorsPalette.length] },
+                    ]}
+                  >
                     {key}
                   </Text>
                   {index === currentIndex && (
@@ -183,14 +177,22 @@ const SpecificationScreen = ({ navigation, route }) => {
                             <View
                               style={[
                                 styles.listItemDot,
-                                { backgroundColor: data[index].color },
+                                {
+                                  backgroundColor:
+                                    colorsPalette[index % colorsPalette.length],
+                                },
                               ]}
                             />
                             <View>
                               <Text
                                 style={[
                                   styles.body,
-                                  { color: data[index].color },
+                                  {
+                                    color:
+                                      colorsPalette[
+                                        index % colorsPalette.length
+                                      ],
+                                  },
                                 ]}
                               >
                                 {value.name}
@@ -205,14 +207,20 @@ const SpecificationScreen = ({ navigation, route }) => {
                             <View
                               style={[
                                 styles.listItemDot,
-                                { backgroundColor: data[index].color },
+                                {
+                                  backgroundColor:
+                                    colorsPalette[index % colorsPalette.length],
+                                },
                               ]}
                             />
                             <Text
                               key={j}
                               style={[
                                 styles.body,
-                                { color: data[index].color },
+                                {
+                                  color:
+                                    colorsPalette[index % colorsPalette.length],
+                                },
                               ]}
                             >
                               {value}

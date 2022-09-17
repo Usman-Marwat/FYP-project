@@ -26,8 +26,17 @@ import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 
 faker.seed(1);
 const colors = [
-  ...niceColors[1].slice(1, niceColors[1].length),
-  ...niceColors[55].slice(0, 3),
+  ...niceColors[4].slice(3, 5),
+  ...niceColors[47].slice(0, 4),
+  ...niceColors[1].slice(2, 5),
+  ...niceColors[42].slice(1, 5),
+  ...niceColors[63].slice(1, 4),
+  ...niceColors[64].slice(2, 3),
+  ...niceColors[65].slice(0, 2),
+  ...niceColors[66].slice(1, 2),
+  ...niceColors[12].slice(0, 1),
+  ...niceColors[70].slice(1, 3),
+  ...niceColors[75].slice(2, 4),
 ];
 
 const data = [
