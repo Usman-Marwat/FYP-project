@@ -34,10 +34,10 @@ const colorsPalette = [
 ];
 
 const tableHeading = [
-  "Material Name",
-  "Types Selected",
-  "Description",
-  "Images",
+  { name: "Material Name", width: 225 },
+  { name: "Types Selected", width: 225 },
+  { name: "Description", width: 298 },
+  { name: "Images", width: 298 },
 ];
 
 export default ContractTable = ({
@@ -53,8 +53,11 @@ export default ContractTable = ({
       <View style={{ flexDirection: "row" }}>
         {tableHeading.map((heading, j) => {
           return (
-            <View key={j} style={styles.headingTabs}>
-              <Text>{heading}</Text>
+            <View
+              key={j}
+              style={[styles.headingTabs, { width: heading.width }]}
+            >
+              <Text>{heading.name}</Text>
             </View>
           );
         })}
@@ -75,10 +78,12 @@ export default ContractTable = ({
         <FlatList
           style={{ padding: 20 }}
           contentContainerStyle={{ alignSelf: "flex-start" }}
+          decelerationRate="fast"
           numColumns={1}
           data={keys}
           keyExtractor={() => Math.random().toString()}
           renderItem={({ item, index }) => {
+            const currentColor = colorsPalette[index % colorsPalette.length];
             if (item === undefined) {
               //This does not work with ternaru opeartors ???
               if (index === 0) return <MapHeadings />;
@@ -87,48 +92,123 @@ export default ContractTable = ({
             return (
               <>
                 {index === 0 ? <MapHeadings /> : null}
-                <View style={{ flexDirection: "row" }}>
-                  <View style={styles.keyContainer}>
-                    <Text>{item}</Text>
-                  </View>
-                  <View style={styles.keyContainer}>
-                    <Text>{item + " Values"}</Text>
-                    <Text>{allValues[index].name}</Text>
+                <View style={[styles.tableRow, { shadowColor: currentColor }]}>
+                  <View
+                    style={[
+                      styles.keyContainer,
+                      { borderColor: currentColor, width: 230 },
+                    ]}
+                  >
+                    <Text style={[styles.heading, { color: currentColor }]}>
+                      {item}
+                    </Text>
                   </View>
                   <View
-                    style={[styles.keyContainer, styles.descriptionsContainer]}
+                    style={[
+                      styles.keyContainer,
+                      { borderColor: currentColor, width: 230 },
+                    ]}
                   >
-                    <ScrollView>
-                      <Text>
-                        {descriptions[index] +
-                          " Descriptions nkjsdnkj cndklcnksdcn skjdnbcjksdcnkjsd sdnsdklcnsdkl klsdnclks skdjbncjksnckjs cksjc jksd k ks  kjnsdjcknsdkjcnklsdncklsdnclksdnlcndslc sjdncklnsdlkcn lsjknclsdnlkc ksdncjklnsdlcn sdncsdncoicmrwifgyiw ciuscnsdc bvewipfhwe "}
-                      </Text>
-                    </ScrollView>
+                    {allValues[index].map((value, j) => {
+                      return value.parent ? (
+                        <View style={styles.list} key={j}>
+                          <View
+                            style={[
+                              styles.listItemDot,
+                              {
+                                backgroundColor: currentColor,
+                              },
+                            ]}
+                          />
+                          <View>
+                            <Text
+                              style={[
+                                styles.body,
+                                {
+                                  color: currentColor,
+                                },
+                              ]}
+                            >
+                              {value.name}
+                              <Text style={styles.parent}>
+                                {" - " + value.parent}
+                              </Text>
+                            </Text>
+                          </View>
+                        </View>
+                      ) : (
+                        <View style={styles.list} key={j}>
+                          <View
+                            style={[
+                              styles.listItemDot,
+                              {
+                                backgroundColor: currentColor,
+                              },
+                            ]}
+                          />
+                          <Text
+                            key={j}
+                            style={[
+                              styles.body,
+                              {
+                                color: currentColor,
+                              },
+                            ]}
+                          >
+                            {value}
+                          </Text>
+                        </View>
+                      );
+                    })}
+                  </View>
+                  <View
+                    style={[styles.keyContainer, { borderColor: currentColor }]}
+                  >
+                    {descriptions[index] && (
+                      <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={{
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Text>{descriptions[index]}</Text>
+                      </ScrollView>
+                    )}
+                    {descriptions[index] === undefined && (
+                      <View style={styles.empty}>
+                        <Text style={styles.emptyText}>Description Added</Text>
+                      </View>
+                    )}
                   </View>
 
-                  <View style={[styles.keyContainer, styles.imagesContainer]}>
-                    <ScrollView
-                      horizontal
-                      contentContainerStyle={{ alignItems: "center" }}
-                    >
-                      {imageUris.length > 0 &&
-                        imageUris[index] !== undefined &&
-                        imageUris[index].length > 0 &&
-                        imageUris[index].map((uri) => {
-                          return (
-                            <Image
-                              source={{ uri }}
-                              key={uri}
-                              style={{
-                                height: 90,
-                                width: 90,
-                                marginHorizontal: 5,
-                                overflow: "hidden",
-                              }}
-                            />
-                          );
-                        })}
-                    </ScrollView>
+                  <View
+                    style={[
+                      styles.keyContainer,
+                      { borderColor: currentColor, marginRight: 45 },
+                    ]}
+                  >
+                    {imageUris.length > 0 &&
+                      imageUris[index] !== undefined &&
+                      imageUris[index].length > 0 && (
+                        <ScrollView
+                          horizontal
+                          showsHorizontalScrollIndicator={false}
+                        >
+                          {imageUris[index].map((uri) => {
+                            return (
+                              <View key={uri} style={styles.imageContainer}>
+                                <Image source={{ uri }} style={styles.image} />
+                              </View>
+                            );
+                          })}
+                        </ScrollView>
+                      )}
+                    {imageUris[index] === undefined && (
+                      <View style={styles.empty}>
+                        <Text style={styles.emptyText}>Images Chosen</Text>
+                      </View>
+                    )}
                   </View>
                 </View>
               </>
@@ -141,37 +221,74 @@ export default ContractTable = ({
 };
 
 const styles = StyleSheet.create({
-  descriptionsContainer: {
-    alignSelf: "flex-start",
+  empty: {
+    fontSize: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+  },
+  emptyText: {
+    fontWeight: "700",
+    textDecorationLine: "line-through",
+  },
+  heading: {
+    fontSize: 28,
+    fontWeight: "700",
+    textTransform: "uppercase",
+    letterSpacing: -2,
+    marginVertical: 40,
+    marginLeft: 30,
   },
   headingTabs: {
     alignItems: "center",
     justifyContent: "center",
-    width: 300,
+    marginRight: 5,
+    width: 225,
     height: 50,
-    marginHorizontal: 2,
     backgroundColor: "#FECBCD",
     borderRadius: 10,
     marginBottom: 10,
   },
-  imagesContainer: {
-    height: 100,
-    alignSelf: "center",
-    marginRight: 45,
-  },
-  keyContainer: {
+
+  imageContainer: {
     alignItems: "center",
+    borderRadius: 15,
+    height: 120,
     justifyContent: "center",
+    overflow: "hidden",
+    width: 120,
+    marginRight: 10,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+  },
+
+  keyContainer: {
+    // alignItems: "center",
+    // justifyContent: "center",
     width: 300,
     height: 150,
     padding: 15,
-    backgroundColor: "silver",
-    margin: 2,
-    borderRadius: 30,
+    backgroundColor: "white",
+    borderRadius: 5,
+    borderRightWidth: 1,
+  },
+  list: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+    marginLeft: 20,
+  },
+  listItemDot: {
+    height: 8,
+    width: 8,
+    borderRadius: 4,
+    marginRight: 10,
   },
   modal: {
     flex: 1,
-    paddingTop: 50,
+    paddingTop: 60,
     alignItems: "center",
   },
   modalCloseButton: {
@@ -184,5 +301,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderBottomEndRadius: 10,
     borderBottomStartRadius: 10,
+  },
+  parent: {
+    lineHeight: 12,
+    fontSize: 10.7,
+    color: colors.medium,
+  },
+  tableRow: {
+    flexDirection: "row",
+    marginBottom: 20,
+
+    shadowColor: "silver",
+    shadowOffset: {
+      width: -10,
+      height: 10,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
   },
 });
