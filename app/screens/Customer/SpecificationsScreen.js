@@ -91,6 +91,14 @@ const SpecificationScreen = ({ navigation, route }) => {
     }
     setImagesUris(imagesUris2);
   };
+  const handleRemoveImage = (uri, index) => {
+    const imagesUris2 = _.cloneDeep(imagesUris);
+    imagesUris2[index] = imagesUris2[index].filter(
+      (imageUri) => imageUri !== uri
+    );
+    if (imagesUris2[index] < 1) imagesUris2[index] = undefined;
+    setImagesUris(imagesUris2);
+  };
 
   const calculateAnimations = (index) => {
     const inputRange = [-1, 0, 150 * index, 150 * (index + 2)];
@@ -124,10 +132,10 @@ const SpecificationScreen = ({ navigation, route }) => {
   //   console.log("hi");
   // });
 
-  // useEffect(() => {
-  //   // console.log("The images URis are ");
-  //   // console.log(imagesUris);
-  // }, [allValues, imagesUris]);
+  useEffect(() => {
+    // console.log("The images URis are ");
+    console.log(imagesUris);
+  }, [allValues, imagesUris]);
 
   return (
     <>
@@ -229,6 +237,9 @@ const SpecificationScreen = ({ navigation, route }) => {
                           onAddImage={(uri) =>
                             handleAddImage(uri, index, false)
                           }
+                          onRemoveImage={(uri) => {
+                            handleRemoveImage(uri, index);
+                          }}
                         />
                       </View>
                     </View>

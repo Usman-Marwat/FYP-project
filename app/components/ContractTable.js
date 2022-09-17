@@ -19,13 +19,13 @@ export default ContractTable = ({
   isVisible,
   onModalVisible,
 }) => {
-  console.log(
-    "---------------------------------------------------------------------------------------"
-  );
-  console.log(keys);
-  console.log(allValues);
-  console.log(descriptions);
-  console.log(imageUris);
+  // console.log(
+  //   "---------------------------------------------------------------------------------------"
+  // );
+  // console.log(keys);
+  // console.log(allValues);
+  // console.log(descriptions);
+  // console.log(imageUris);
   return (
     <Modal visible={isVisible}>
       <AppButton onPress={onModalVisible} title="Close" />
