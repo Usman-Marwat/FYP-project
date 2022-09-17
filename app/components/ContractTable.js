@@ -6,10 +6,17 @@ import {
   ScrollView,
   FlatList,
   Text,
+  Image,
 } from "react-native";
+
 import AppButton from "./AppButton";
-import ImageInput from "./ImageInput";
-import ImageInputList from "./ImageInputList";
+
+const tableHeading = [
+  "Material Name",
+  "Types Selected",
+  "Description",
+  "Images",
+];
 
 export default ContractTable = ({
   allValues,
@@ -38,33 +45,72 @@ export default ContractTable = ({
         renderItem={({ item, index }) => {
           if (item === undefined) return null;
           return (
-            <View style={{ flexDirection: "row" }}>
-              <View style={styles.keyContainer}>
-                <Text>{item}</Text>
+            <>
+              {index === 0 && (
+                <View style={{ flexDirection: "row" }}>
+                  {tableHeading.map((heading, index) => {
+                    return (
+                      <View
+                        key={index}
+                        style={{
+                          width: 300,
+                          height: 50,
+                          marginHorizontal: 2,
+                          backgroundColor: "#FECBCD",
+                        }}
+                      >
+                        <Text>{heading}</Text>
+                      </View>
+                    );
+                  })}
+                </View>
+              )}
+
+              <View style={{ flexDirection: "row" }}>
+                <View style={styles.keyContainer}>
+                  <Text>{item}</Text>
+                </View>
+                <View style={styles.keyContainer}>
+                  <Text>{item + " Values"}</Text>
+                  <Text>{allValues[index].name}</Text>
+                </View>
+                <View
+                  style={[styles.keyContainer, styles.descriptionsContainer]}
+                >
+                  <ScrollView>
+                    <Text>
+                      {item +
+                        " Descriptions nkjsdnkj skdjbncjksnckjs cksjc jksd k ks  kjnsdjcknsdkjcnklsdncklsdnclksdnlcndslc sjdncklnsdlkcn lsjknclsdnlkc ksdncjklnsdlcn sdncsdncoicmrwifgyiw ciuscnsdc bvewipfhwe "}
+                    </Text>
+                  </ScrollView>
+                </View>
+
+                <View style={[styles.keyContainer, styles.imagesContainer]}>
+                  <ScrollView
+                    horizontal
+                    contentContainerStyle={{ alignItems: "center" }}
+                  >
+                    {imageUris.length > 0 &&
+                      imageUris[index] !== undefined &&
+                      imageUris[index].length > 0 &&
+                      imageUris[index].map((uri) => {
+                        return (
+                          <Image
+                            source={{ uri }}
+                            key={uri}
+                            style={{
+                              height: 90,
+                              width: 90,
+                              marginHorizontal: 5,
+                              overflow: "hidden",
+                            }}
+                          />
+                        );
+                      })}
+                  </ScrollView>
+                </View>
               </View>
-              <View style={styles.keyContainer}>
-                <Text>{item + " Values"}</Text>
-                <Text>{allValues[index].name}</Text>
-              </View>
-              <View style={styles.keyContainer}>
-                <Text>{item + " Descriptions"}</Text>
-                <Text>{descriptions[index]}</Text>
-              </View>
-              <View style={styles.keyContainer}>
-                <Text>{item + " Images"}</Text>
-              </View>
-              <View style={styles.keyContainer}>
-                <ScrollView horizontal>
-                  {imageUris.length > 0 &&
-                    imageUris[index] !== undefined &&
-                    imageUris[index].length > 0 &&
-                    imageUris[index].map((uri) => {
-                      console.log(index);
-                      return <ImageInput imageUri={uri} key={uri} />;
-                    })}
-                </ScrollView>
-              </View>
-            </View>
+            </>
           );
         }}
       />
@@ -73,12 +119,21 @@ export default ContractTable = ({
 };
 
 const styles = StyleSheet.create({
+  descriptionsContainer: {
+    alignSelf: "flex-start",
+  },
+  imagesContainer: {
+    height: 100,
+    alignSelf: "center",
+  },
   keyContainer: {
     alignItems: "center",
     justifyContent: "center",
-    width: 200,
+    width: 300,
     height: 200,
+    padding: 20,
     backgroundColor: "silver",
     margin: 2,
+    borderRadius: 30,
   },
 });

@@ -27,8 +27,8 @@ const colorsPalette = [
   ...niceColors[39],
   "#FCBE4A",
   "#FD5963",
-  "#FECBCD",
   ...niceColors[8],
+  "#FECBCD",
   ...niceColors[10].slice(1, 5),
   ...niceColors[6],
   ...niceColors[14],
@@ -261,7 +261,7 @@ const SpecificationScreen = ({ navigation, route }) => {
               style={[styles.shadow, { shadowColor: colors.medium }]}
               onPress={() => setIsVisible(!isVisible)}
             >
-              <Icon name="plus" size={55} backgroundColor={colors.secondary} />
+              <Icon name="plus" size={55} backgroundColor={colors.medium} />
             </TouchableOpacity>
           </View>
           <TouchableOpacity style={[styles.cardContainer]}></TouchableOpacity>
@@ -269,16 +269,17 @@ const SpecificationScreen = ({ navigation, route }) => {
       </Animated.ScrollView>
 
       <View style={styles.row}>
-        <TouchableOpacity style={styles.shadow}>
+        <TouchableOpacity style={[styles.shadow, { alignItems: "center" }]}>
           <Icon
             name="bookmark"
             iconColor="#222"
             size={35}
             backgroundColor={colors.white}
           />
+          <Text style={styles.buttonTitle}>Save</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={styles.shadow}
+          style={[styles.shadow, { alignItems: "center" }]}
           onPress={() => setIsTableVisible(true)}
         >
           <Icon
@@ -287,18 +288,15 @@ const SpecificationScreen = ({ navigation, route }) => {
             size={50}
             backgroundColor={colors.white}
           />
+          <Text style={styles.buttonTitle}>Table View</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.shadow}
+          style={[styles.shadow, { alignItems: "center" }]}
           onPress={() => navigation.navigate(routes.FIRMSLIST)}
         >
-          <Icon
-            name="arrow-right"
-            iconColor="#222"
-            size={35}
-            backgroundColor={colors.white}
-          />
+          <Icon name="arrow-right" size={35} backgroundColor={colors.primary} />
+          <Text style={styles.buttonTitle}>Send</Text>
         </TouchableOpacity>
       </View>
       <MaterialInput
@@ -332,6 +330,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 20 * 1.5,
     textAlign: "center",
+  },
+  buttonTitle: {
+    marginTop: 3,
+    fontSize: 10,
   },
   container: {
     flex: 1,
@@ -386,9 +388,9 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    backgroundColor: "transparent",
+    backgroundColor: "white",
     paddingHorizontal: 30,
-    paddingVertical: 10,
+    paddingVertical: 2,
     justifyContent: "space-between",
     alignItems: "center",
 
@@ -404,7 +406,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: -3,
     },
-    shadowOpacity: 1,
+    shadowOpacity: 0.3,
     shadowRadius: 5,
   },
   tagline: {

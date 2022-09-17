@@ -75,9 +75,11 @@ const FirmsList = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header navigation={navigation} translateX={translateX} />
+
       <FlatList
         contentContainerStyle={{ padding: SPACING }}
         data={fakerData}
+        style={{ paddingTop: 55 }}
         keyExtractor={(item) => item.key}
         renderItem={({ item }) => {
           return (
