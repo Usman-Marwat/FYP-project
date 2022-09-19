@@ -187,8 +187,8 @@ const MaterialScreen = ({ navigation }) => {
     Under the covers React will batch multiple calls to setState() into a single state mutation,
     and then re-render the component a single time, rather than re-rendering for every state change.
     */
-    console.log("All Values ----------------- \n", allValues);
-    console.log("Updated State ----------------- \n", keysValues);
+    // console.log("All Values ----------------- \n", allValues);
+    // console.log("Updated State ----------------- \n", keysValues);
     // setCount((prevCount) => prevCount + 1);
   });
 

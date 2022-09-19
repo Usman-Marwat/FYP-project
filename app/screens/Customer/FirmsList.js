@@ -20,11 +20,13 @@ import { faker } from "@faker-js/faker";
 // } from "react-native-shared-element";
 import { SharedElement } from "react-navigation-shared-element";
 
+import AppButton from "../../components/AppButton";
 import Screen from "../../components/Screen";
 import routes from "../../navigation/routes";
 import Header from "../../components/Header";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
+import customerContractApi from "../../api/Customer/contract";
 
 faker.seed(1);
 const colors = [
@@ -77,12 +79,12 @@ const FirmsList = ({ navigation, route }) => {
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
 
-  const headerHeight = 30 * 2;
+  const headerHeight = 60 * 2;
   const scrollY = useRef(new Animated.Value(0));
   const scrollYClamped = Animated.diffClamp(scrollY.current, 0, headerHeight);
   const translateY = scrollYClamped.interpolate({
-    inputRange: [0, headerHeight * 2],
-    outputRange: [0, -headerHeight + 30],
+    inputRange: [0, headerHeight],
+    outputRange: [0, -headerHeight / 2],
   });
   const translateYNumber = useRef();
   translateY.addListener(({ value }) => {
@@ -101,14 +103,21 @@ const FirmsList = ({ navigation, route }) => {
     }
   );
 
+  sendData = async () => {
+    const result = await customerContractApi.addContract(contract, (prog) =>
+      console.log(prog)
+    );
+    // console.log(result.data);
+
+    if (!result.ok) {
+      return alert("Could not save the listings");
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <Animated.View
-        style={{
-          zIndex: 1,
-          transform: [{ translateY }],
-        }}
-      >
+      <AppButton title="Send" onPress={sendData} />
+      <Animated.View style={{ zIndex: 1, transform: [{ translateY }] }}>
         <Header navigation={navigation} translateX={translateX} />
       </Animated.View>
 
