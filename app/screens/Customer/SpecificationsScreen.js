@@ -49,7 +49,7 @@ const SpecificationScreen = ({ navigation, route }) => {
   const [currentIndex, setCurrentIndex] = useState(null);
   const [isTableVisible, setIsTableVisible] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [descriptions, setDescriptions] = useState([]);
+  const [descriptions, setDescriptions] = useState(["", "", "", ""]);
   const [imagesUris, setImagesUris] = useState(route.params.imagesUris);
   const [keys, setKeys] = useState(route.params.keysValues);
   const [allValues, setAllValues] = useState(route.params.allValues);
@@ -63,7 +63,7 @@ const SpecificationScreen = ({ navigation, route }) => {
   //calling handle description againand again is not costly becasue its not changing the UI
   //check that using useEffect
   const handleAddDescription = (text, index) => {
-    const currentDescriptions = descriptions;
+    const currentDescriptions = _.cloneDeep(descriptions);
     currentDescriptions[index] = text;
     setDescriptions(currentDescriptions);
   };

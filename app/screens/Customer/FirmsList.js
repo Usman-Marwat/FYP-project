@@ -107,8 +107,7 @@ const FirmsList = ({ navigation, route }) => {
     const result = await customerContractApi.addContract(contract, (prog) =>
       console.log(prog)
     );
-    // console.log(result.data);
-
+    console.log(result.data);
     if (!result.ok) {
       return alert("Could not save the listings");
     }

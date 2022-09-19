@@ -48,6 +48,14 @@ export default ContractTable = ({
   isVisible,
   onModalVisible,
 }) => {
+  console.log("-----------------Keys--------------------");
+  console.log(keys);
+  console.log("------------------All values-------------------");
+  console.log(allValues);
+  console.log("----------------descriptions---------------------");
+  console.log(descriptions);
+  console.log("-----------------imageUris--------------------");
+  console.log(imageUris);
   const MapHeadings = () => {
     return (
       <View style={{ flexDirection: "row" }}>
@@ -164,7 +172,7 @@ export default ContractTable = ({
                   <View
                     style={[styles.keyContainer, { borderColor: currentColor }]}
                   >
-                    {descriptions[index] && (
+                    {descriptions[index] ? (
                       <ScrollView
                         showsVerticalScrollIndicator={false}
                         contentContainerStyle={{
@@ -174,8 +182,7 @@ export default ContractTable = ({
                       >
                         <Text>{descriptions[index]}</Text>
                       </ScrollView>
-                    )}
-                    {descriptions[index] === undefined && (
+                    ) : (
                       <View style={styles.empty}>
                         <Text style={styles.emptyText}>Description Added</Text>
                       </View>
