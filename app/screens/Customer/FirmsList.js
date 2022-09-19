@@ -1,4 +1,5 @@
 import {
+  Animated,
   Dimensions,
   Image,
   FlatList,
@@ -7,8 +8,9 @@ import {
   TouchableOpacity,
   View,
   SafeAreaView,
+  StatusBar,
 } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import niceColors from "nice-color-palettes";
 import { faker } from "@faker-js/faker";
 // import {
@@ -69,14 +71,49 @@ const { height, width } = Dimensions.get("window");
 const ITEM_HEIGHT = height * 0.18;
 const SPACING = 10;
 
-const FirmsList = ({ navigation }) => {
+const FirmsList = ({ navigation, route }) => {
+  const { contract } = route.params;
+  console.log(contract);
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
+
+  const headerHeight = 30 * 2;
+  const scrollY = useRef(new Animated.Value(0));
+  const scrollYClamped = Animated.diffClamp(scrollY.current, 0, headerHeight);
+  const translateY = scrollYClamped.interpolate({
+    inputRange: [0, headerHeight * 2],
+    outputRange: [0, -headerHeight + 30],
+  });
+  const translateYNumber = useRef();
+  translateY.addListener(({ value }) => {
+    translateYNumber.current = value;
+  });
+  const handleScroll = Animated.event(
+    [
+      {
+        nativeEvent: {
+          contentOffset: { y: scrollY.current },
+        },
+      },
+    ],
+    {
+      useNativeDriver: true,
+    }
+  );
+
   return (
     <SafeAreaView style={styles.container}>
-      <Header navigation={navigation} translateX={translateX} />
+      <Animated.View
+        style={{
+          zIndex: 1,
+          transform: [{ translateY }],
+        }}
+      >
+        <Header navigation={navigation} translateX={translateX} />
+      </Animated.View>
 
-      <FlatList
+      <Animated.FlatList
+        onScroll={handleScroll}
         contentContainerStyle={{ padding: SPACING }}
         data={fakerData}
         style={{ paddingTop: 55 }}
@@ -117,6 +154,7 @@ const FirmsList = ({ navigation }) => {
       <SharedElement id="general.bg">
         <View style={styles.overlay} />
       </SharedElement>
+      <StatusBar hidden />
     </SafeAreaView>
   );
 };

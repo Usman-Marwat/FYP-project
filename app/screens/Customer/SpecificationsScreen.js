@@ -67,7 +67,6 @@ const SpecificationScreen = ({ navigation, route }) => {
     currentDescriptions[index] = text;
     setDescriptions(currentDescriptions);
   };
-
   const handleAddImage = (uri, index, newMaterial = true) => {
     const imagesUris2 = _.cloneDeep(imagesUris);
     if (newMaterial)
@@ -88,7 +87,6 @@ const SpecificationScreen = ({ navigation, route }) => {
     if (imagesUris2[index] < 1) imagesUris2[index] = undefined;
     setImagesUris(imagesUris2);
   };
-
   const calculateAnimations = (index) => {
     const inputRange = [-1, 0, 150 * index, 150 * (index + 2)];
     const opcaityInputRange = [-1, 0, 150 * index, 150 * (index + 0.7)];
@@ -102,7 +100,6 @@ const SpecificationScreen = ({ navigation, route }) => {
     });
     return { inputRange, opcaityInputRange, scale, opacity };
   };
-
   const addMaterial = (MaterialData) => {
     const newAllValues = _.cloneDeep(allValues);
     const newKeys = _.cloneDeep(keys);
@@ -293,7 +290,11 @@ const SpecificationScreen = ({ navigation, route }) => {
 
         <TouchableOpacity
           style={[styles.shadow, { alignItems: "center" }]}
-          onPress={() => navigation.navigate(routes.FIRMSLIST)}
+          onPress={() =>
+            navigation.navigate(routes.FIRMSLIST, {
+              contract: { keys, allValues, descriptions, imagesUris },
+            })
+          }
         >
           <Icon name="arrow-right" size={35} backgroundColor={colors.primary} />
           <Text style={styles.buttonTitle}>Send</Text>

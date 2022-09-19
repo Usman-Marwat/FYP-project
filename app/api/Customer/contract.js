@@ -2,7 +2,7 @@ import client from "../client";
 
 const endpoint = "/customer/contract";
 
-export const addContract = (onUploadProgress) => {
+export const addContract = (contract, onUploadProgress) => {
   const data = new FormData();
   data.append("title", "Contract");
   data.append("myarray", JSON.stringify(["Usman", "khan", "marwat"]));

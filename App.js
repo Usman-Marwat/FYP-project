@@ -5,6 +5,7 @@ import useApi from "./app/hooks/useApi";
 import ImageInputList from "./app/components/ImageInputList";
 import AppButton from "./app/components/AppButton";
 import customerContractApi from "./app/api/Customer/contract";
+import CustomerNavigator from "./app/navigation/CustomerNavigation/CustomerNavigatior";
 
 export default function App() {
   const [imageUris, setImageUris] = useState([]);
@@ -23,12 +24,7 @@ export default function App() {
   const appendUris = (uri) => {
     setImageUris([...imageUris, uri]);
   };
-  return (
-    <>
-      <ImageInputList imageUris={imageUris} onAddImage={appendUris} />
-      <AppButton title="Send" onPress={sendData} />
-    </>
-  );
+  return <CustomerNavigator />;
 }
 
 const styles = StyleSheet.create({
