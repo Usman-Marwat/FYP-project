@@ -19,7 +19,7 @@ const screen = routes.REGISTER;
 const bgs = ["#A5BBFF", "#DDBEFE", "#FF63ED", "#B98EFF"];
 const DATA = [
   {
-    actor: "Contractor",
+    actor: "as Contractor",
     key: "3571572",
     title: "Multi-lateral intermediate moratorium",
     description:
@@ -28,7 +28,7 @@ const DATA = [
     screen,
   },
   {
-    actor: "Customer",
+    actor: "as Customer",
     key: "3571747",
     title: "Automated radical data-warehouse",
     description:
@@ -37,7 +37,7 @@ const DATA = [
     screen,
   },
   {
-    actor: "Employee",
+    actor: "as Employee",
     key: "3571680",
     title: "Inverse attitude-oriented system engine",
     description:
@@ -46,7 +46,7 @@ const DATA = [
     screen,
   },
   {
-    actor: "Supplier",
+    actor: "as Supplier",
     key: "3571603",
     title: "Monitored global data-warehouse",
     description: "We need to program the open-source IB interface!",
@@ -119,6 +119,7 @@ const Square = ({ scrollX }) => {
 export default function WelcomeScreen() {
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentIndex, setCurrentIndex] = useState(0);
+  console.log(currentIndex);
   return (
     <View style={styles.container}>
       <StatusBar hidden />
@@ -133,9 +134,16 @@ export default function WelcomeScreen() {
           [{ nativeEvent: { contentOffset: { x: scrollX } } }],
           { useNativeDriver: false }
         )}
+        onMomentumScrollEnd={(event) => {
+          const index = Math.floor(
+            Math.floor(event.nativeEvent.contentOffset.x) /
+              Math.floor(event.nativeEvent.layoutMeasurement.width)
+          );
+          setCurrentIndex(index);
+        }}
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           return (
             <View style={styles.itemWrapper}>
               <View style={styles.imageContainer}>
@@ -152,13 +160,14 @@ export default function WelcomeScreen() {
       <View style={styles.buttonsRow}>
         <AppButton
           color="transparent"
-          style={[styles.button, { width: 120 }]}
-          title="Login"
-        />
-        <AppButton
-          color="transparent"
           style={[styles.button, { width: 190 }]}
           title={"Register"}
+          subTitle={DATA[currentIndex].actor}
+        />
+        <AppButton
+          color={bgs[currentIndex]}
+          style={[styles.button, { width: 150 }]}
+          title="Login"
         />
       </View>
       <Indicator scrollX={scrollX} />
@@ -169,8 +178,9 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   button: {
     marginHorizontal: 10,
-    borderWidth: 7,
+    borderWidth: 3.5,
     borderColor: "white",
+    padding: 10,
   },
   buttonsRow: {
     flexDirection: "row",

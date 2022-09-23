@@ -3,13 +3,21 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 import colors from "../config/colors";
 
-function AppButton({ title, onPress, color = "primary", style, titleStyle }) {
+function AppButton({
+  title,
+  onPress,
+  color = "primary",
+  style,
+  subTitle,
+  titleStyle,
+}) {
   return (
     <TouchableOpacity
       style={[styles.button, { backgroundColor: colors[color] }, style]}
       onPress={onPress}
     >
       <Text style={[styles.text, titleStyle]}>{title}</Text>
+      {subTitle && <Text style={styles.subTitle}>{subTitle}</Text>}
     </TouchableOpacity>
   );
 }
@@ -21,6 +29,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 15,
     width: "100%",
+    // flexDirection: "row",
     // marginVertical: 10,
     /* we removed this margin and added the "spaceViews" on the welcome screen to make our buttons 
     more general. Because we could be using the button somewhere else where we don't need margin */
@@ -30,6 +39,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textTransform: "uppercase",
     fontWeight: "bold",
+  },
+  subTitle: {
+    color: colors.white,
+    fontSize: 11,
   },
 });
 
