@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Animated,
   Dimensions,
@@ -8,12 +8,17 @@ import {
   Text,
   View,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { SharedElement } from "react-navigation-shared-element";
+
+import AppButton from "../components/AppButton";
+import routes from "../navigation/routes";
+
 const { width, height } = Dimensions.get("screen");
 
 const bgs = ["#A5BBFF", "#DDBEFE", "#FF63ED", "#B98EFF"];
 const DATA = [
   {
+    actor: "Contractor",
     key: "3571572",
     title: "Multi-lateral intermediate moratorium",
     description:
@@ -21,6 +26,7 @@ const DATA = [
     image: "https://cdn-icons-png.flaticon.com/512/3571/3571572.png",
   },
   {
+    actor: "Customer",
     key: "3571747",
     title: "Automated radical data-warehouse",
     description:
@@ -28,6 +34,7 @@ const DATA = [
     image: "https://cdn-icons-png.flaticon.com/128/3571/3571747.png",
   },
   {
+    actor: "Employee",
     key: "3571680",
     title: "Inverse attitude-oriented system engine",
     description:
@@ -35,6 +42,7 @@ const DATA = [
     image: "https://cdn-icons-png.flaticon.com/512/3571/3571680.png",
   },
   {
+    actor: "Supplier",
     key: "3571603",
     title: "Monitored global data-warehouse",
     description: "We need to program the open-source IB interface!",
@@ -103,8 +111,10 @@ const Square = ({ scrollX }) => {
   );
 };
 
-export default function WelcomeScreen() {
+export default function WelcomeScreen({ navigation }) {
   const scrollX = useRef(new Animated.Value(0)).current;
+  const [currentIndex, setCurrentIndex] = useState(0);
+  console.log(currentIndex);
   return (
     <View style={styles.container}>
       <StatusBar hidden />
@@ -119,13 +129,22 @@ export default function WelcomeScreen() {
           [{ nativeEvent: { contentOffset: { x: scrollX } } }],
           { useNativeDriver: false }
         )}
+        onMomentumScrollEnd={(event) => {
+          const index = Math.floor(
+            Math.floor(event.nativeEvent.contentOffset.x) /
+              Math.floor(event.nativeEvent.layoutMeasurement.width)
+          );
+          setCurrentIndex(index);
+        }}
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           return (
             <View style={styles.itemWrapper}>
               <View style={styles.imageContainer}>
-                <Image source={{ uri: item.image }} style={styles.image} />
+                <SharedElement id={`item.${item.key}.image`}>
+                  <Image source={{ uri: item.image }} style={styles.image} />
+                </SharedElement>
               </View>
               <View style={{ flex: 0.3 }}>
                 <Text style={styles.title}>{item.title}</Text>
@@ -135,12 +154,47 @@ export default function WelcomeScreen() {
           );
         }}
       />
+      <View style={styles.buttonsRow}>
+        <AppButton
+          color="transparent"
+          style={[styles.button, { width: 190 }]}
+          title={"Register"}
+          subTitle={"as " + DATA[currentIndex].actor}
+          onPress={() =>
+            navigation.navigate(routes.REGISTER, {
+              item: DATA[currentIndex],
+            })
+          }
+        />
+
+        <AppButton
+          color="transparent"
+          style={[styles.button, { width: 150 }]}
+          title="Login"
+          onPress={() =>
+            navigation.navigate(routes.LOGIN, {
+              item: DATA[currentIndex],
+            })
+          }
+        />
+      </View>
       <Indicator scrollX={scrollX} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  button: {
+    marginHorizontal: 10,
+    borderWidth: 3.5,
+    borderColor: "white",
+    padding: 10,
+  },
+  buttonsRow: {
+    flexDirection: "row",
+    position: "absolute",
+    bottom: 80,
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
