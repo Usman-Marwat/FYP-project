@@ -46,7 +46,26 @@ const Indicator = ({ scrollX }) => {
   return (
     <View style={styles.paginationConatiner}>
       {DATA.map((_, i) => {
-        return <View key={i} style={styles.paginationDot}></View>;
+        const inputRange = [(i - 1) * width, i * width, (i + 1) * width];
+        const scale = scrollX.interpolate({
+          inputRange,
+          outputRange: [0.8, 1.4, 0.8],
+          extrapolate: "clamp",
+        });
+        const opacity = scrollX.interpolate({
+          inputRange,
+          outputRange: [0.5, 0.9, 0.5],
+          extrapolate: "clamp",
+        });
+        return (
+          <Animated.View
+            key={i}
+            style={[
+              styles.paginationDot,
+              { transform: [{ scale: scale }], opacity },
+            ]}
+          ></Animated.View>
+        );
       })}
     </View>
   );
@@ -64,12 +83,33 @@ const BackDrop = ({ scrollX }) => {
   );
 };
 
+const Square = ({ scrollX }) => {
+  const YOLO = Animated.modulo(
+    Animated.divide(Animated.modulo(scrollX, width), new Animated.Value(width)),
+    1
+  );
+  const rotate = YOLO.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: ["35deg", "0deg", "35deg"],
+  });
+  const translateX = YOLO.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [0, -height, 0],
+  });
+  return (
+    <Animated.View
+      style={[styles.square, { transform: [{ rotate }, { translateX }] }]}
+    />
+  );
+};
+
 export default function WelcomeScreen() {
   const scrollX = useRef(new Animated.Value(0)).current;
   return (
     <View style={styles.container}>
       <StatusBar hidden />
       <BackDrop scrollX={scrollX} />
+      <Square scrollX={scrollX} />
       <Animated.FlatList
         data={DATA}
         keyExtractor={(item) => item.key}
@@ -81,7 +121,6 @@ export default function WelcomeScreen() {
         )}
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        scrollEventThrottle={32}
         renderItem={({ item }) => {
           return (
             <View style={styles.itemWrapper}>
@@ -129,7 +168,7 @@ const styles = StyleSheet.create({
     width,
   },
   paginationConatiner: {
-    bottom: 100,
+    bottom: 20,
     flexDirection: "row",
     position: "absolute",
   },
@@ -137,11 +176,20 @@ const styles = StyleSheet.create({
     height: 10,
     width: 10,
     borderRadius: 5,
-    backgroundColor: "#333",
+    backgroundColor: "#fff",
     margin: 10,
   },
+  square: {
+    width: height,
+    height: height,
+    backgroundColor: "#fff",
+    borderRadius: 86,
+    position: "absolute",
+    top: -height * 0.6,
+    left: -height * 0.3,
+  },
   title: {
-    // color: "white",
+    color: "#fff",
     fontWeight: "800",
     fontSize: 28,
     marginBottom: 10,
