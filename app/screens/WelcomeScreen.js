@@ -8,50 +8,45 @@ import {
   Text,
   View,
 } from "react-native";
-import AppButton from "../components/AppButton";
+import { SharedElement } from "react-navigation-shared-element";
 
+import AppButton from "../components/AppButton";
 import routes from "../navigation/routes";
 
 const { width, height } = Dimensions.get("screen");
 
-const screen = routes.REGISTER;
-
 const bgs = ["#A5BBFF", "#DDBEFE", "#FF63ED", "#B98EFF"];
 const DATA = [
   {
-    actor: "as Contractor",
+    actor: "Contractor",
     key: "3571572",
     title: "Multi-lateral intermediate moratorium",
     description:
       "I'll back up the multi-byte XSS matrix, that should feed the SCSI WelcomeScreenlication!",
     image: "https://cdn-icons-png.flaticon.com/512/3571/3571572.png",
-    screen,
   },
   {
-    actor: "as Customer",
+    actor: "Customer",
     key: "3571747",
     title: "Automated radical data-warehouse",
     description:
       "Use the optical SAS system, then you can navigate the auxiliary alarm!",
     image: "https://cdn-icons-png.flaticon.com/128/3571/3571747.png",
-    screen,
   },
   {
-    actor: "as Employee",
+    actor: "Employee",
     key: "3571680",
     title: "Inverse attitude-oriented system engine",
     description:
       "The ADP array is down, compress the online sensor so we can input the HTTP panel!",
     image: "https://cdn-icons-png.flaticon.com/512/3571/3571680.png",
-    screen,
   },
   {
-    actor: "as Supplier",
+    actor: "Supplier",
     key: "3571603",
     title: "Monitored global data-warehouse",
     description: "We need to program the open-source IB interface!",
     image: "https://cdn-icons-png.flaticon.com/512/3571/3571603.png",
-    screen,
   },
 ];
 
@@ -116,7 +111,7 @@ const Square = ({ scrollX }) => {
   );
 };
 
-export default function WelcomeScreen() {
+export default function WelcomeScreen({ navigation }) {
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentIndex, setCurrentIndex] = useState(0);
   console.log(currentIndex);
@@ -147,7 +142,9 @@ export default function WelcomeScreen() {
           return (
             <View style={styles.itemWrapper}>
               <View style={styles.imageContainer}>
-                <Image source={{ uri: item.image }} style={styles.image} />
+                <SharedElement id={`item.${item.key}.image`}>
+                  <Image source={{ uri: item.image }} style={styles.image} />
+                </SharedElement>
               </View>
               <View style={{ flex: 0.3 }}>
                 <Text style={styles.title}>{item.title}</Text>
@@ -162,12 +159,23 @@ export default function WelcomeScreen() {
           color="transparent"
           style={[styles.button, { width: 190 }]}
           title={"Register"}
-          subTitle={DATA[currentIndex].actor}
+          subTitle={"as " + DATA[currentIndex].actor}
+          onPress={() =>
+            navigation.navigate(routes.REGISTER, {
+              item: DATA[currentIndex],
+            })
+          }
         />
+
         <AppButton
-          color={bgs[currentIndex]}
+          color="transparent"
           style={[styles.button, { width: 150 }]}
           title="Login"
+          onPress={() =>
+            navigation.navigate(routes.LOGIN, {
+              item: DATA[currentIndex],
+            })
+          }
         />
       </View>
       <Indicator scrollX={scrollX} />

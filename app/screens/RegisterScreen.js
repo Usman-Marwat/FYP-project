@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+import { Dimensions, Image, StyleSheet } from "react-native";
 import * as Yup from "yup";
+import { SharedElement } from "react-navigation-shared-element";
 
 import Screen from "../components/Screen";
 import authApi from "../api/auth";
@@ -15,17 +16,21 @@ import usersApi from "../api/users";
 import useApi from "../hooks/useApi";
 import ActivityIndicator from "../components/ActivityIndicator";
 
+const { width, height } = Dimensions.get("screen");
+
 const validationSchema = Yup.object().shape({
   name: Yup.string().required().label("Name"),
   email: Yup.string().required().email().label("Email"),
   password: Yup.string().required().min(4).label("Password"),
 });
 
-function RegisterScreen() {
-  const registerApi = useApi(usersApi.register);
-  const loginApi = useApi(authApi.login);
-  const auth = useAuth();
-  const [error, setError] = useState();
+function RegisterScreen({ route }) {
+  // const registerApi = useApi(usersApi.register);
+  // const loginApi = useApi(authApi.login);
+  // const auth = useAuth();
+  // const [error, setError] = useState();
+
+  const { item } = route.params;
 
   const handleSubmit = async (userInfo) => {
     //userInfo is the objet that formik gives us
@@ -54,14 +59,17 @@ function RegisterScreen() {
   //registerApi.loading || loginApi.loading
   return (
     <>
-      <ActivityIndicator visible={registerApi.loading || loginApi.loading} />
+      {/* <ActivityIndicator visible={registerApi.loading || loginApi.loading} /> */}
       <Screen style={styles.container}>
+        <SharedElement id={`item.${item.key}.image`}>
+          <Image source={{ uri: item.image }} style={styles.image} />
+        </SharedElement>
         <Form
           initialValues={{ name: "", email: "", password: "" }}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >
-          <ErrorMessage error={error} visible={error} />
+          {/* <ErrorMessage error={error} visible={error} /> */}
           <FormField
             autoCorrect={false}
             icon="account"
@@ -96,6 +104,13 @@ function RegisterScreen() {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+  },
+  image: {
+    width: width / 2,
+    height: width / 2.5,
+    marginTop: 30,
+    marginLeft: 90,
+    resizeMode: "contain",
   },
 });
 
