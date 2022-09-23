@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Animated,
   Dimensions,
@@ -8,37 +8,50 @@ import {
   Text,
   View,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import AppButton from "../components/AppButton";
+
+import routes from "../navigation/routes";
+
 const { width, height } = Dimensions.get("screen");
+
+const screen = routes.REGISTER;
 
 const bgs = ["#A5BBFF", "#DDBEFE", "#FF63ED", "#B98EFF"];
 const DATA = [
   {
+    actor: "Contractor",
     key: "3571572",
     title: "Multi-lateral intermediate moratorium",
     description:
       "I'll back up the multi-byte XSS matrix, that should feed the SCSI WelcomeScreenlication!",
     image: "https://cdn-icons-png.flaticon.com/512/3571/3571572.png",
+    screen,
   },
   {
+    actor: "Customer",
     key: "3571747",
     title: "Automated radical data-warehouse",
     description:
       "Use the optical SAS system, then you can navigate the auxiliary alarm!",
     image: "https://cdn-icons-png.flaticon.com/128/3571/3571747.png",
+    screen,
   },
   {
+    actor: "Employee",
     key: "3571680",
     title: "Inverse attitude-oriented system engine",
     description:
       "The ADP array is down, compress the online sensor so we can input the HTTP panel!",
     image: "https://cdn-icons-png.flaticon.com/512/3571/3571680.png",
+    screen,
   },
   {
+    actor: "Supplier",
     key: "3571603",
     title: "Monitored global data-warehouse",
     description: "We need to program the open-source IB interface!",
     image: "https://cdn-icons-png.flaticon.com/512/3571/3571603.png",
+    screen,
   },
 ];
 
@@ -105,6 +118,7 @@ const Square = ({ scrollX }) => {
 
 export default function WelcomeScreen() {
   const scrollX = useRef(new Animated.Value(0)).current;
+  const [currentIndex, setCurrentIndex] = useState(0);
   return (
     <View style={styles.container}>
       <StatusBar hidden />
@@ -135,12 +149,34 @@ export default function WelcomeScreen() {
           );
         }}
       />
+      <View style={styles.buttonsRow}>
+        <AppButton
+          color="transparent"
+          style={[styles.button, { width: 120 }]}
+          title="Login"
+        />
+        <AppButton
+          color="transparent"
+          style={[styles.button, { width: 190 }]}
+          title={"Register"}
+        />
+      </View>
       <Indicator scrollX={scrollX} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  button: {
+    marginHorizontal: 10,
+    borderWidth: 7,
+    borderColor: "white",
+  },
+  buttonsRow: {
+    flexDirection: "row",
+    position: "absolute",
+    bottom: 80,
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
