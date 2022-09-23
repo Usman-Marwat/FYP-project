@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useRef } from "react";
 import {
   Animated,
   Dimensions,
@@ -42,28 +42,61 @@ const DATA = [
   },
 ];
 
+const Indicator = ({ scrollX }) => {
+  return (
+    <View style={styles.paginationConatiner}>
+      {DATA.map((_, i) => {
+        return <View key={i} style={styles.paginationDot}></View>;
+      })}
+    </View>
+  );
+};
+
+const BackDrop = ({ scrollX }) => {
+  const backgroundColor = scrollX.interpolate({
+    inputRange: bgs.map((_, i) => i * width),
+    outputRange: bgs.map((bg) => bg),
+  });
+  return (
+    <Animated.View
+      style={[StyleSheet.absoluteFillObject, { backgroundColor }]}
+    />
+  );
+};
+
 export default function WelcomeScreen() {
+  const scrollX = useRef(new Animated.Value(0)).current;
   return (
     <View style={styles.container}>
       <StatusBar hidden />
+      <BackDrop scrollX={scrollX} />
       <Animated.FlatList
         data={DATA}
         keyExtractor={(item) => item.key}
+        horizontal
+        contentContainerStyle={styles.contentContainerStyle}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          { useNativeDriver: false }
+        )}
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        scrollEventThrottle={32}
         renderItem={({ item }) => {
           return (
-            <View>
-              <Image
-                source={{ uri: item.image }}
-                style={{
-                  width: width / 2,
-                  height: width / 2.5,
-                  resizeMode: "contain",
-                }}
-              />
+            <View style={styles.itemWrapper}>
+              <View style={styles.imageContainer}>
+                <Image source={{ uri: item.image }} style={styles.image} />
+              </View>
+              <View style={{ flex: 0.3 }}>
+                <Text style={styles.title}>{item.title}</Text>
+                <Text style={styles.description}>{item.description}</Text>
+              </View>
             </View>
           );
         }}
       />
+      <Indicator scrollX={scrollX} />
     </View>
   );
 }
@@ -74,5 +107,43 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  contentContainerStyle: {
+    paddingBottom: 100,
+  },
+  description: {
+    fontWeight: "300",
+  },
+  imageContainer: {
+    flex: 0.7,
+    justifyContent: "center",
+  },
+  image: {
+    width: width / 2,
+    height: width / 2.5,
+    resizeMode: "contain",
+  },
+  itemWrapper: {
+    alignItems: "center",
+    padding: 20,
+    width,
+  },
+  paginationConatiner: {
+    bottom: 100,
+    flexDirection: "row",
+    position: "absolute",
+  },
+  paginationDot: {
+    height: 10,
+    width: 10,
+    borderRadius: 5,
+    backgroundColor: "#333",
+    margin: 10,
+  },
+  title: {
+    // color: "white",
+    fontWeight: "800",
+    fontSize: 28,
+    marginBottom: 10,
   },
 });
