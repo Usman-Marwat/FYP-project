@@ -5,11 +5,23 @@ import Icon from "../components/Icon";
 
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
-const MenuFoldButton = ({ navigation, translateX }) => {
+const MenuFoldButton = ({
+  navigation,
+  translateX,
+  menuFoldPosition = "absolute",
+}) => {
   return (
     <AnimatedTouchable
       onPress={() => navigation.openDrawer()}
-      style={[styles.drawerIcon, { transform: [{ translateX: translateX }] }]}
+      style={[
+        styles.drawerIcon,
+        {
+          transform: [{ translateX: translateX }],
+          position: menuFoldPosition,
+          top: menuFoldPosition === "relative" ? 0 : 35,
+          right: menuFoldPosition === "relative" ? 0 : 20,
+        },
+      ]}
     >
       <Icon
         antDesign={true}
@@ -26,9 +38,6 @@ export default MenuFoldButton;
 
 const styles = StyleSheet.create({
   drawerIcon: {
-    position: "absolute",
-    top: 35,
-    right: 20,
     backgroundColor: "transparent",
     zIndex: 1,
   },

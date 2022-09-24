@@ -1,4 +1,5 @@
 import {
+  Animated,
   Dimensions,
   Image,
   FlatList,
@@ -6,8 +7,10 @@ import {
   Text,
   TouchableOpacity,
   View,
+  SafeAreaView,
+  StatusBar,
 } from "react-native";
-import React from "react";
+import React, { useContext, useRef } from "react";
 import niceColors from "nice-color-palettes";
 import { faker } from "@faker-js/faker";
 // import {
@@ -17,13 +20,27 @@ import { faker } from "@faker-js/faker";
 // } from "react-native-shared-element";
 import { SharedElement } from "react-navigation-shared-element";
 
+import AppButton from "../../components/AppButton";
 import Screen from "../../components/Screen";
 import routes from "../../navigation/routes";
+import Header from "../../components/Header";
+import { translateMenuFold } from "../../navigation/navigationAnimations";
+import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
+import customerContractApi from "../../api/Customer/contract";
 
 faker.seed(1);
 const colors = [
-  ...niceColors[1].slice(1, niceColors[1].length),
-  ...niceColors[55].slice(0, 3),
+  ...niceColors[4].slice(3, 5),
+  ...niceColors[47].slice(0, 4),
+  ...niceColors[1].slice(2, 5),
+  ...niceColors[42].slice(1, 5),
+  ...niceColors[63].slice(1, 4),
+  ...niceColors[64].slice(2, 3),
+  ...niceColors[65].slice(0, 2),
+  ...niceColors[66].slice(1, 2),
+  ...niceColors[12].slice(0, 1),
+  ...niceColors[70].slice(1, 3),
+  ...niceColors[75].slice(2, 4),
 ];
 
 const data = [
@@ -56,12 +73,58 @@ const { height, width } = Dimensions.get("window");
 const ITEM_HEIGHT = height * 0.18;
 const SPACING = 10;
 
-const FirmsList = ({ navigation }) => {
+const FirmsList = ({ navigation, route }) => {
+  const { contract } = route.params;
+  console.log(contract);
+  const { animatedValue } = useContext(DrawerAnimationContext);
+  const translateX = translateMenuFold(animatedValue);
+
+  const headerHeight = 60 * 2;
+  const scrollY = useRef(new Animated.Value(0));
+  const scrollYClamped = Animated.diffClamp(scrollY.current, 0, headerHeight);
+  const translateY = scrollYClamped.interpolate({
+    inputRange: [0, headerHeight],
+    outputRange: [0, -headerHeight / 2],
+  });
+  const translateYNumber = useRef();
+  translateY.addListener(({ value }) => {
+    translateYNumber.current = value;
+  });
+  const handleScroll = Animated.event(
+    [
+      {
+        nativeEvent: {
+          contentOffset: { y: scrollY.current },
+        },
+      },
+    ],
+    {
+      useNativeDriver: true,
+    }
+  );
+
+  sendData = async () => {
+    const result = await customerContractApi.addContract(contract, (prog) =>
+      console.log(prog)
+    );
+    console.log(result.data);
+    if (!result.ok) {
+      return alert("Could not save the listings");
+    }
+  };
+
   return (
-    <Screen style={styles.container}>
-      <FlatList
+    <SafeAreaView style={styles.container}>
+      <AppButton title="Send" onPress={sendData} />
+      <Animated.View style={{ zIndex: 1, transform: [{ translateY }] }}>
+        <Header navigation={navigation} translateX={translateX} />
+      </Animated.View>
+
+      <Animated.FlatList
+        onScroll={handleScroll}
         contentContainerStyle={{ padding: SPACING }}
         data={fakerData}
+        style={{ paddingTop: 55 }}
         keyExtractor={(item) => item.key}
         renderItem={({ item }) => {
           return (
@@ -99,7 +162,8 @@ const FirmsList = ({ navigation }) => {
       <SharedElement id="general.bg">
         <View style={styles.overlay} />
       </SharedElement>
-    </Screen>
+      <StatusBar hidden />
+    </SafeAreaView>
   );
 };
 

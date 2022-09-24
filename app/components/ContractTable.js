@@ -1,77 +1,329 @@
-import React, { useState } from "react";
-import { Modal, StyleSheet, View, ScrollView } from "react-native";
-import { Table, Row, Rows } from "react-native-table-component";
+import React from "react";
+import {
+  Dimensions,
+  Modal,
+  StyleSheet,
+  View,
+  ScrollView,
+  FlatList,
+  Text,
+  Image,
+  TouchableOpacity,
+} from "react-native";
+import niceColors from "nice-color-palettes";
+
 import AppButton from "./AppButton";
+import Icon from "./Icon";
+import colors from "../config/colors";
+import auth from "../api/auth";
 
-export default ContractTable = ({ isVisible, onModalVisible }) => {
-  const [tableHead] = useState([
-    "Head",
-    "Head2",
-    "Head3",
-    "Head4",
-    "Head5",
-    "Head6",
-    "Head7",
-    "Head8",
-    "Head9",
-  ]);
-  const [widthArr] = useState([40, 60, 80, 100, 120, 140, 160, 180, 200]);
+const { width, height } = Dimensions.get("window");
+const colorsPalette = [
+  "#3F5B98",
+  ...niceColors[39],
+  "#FCBE4A",
+  "#FD5963",
+  ...niceColors[8],
+  "#FECBCD",
+  ...niceColors[10].slice(1, 5),
+  ...niceColors[6],
+  ...niceColors[14],
+  ...niceColors[21].slice(1, 3),
+  ...niceColors[41],
+  ...niceColors[50].slice(0, 3),
+];
 
-  const tableData = [];
-  for (let i = 0; i < 30; i += 1) {
-    const rowData = [];
-    for (let j = 0; j < 9; j += 1) {
-      rowData.push(`${i}${j}`);
-    }
-    tableData.push(rowData);
-  }
+const tableHeading = [
+  { name: "Material Name", width: 225 },
+  { name: "Types Selected", width: 225 },
+  { name: "Description", width: 298 },
+  { name: "Images", width: 298 },
+];
+
+export default ContractTable = ({
+  allValues,
+  descriptions,
+  imageUris,
+  keys,
+  isVisible,
+  onModalVisible,
+}) => {
+  console.log("-----------------Keys--------------------");
+  console.log(keys);
+  console.log("------------------All values-------------------");
+  console.log(allValues);
+  console.log("----------------descriptions---------------------");
+  console.log(descriptions);
+  console.log("-----------------imageUris--------------------");
+  console.log(imageUris);
+  const MapHeadings = () => {
+    return (
+      <View style={{ flexDirection: "row" }}>
+        {tableHeading.map((heading, j) => {
+          return (
+            <View
+              key={j}
+              style={[styles.headingTabs, { width: heading.width }]}
+            >
+              <Text>{heading.name}</Text>
+            </View>
+          );
+        })}
+      </View>
+    );
+  };
 
   return (
-    <Modal visible={isVisible}>
-      <AppButton onPress={onModalVisible} />
-      <View style={styles.container}>
-        <ScrollView horizontal={true}>
-          <View>
-            <Table borderStyle={{ borderWidth: 1, borderColor: "#C1C0B9" }}>
-              <Row
-                data={tableHead}
-                widthArr={widthArr}
-                style={styles.header}
-                textStyle={styles.text}
-              />
-            </Table>
-            <ScrollView style={styles.dataWrapper}>
-              <Table borderStyle={{ borderWidth: 1, borderColor: "#C1C0B9" }}>
-                {tableData.map((rowData, index) => (
-                  <Row
-                    key={index}
-                    data={rowData}
-                    widthArr={widthArr}
+    <Modal visible={isVisible} animationType="slide">
+      <View style={styles.modal}>
+        <TouchableOpacity
+          style={styles.modalCloseButton}
+          onPress={onModalVisible}
+        >
+          <Icon name="close" size={35} backgroundColor="transparent" />
+        </TouchableOpacity>
+
+        <FlatList
+          style={{ padding: 20 }}
+          contentContainerStyle={{ alignSelf: "flex-start" }}
+          decelerationRate="fast"
+          numColumns={1}
+          data={keys}
+          keyExtractor={() => Math.random().toString()}
+          renderItem={({ item, index }) => {
+            const currentColor = colorsPalette[index % colorsPalette.length];
+            if (item === undefined) {
+              //This does not work with ternaru opeartors ???
+              if (index === 0) return <MapHeadings />;
+              else return null;
+            }
+            return (
+              <>
+                {index === 0 ? <MapHeadings /> : null}
+                <View style={[styles.tableRow, { shadowColor: currentColor }]}>
+                  <View
                     style={[
-                      styles.row,
-                      index % 2 && { backgroundColor: "#F7F6E7" },
+                      styles.keyContainer,
+                      { borderColor: currentColor, width: 230 },
                     ]}
-                    textStyle={styles.text}
-                  />
-                ))}
-              </Table>
-            </ScrollView>
-          </View>
-        </ScrollView>
+                  >
+                    <Text style={[styles.heading, { color: currentColor }]}>
+                      {item}
+                    </Text>
+                  </View>
+                  <View
+                    style={[
+                      styles.keyContainer,
+                      { borderColor: currentColor, width: 230 },
+                    ]}
+                  >
+                    {allValues[index].map((value, j) => {
+                      return value.parent ? (
+                        <View style={styles.list} key={j}>
+                          <View
+                            style={[
+                              styles.listItemDot,
+                              {
+                                backgroundColor: currentColor,
+                              },
+                            ]}
+                          />
+                          <View>
+                            <Text
+                              style={[
+                                styles.body,
+                                {
+                                  color: currentColor,
+                                },
+                              ]}
+                            >
+                              {value.name}
+                              <Text style={styles.parent}>
+                                {" - " + value.parent}
+                              </Text>
+                            </Text>
+                          </View>
+                        </View>
+                      ) : (
+                        <View style={styles.list} key={j}>
+                          <View
+                            style={[
+                              styles.listItemDot,
+                              {
+                                backgroundColor: currentColor,
+                              },
+                            ]}
+                          />
+                          <Text
+                            key={j}
+                            style={[
+                              styles.body,
+                              {
+                                color: currentColor,
+                              },
+                            ]}
+                          >
+                            {value}
+                          </Text>
+                        </View>
+                      );
+                    })}
+                  </View>
+                  <View
+                    style={[styles.keyContainer, { borderColor: currentColor }]}
+                  >
+                    {descriptions[index] ? (
+                      <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={{
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Text>{descriptions[index]}</Text>
+                      </ScrollView>
+                    ) : (
+                      <View style={styles.empty}>
+                        <Text style={styles.emptyText}>Description Added</Text>
+                      </View>
+                    )}
+                  </View>
+
+                  <View
+                    style={[
+                      styles.keyContainer,
+                      { borderColor: currentColor, marginRight: 45 },
+                    ]}
+                  >
+                    {imageUris.length > 0 &&
+                      imageUris[index] !== undefined &&
+                      imageUris[index].length > 0 && (
+                        <ScrollView
+                          horizontal
+                          showsHorizontalScrollIndicator={false}
+                        >
+                          {imageUris[index].map((uri) => {
+                            return (
+                              <View key={uri} style={styles.imageContainer}>
+                                <Image source={{ uri }} style={styles.image} />
+                              </View>
+                            );
+                          })}
+                        </ScrollView>
+                      )}
+                    {imageUris[index] === undefined && (
+                      <View style={styles.empty}>
+                        <Text style={styles.emptyText}>Images Chosen</Text>
+                      </View>
+                    )}
+                  </View>
+                </View>
+              </>
+            );
+          }}
+        />
       </View>
     </Modal>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  empty: {
+    fontSize: 15,
+    alignItems: "center",
+    justifyContent: "center",
     flex: 1,
-    padding: 16,
-    paddingTop: 30,
-    backgroundColor: "dodgerblue",
   },
-  header: { height: 50, backgroundColor: "#537791" },
-  text: { textAlign: "center", fontWeight: "100" },
-  dataWrapper: { marginTop: -1 },
-  row: { height: 40, backgroundColor: "#E7E6E1" },
+  emptyText: {
+    fontWeight: "700",
+    textDecorationLine: "line-through",
+  },
+  heading: {
+    fontSize: 28,
+    fontWeight: "700",
+    textTransform: "uppercase",
+    letterSpacing: -2,
+    marginVertical: 40,
+    marginLeft: 30,
+  },
+  headingTabs: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 5,
+    width: 225,
+    height: 50,
+    backgroundColor: "#FECBCD",
+    borderRadius: 10,
+    marginBottom: 10,
+  },
+
+  imageContainer: {
+    alignItems: "center",
+    borderRadius: 15,
+    height: 120,
+    justifyContent: "center",
+    overflow: "hidden",
+    width: 120,
+    marginRight: 10,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+  },
+
+  keyContainer: {
+    // alignItems: "center",
+    // justifyContent: "center",
+    width: 300,
+    height: 150,
+    padding: 15,
+    backgroundColor: "white",
+    borderRadius: 5,
+    borderRightWidth: 1,
+  },
+  list: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+    marginLeft: 20,
+  },
+  listItemDot: {
+    height: 8,
+    width: 8,
+    borderRadius: 4,
+    marginRight: 10,
+  },
+  modal: {
+    flex: 1,
+    paddingTop: 60,
+    alignItems: "center",
+  },
+  modalCloseButton: {
+    backgroundColor: colors.primary,
+    position: "absolute",
+    top: 0,
+    width: 60,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    borderBottomEndRadius: 10,
+    borderBottomStartRadius: 10,
+  },
+  parent: {
+    lineHeight: 12,
+    fontSize: 10.7,
+    color: colors.medium,
+  },
+  tableRow: {
+    flexDirection: "row",
+    marginBottom: 20,
+
+    shadowColor: "silver",
+    shadowOffset: {
+      width: -10,
+      height: 10,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+  },
 });

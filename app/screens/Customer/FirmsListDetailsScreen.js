@@ -17,6 +17,7 @@ import { SharedElement } from "react-navigation-shared-element";
 
 import Icon from "../../components/Icon";
 import colors from "../../config/colors";
+import BackButton from "../../navigation/BackButton";
 
 const { height, width } = Dimensions.get("window");
 const ITEM_HEIGHT = height * 0.18;
@@ -34,6 +35,12 @@ const FirmsListDetailsScreen = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <BackButton
+        navigation={navigation}
+        iconName="back"
+        containerStyle={{ position: "absolute", top: 22, left: 20, zIndex: 1 }}
+      />
+
       <SharedElement
         id={`item.${item.key}.bg`}
         style={StyleSheet.absoluteFillObject}
@@ -173,15 +180,5 @@ const styles = StyleSheet.create({
     marginBottom: SPACING,
   },
 });
-
-// FirmsListDetailsScreen.SharedElement = (route, otherRoute, showing) => {
-//   const { item } = route.params;
-//   return [
-//     { id: `item.${item.key}.bg` },
-//     { id: `item.${item.key}.name` },
-//     { id: `item.${item.key}.image` },
-//     { id: "general.bg" },
-//   ];
-// };
 
 export default FirmsListDetailsScreen;

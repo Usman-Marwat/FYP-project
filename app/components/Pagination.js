@@ -2,15 +2,17 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
 import PaginationDot from "react-native-animated-pagination-dot";
 
+import colors from "../config/colors";
+
 const Pagination = ({
-  activeDotColor = "black",
+  activeDotColor = colors.medium,
   curPage,
   maxPage,
   sizeRatio,
   style,
 }) => {
   return (
-    <View style={style}>
+    <View style={[styles.container, { style }]}>
       <PaginationDot
         activeDotColor={activeDotColor}
         curPage={curPage}
@@ -24,5 +26,8 @@ const Pagination = ({
 export default Pagination;
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    alignItems: "center",
+    bottom: 30,
+  },
 });
