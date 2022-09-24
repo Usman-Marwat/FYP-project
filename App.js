@@ -1,17 +1,69 @@
-import { NavigationContainer } from "@react-navigation/native";
-import React, { useState } from "react";
-import { StyleSheet } from "react-native";
-import AuthNavigator from "./app/navigation/AuthNavigator";
-import navigationTheme from "./app/navigation/navigationTheme";
+import React, { useState, useRef } from "react";
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  StatusBar,
+  TouchableOpacity,
+  Text,
+} from "react-native";
+import PhoneInput from "react-native-phone-number-input";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
-import WelcomeScreen from "./app/screens/WelcomeScreen";
-
-export default function App() {
-  return <AuthNavigator />;
-}
+const App = () => {
+  const [value, setValue] = useState("");
+  const [formattedValue, setFormattedValue] = useState("");
+  const [valid, setValid] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const phoneInput = useRef(null);
+  return (
+    <>
+      <StatusBar barStyle="dark-content" />
+      <View style={styles.container}>
+        <SafeAreaView style={styles.wrapper}>
+          {showMessage && (
+            <View style={styles.message}>
+              <Text>Value : {value}</Text>
+              <Text>Formatted Value : {formattedValue}</Text>
+              <Text>Valid : {valid ? "true" : "false"}</Text>
+            </View>
+          )}
+          <PhoneInput
+            ref={phoneInput}
+            defaultValue={value}
+            defaultCode="DM"
+            layout="first"
+            onChangeText={(text) => {
+              setValue(text);
+            }}
+            onChangeFormattedText={(text) => {
+              setFormattedValue(text);
+            }}
+            withDarkTheme
+            withShadow
+            autoFocus
+          />
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              const checkValid = phoneInput.current?.isValidNumber(value);
+              setShowMessage(true);
+              setValid(checkValid ? checkValid : false);
+            }}
+          >
+            <Text>Check</Text>
+          </TouchableOpacity>
+        </SafeAreaView>
+      </View>
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+  constainer: {},
+  message: {},
+  wrapper: {},
+  button: {},
 });
+
+export default App;
