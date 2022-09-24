@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Dimensions, StyleSheet, Image } from "react-native";
+import { Dimensions, StyleSheet, Image, Text, View } from "react-native";
 import * as Yup from "yup";
 import { SharedElement } from "react-navigation-shared-element";
 
@@ -38,9 +38,12 @@ function LoginScreen({ route }) {
       {/* <ActivityIndicator visible={registerApi.loading || loginApi.loading} /> */}
       <Screen style={styles.container}>
         {/* <Image style={styles.logo} source={require("../assets/logo-red.png")} /> */}
-        <SharedElement id={`item.${item.key}.image`}>
-          <Image source={{ uri: item.image }} style={styles.image} />
-        </SharedElement>
+        <View style={styles.headingConatiner}>
+          <SharedElement id={`item.${item.key}.image`}>
+            <Image source={{ uri: item.image }} style={styles.image} />
+          </SharedElement>
+          <Text style={styles.title}>{item.actor}</Text>
+        </View>
         <AppForm
           initialValues={{ email: "", password: "" }}
           onSubmit={handleSubmit}
@@ -79,11 +82,9 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
   },
-  logo: {
-    width: 80,
-    height: 80,
-    alignSelf: "center",
-    marginTop: 50,
+  headingConatiner: {
+    alignItems: "center",
+    marginTop: 7,
     marginBottom: 20,
   },
   image: {
@@ -91,8 +92,20 @@ const styles = StyleSheet.create({
     height: width / 2.5,
     marginTop: 30,
     marginBottom: 30,
-    marginLeft: 90,
     resizeMode: "contain",
+    zIndex: 1,
+  },
+  logo: {
+    width: 80,
+    height: 80,
+    alignSelf: "center",
+    marginTop: 50,
+    marginBottom: 20,
+  },
+  title: {
+    fontWeight: "800",
+    fontSize: 32,
+    textTransform: "uppercase",
   },
 });
 

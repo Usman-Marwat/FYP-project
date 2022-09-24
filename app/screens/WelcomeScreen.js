@@ -23,7 +23,7 @@ const DATA = [
     title: "Expand the realm of your business",
     description:
       "I'll back up the multi-byte XSS matrix, that should feed the SCSI WelcomeScreenlication!",
-    image: "https://cdn-icons-png.flaticon.com/512/3571/3571572.png",
+    image: "https://cdn-icons-png.flaticon.com/512/7899/7899486.png",
   },
   {
     actor: "Customer",
@@ -31,7 +31,7 @@ const DATA = [
     title: "Find the best makers for your house",
     description:
       "Use the optical SAS system, then you can navigate the auxiliary alarm!",
-    image: "https://cdn-icons-png.flaticon.com/128/3571/3571747.png",
+    image: "https://cdn-icons-png.flaticon.com/512/7899/7899565.png",
   },
   {
     actor: "Employee",
@@ -39,14 +39,14 @@ const DATA = [
     title: "Be part of your amazing firm",
     description:
       "The ADP array is down, compress the online sensor so we can input the HTTP panel!",
-    image: "https://cdn-icons-png.flaticon.com/512/3571/3571680.png",
+    image: "https://cdn-icons-png.flaticon.com/512/7899/7899416.png",
   },
   {
     actor: "Supplier",
     key: "3571603",
     title: "Help contractor, and grow your business",
     description: "We need to program the open-source IB interface!",
-    image: "https://cdn-icons-png.flaticon.com/512/3571/3571603.png",
+    image: "https://cdn-icons-png.flaticon.com/512/7899/7899473.png",
   },
 ];
 
@@ -147,9 +147,7 @@ export default function WelcomeScreen({ navigation }) {
                 </SharedElement>
               </View>
               <View style={{ flex: 0.3 }}>
-                <SharedElement id={`item.${item.key}.actor`}>
-                  <Text style={styles.title}>{item.actor}</Text>
-                </SharedElement>
+                <Text style={styles.title}>{item.actor}</Text>
                 <Text style={styles.tagline}>{item.title}</Text>
                 <Text style={styles.description}>{item.description}</Text>
               </View>
@@ -216,8 +214,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   image: {
-    width: width / 2,
-    height: width / 2.5,
+    width: width,
+    height: width / 2,
     resizeMode: "contain",
   },
   itemWrapper: {

@@ -65,9 +65,7 @@ function RegisterScreen({ route }) {
           <SharedElement id={`item.${item.key}.image`}>
             <Image source={{ uri: item.image }} style={styles.image} />
           </SharedElement>
-          <SharedElement id={`item.${item.key}.actor`}>
-            <Text style={styles.title}>{item.actor}</Text>
-          </SharedElement>
+          <Text style={styles.title}>{item.actor}</Text>
         </View>
         <Form
           initialValues={{ name: "", email: "", password: "" }}

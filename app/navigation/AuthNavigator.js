@@ -20,7 +20,7 @@ const AuthNavigator = () => (
         sharedElements={(route) => {
           const { item } = route.params;
           return [
-            { id: `item.${item.key}.image` },
+            { id: `item.${item.key}.image`, animation: "fade" },
             { id: `item.${item.key}.actor`, animation: "fade-out" },
           ];
         }}
