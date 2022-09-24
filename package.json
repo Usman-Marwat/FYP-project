@@ -50,6 +50,7 @@
     "react-native-gesture-handler": "~2.5.0",
     "react-native-gorgeous-header": "^1.0.0",
     "react-native-modern-header": "^1.0.2",
+    "react-native-otp-textinput": "^0.0.9",
     "react-native-phone-number-input": "^2.1.0",
     "react-native-profile-header": "^0.1.1",
     "react-native-progress": "^5.0.0",

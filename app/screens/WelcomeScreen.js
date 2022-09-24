@@ -115,7 +115,12 @@ const Square = ({ scrollX }) => {
 export default function WelcomeScreen({ navigation }) {
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentIndex, setCurrentIndex] = useState(0);
-  console.log(currentIndex);
+
+  const handleCurentIndex = (index) => {
+    if (index < 0) return setCurrentIndex(0);
+    if (index > 3) return setCurrentIndex(3);
+    setCurrentIndex(index);
+  };
   return (
     <View style={styles.container}>
       <StatusBar hidden />
@@ -135,7 +140,7 @@ export default function WelcomeScreen({ navigation }) {
             Math.floor(event.nativeEvent.contentOffset.x) /
               Math.floor(event.nativeEvent.layoutMeasurement.width)
           );
-          setCurrentIndex(index);
+          handleCurentIndex(index);
         }}
         pagingEnabled
         showsHorizontalScrollIndicator={false}

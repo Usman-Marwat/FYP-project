@@ -6182,7 +6182,7 @@ prop-types@15.7.2:
     object-assign "^4.1.1"
     react-is "^16.8.1"
 
-prop-types@^15.7.2:
+prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -6415,6 +6415,13 @@ react-native-modern-header@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-modern-header/-/react-native-modern-header-1.0.2.tgz#84650d036b4b1d959ce699a73b6215882e5859d0"
   integrity sha512-oSQ3VRGV3/52StefbVy2+hMT2z52hHA8WLc7YDFfju6NW/5piK933+YBgJdUX9NwRQHGicQHIYF+FH3ac4A37Q==
+
+react-native-otp-textinput@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/react-native-otp-textinput/-/react-native-otp-textinput-0.0.9.tgz#30c20c53ff077ad6c0f7fd77f57d767fb8950326"
+  integrity sha512-JVt9OjAA2G5cTHwjqUyxnHT5ieRJt291+M2Osmzbnj7ari6DgKa8hg5RI6HfSUxH242vqZ4zq78EPU07FWoXqQ==
+  dependencies:
+    prop-types "^15.6.2"
 
 react-native-phone-number-input@^2.1.0:
   version "2.1.0"
