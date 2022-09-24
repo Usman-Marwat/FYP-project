@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Dimensions, Image, StyleSheet } from "react-native";
+import { Dimensions, Image, StyleSheet, View } from "react-native";
 import * as Yup from "yup";
 import { SharedElement } from "react-navigation-shared-element";
 
@@ -61,6 +61,7 @@ function RegisterScreen({ route }) {
     <>
       {/* <ActivityIndicator visible={registerApi.loading || loginApi.loading} /> */}
       <Screen style={styles.container}>
+        {/* <View style={styles.square} /> */}
         <SharedElement id={`item.${item.key}.image`}>
           <Image source={{ uri: item.image }} style={styles.image} />
         </SharedElement>
@@ -109,8 +110,23 @@ const styles = StyleSheet.create({
     width: width / 2,
     height: width / 2.5,
     marginTop: 30,
+    marginBottom: 70,
     marginLeft: 90,
     resizeMode: "contain",
+    zIndex: 1,
+  },
+  square: {
+    width: height,
+    height: height,
+    borderColor: "pink",
+    borderWidth: 3,
+
+    borderRadius: 50,
+    position: "absolute",
+    top: -height * 0.65,
+    left: -height * 0.3,
+    zIndex: 0,
+    transform: [{ rotateX: "40deg" }, { rotateZ: "0.685398rad" }],
   },
 });
 

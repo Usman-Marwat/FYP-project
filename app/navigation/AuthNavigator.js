@@ -6,11 +6,12 @@ import { createSharedElementStackNavigator } from "react-navigation-shared-eleme
 import LoginScreen from "../screens/LoginScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
+import navigationTheme from "./navigationTheme";
 
 const Stack = createSharedElementStackNavigator();
 
 const AuthNavigator = () => (
-  <NavigationContainer>
+  <NavigationContainer theme={navigationTheme}>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen

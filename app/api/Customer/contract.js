@@ -2,7 +2,7 @@ import _ from "lodash";
 
 import client from "../client";
 
-const endpoint = "/customer/contract2";
+const endpoint = "/customer/contract";
 
 export const addContract = (contract, onUploadProgress) => {
   const data = new FormData();
@@ -18,13 +18,13 @@ export const addContract = (contract, onUploadProgress) => {
     .compact()
     .value();
 
-  // imagesUris.forEach((image, index) =>
-  //   data.append("images", {
-  //     name: "image" + index,
-  //     type: "image/jpeg",
-  //     uri: image,
-  //   })
-  // );
+  imagesUris.forEach((image, index) =>
+    data.append("images", {
+      name: "image" + index,
+      type: "image/jpeg",
+      uri: image,
+    })
+  );
 
   return client.post(endpoint, data, {
     onUploadProgress: (progress) =>
