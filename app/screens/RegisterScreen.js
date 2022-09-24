@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Dimensions, Image, StyleSheet, View } from "react-native";
+import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import * as Yup from "yup";
 import { SharedElement } from "react-navigation-shared-element";
 
@@ -61,10 +61,14 @@ function RegisterScreen({ route }) {
     <>
       {/* <ActivityIndicator visible={registerApi.loading || loginApi.loading} /> */}
       <Screen style={styles.container}>
-        {/* <View style={styles.square} /> */}
-        <SharedElement id={`item.${item.key}.image`}>
-          <Image source={{ uri: item.image }} style={styles.image} />
-        </SharedElement>
+        <View style={styles.headingConatiner}>
+          <SharedElement id={`item.${item.key}.image`}>
+            <Image source={{ uri: item.image }} style={styles.image} />
+          </SharedElement>
+          <SharedElement id={`item.${item.key}.actor`}>
+            <Text style={styles.title}>{item.actor}</Text>
+          </SharedElement>
+        </View>
         <Form
           initialValues={{ name: "", email: "", password: "" }}
           onSubmit={handleSubmit}
@@ -106,12 +110,16 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
   },
+  headingConatiner: {
+    alignItems: "center",
+    marginTop: 7,
+    marginBottom: 20,
+  },
   image: {
     width: width / 2,
     height: width / 2.5,
     marginTop: 30,
-    marginBottom: 70,
-    marginLeft: 90,
+    marginBottom: 30,
     resizeMode: "contain",
     zIndex: 1,
   },
@@ -127,6 +135,11 @@ const styles = StyleSheet.create({
     left: -height * 0.3,
     zIndex: 0,
     transform: [{ rotateX: "40deg" }, { rotateZ: "0.685398rad" }],
+  },
+  title: {
+    fontWeight: "800",
+    fontSize: 32,
+    textTransform: "uppercase",
   },
 });
 

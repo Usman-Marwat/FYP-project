@@ -20,7 +20,7 @@ const DATA = [
   {
     actor: "Contractor",
     key: "3571572",
-    title: "Multi-lateral intermediate moratorium",
+    title: "Expand the realm of your business",
     description:
       "I'll back up the multi-byte XSS matrix, that should feed the SCSI WelcomeScreenlication!",
     image: "https://cdn-icons-png.flaticon.com/512/3571/3571572.png",
@@ -28,7 +28,7 @@ const DATA = [
   {
     actor: "Customer",
     key: "3571747",
-    title: "Automated radical data-warehouse",
+    title: "Find the best makers for your house",
     description:
       "Use the optical SAS system, then you can navigate the auxiliary alarm!",
     image: "https://cdn-icons-png.flaticon.com/128/3571/3571747.png",
@@ -36,7 +36,7 @@ const DATA = [
   {
     actor: "Employee",
     key: "3571680",
-    title: "Inverse attitude-oriented system engine",
+    title: "Be part of your amazing firm",
     description:
       "The ADP array is down, compress the online sensor so we can input the HTTP panel!",
     image: "https://cdn-icons-png.flaticon.com/512/3571/3571680.png",
@@ -44,7 +44,7 @@ const DATA = [
   {
     actor: "Supplier",
     key: "3571603",
-    title: "Monitored global data-warehouse",
+    title: "Help contractor, and grow your business",
     description: "We need to program the open-source IB interface!",
     image: "https://cdn-icons-png.flaticon.com/512/3571/3571603.png",
   },
@@ -147,7 +147,10 @@ export default function WelcomeScreen({ navigation }) {
                 </SharedElement>
               </View>
               <View style={{ flex: 0.3 }}>
-                <Text style={styles.title}>{item.title}</Text>
+                <SharedElement id={`item.${item.key}.actor`}>
+                  <Text style={styles.title}>{item.actor}</Text>
+                </SharedElement>
+                <Text style={styles.tagline}>{item.title}</Text>
                 <Text style={styles.description}>{item.description}</Text>
               </View>
             </View>
@@ -159,7 +162,7 @@ export default function WelcomeScreen({ navigation }) {
           color="transparent"
           style={[styles.button, { width: 190 }]}
           title={"Register"}
-          subTitle={"as " + DATA[currentIndex].actor}
+          subTitle={"as " + DATA[currentIndex]?.actor}
           onPress={() =>
             navigation.navigate(routes.REGISTER, {
               item: DATA[currentIndex],
@@ -206,6 +209,7 @@ const styles = StyleSheet.create({
   },
   description: {
     fontWeight: "300",
+    marginTop: 10,
   },
   imageContainer: {
     flex: 0.7,
@@ -242,10 +246,15 @@ const styles = StyleSheet.create({
     top: -height * 0.6,
     left: -height * 0.3,
   },
+  tagline: {
+    color: "#fff",
+    fontWeight: "800",
+    fontSize: 25,
+  },
   title: {
     color: "#fff",
     fontWeight: "800",
-    fontSize: 28,
-    marginBottom: 10,
+    fontSize: 32,
+    textTransform: "uppercase",
   },
 });

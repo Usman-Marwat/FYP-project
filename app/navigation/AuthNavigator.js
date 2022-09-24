@@ -19,7 +19,10 @@ const AuthNavigator = () => (
         component={RegisterScreen}
         sharedElements={(route) => {
           const { item } = route.params;
-          return [{ id: `item.${item.key}.image` }, { id: `item.${0}.btn` }];
+          return [
+            { id: `item.${item.key}.image` },
+            { id: `item.${item.key}.actor`, animation: "fade-out" },
+          ];
         }}
       />
       <Stack.Screen
