@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import * as Yup from "yup";
 import { SharedElement } from "react-navigation-shared-element";
@@ -15,14 +15,10 @@ import {
 import usersApi from "../api/users";
 import useApi from "../hooks/useApi";
 import ActivityIndicator from "../components/ActivityIndicator";
+import colors from "../config/colors";
+import AppPhoneInput from "../components/forms/AppPhoneInput";
 
 const { width, height } = Dimensions.get("screen");
-
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required().label("Name"),
-  email: Yup.string().required().email().label("Email"),
-  password: Yup.string().required().min(4).label("Password"),
-});
 
 function RegisterScreen({ route }) {
   // const registerApi = useApi(usersApi.register);
@@ -32,8 +28,26 @@ function RegisterScreen({ route }) {
 
   const { item } = route.params;
 
+  const [isValid, setIsValid] = useState(false);
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required().label("Name"),
+    email: Yup.string().required().email().label("Email"),
+    password: Yup.string().required().min(4).label("Password"),
+    phoneNumber: Yup.string()
+      .required()
+      .test(
+        "test-name",
+        "phone input should like +(0)3125103497",
+        function (value) {
+          console.log("Yup function value " + value);
+          return isValid;
+        }
+      ),
+  });
+
   const handleSubmit = async (userInfo) => {
     //userInfo is the objet that formik gives us
+    console.log(userInfo);
     const result = await registerApi.request(userInfo);
 
     //if (!result.ok) returns true that means the result failed
@@ -56,7 +70,7 @@ function RegisterScreen({ route }) {
     );
     auth.logIn(authToken);
   };
-  //registerApi.loading || loginApi.loading
+
   return (
     <>
       {/* <ActivityIndicator visible={registerApi.loading || loginApi.loading} /> */}
@@ -96,6 +110,10 @@ function RegisterScreen({ route }) {
             placeholder="Password"
             secureTextEntry
             textContentType="password"
+          />
+          <AppPhoneInput
+            name="phoneNumber"
+            onCheck={(val) => setIsValid(val)}
           />
           <SubmitButton title="Register" />
         </Form>

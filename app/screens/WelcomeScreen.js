@@ -15,7 +15,7 @@ import routes from "../navigation/routes";
 
 const { width, height } = Dimensions.get("screen");
 
-const bgs = ["#F88379", "#FAA0A0", "#ffa07a", "#A5BBFF"];
+const bgs = ["#ff355e", "#cb4154", "#ffa07a", "#A5BBFF"];
 
 const DATA = [
   {
