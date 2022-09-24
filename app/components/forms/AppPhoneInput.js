@@ -25,10 +25,11 @@ const AppPhoneInput = ({ name, onCheck }) => {
 
   return (
     <>
-      <View>
+      <View style={styles.container}>
         <PhoneInput
           ref={phoneInput}
-          containerStyle={{ width: "100%" }}
+          containerStyle={{ width: "100%", height: 55 }}
+          flagButtonStyle={styles.phoneButtonStyle}
           defaultCode="PK"
           onChangeText={handleText}
           value={values[name]}
@@ -39,9 +40,8 @@ const AppPhoneInput = ({ name, onCheck }) => {
             placeholderTextColor: colors.medium,
             onBlur: () => setFieldTouched(name),
           }}
-          textContainerStyle={{ backgroundColor: colors.light }}
-          codeTextStyle={{ color: colors.medium, fontWeight: "700" }}
-          withShadow
+          textContainerStyle={styles.phoneInputStyle}
+          codeTextStyle={styles.code}
         />
       </View>
       <ErrorMessage error={errors[name]} visible={touched[name]} />
@@ -51,4 +51,23 @@ const AppPhoneInput = ({ name, onCheck }) => {
 
 export default AppPhoneInput;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    marginVertical: 10,
+  },
+  code: {
+    color: colors.medium,
+    fontWeight: "700",
+    marginLeft: -20,
+  },
+  phoneInputStyle: {
+    backgroundColor: colors.light,
+    borderTopRightRadius: 25,
+    borderBottomRightRadius: 25,
+  },
+  phoneButtonStyle: {
+    backgroundColor: colors.light,
+    borderTopLeftRadius: 25,
+    borderBottomLeftRadius: 25,
+  },
+});
