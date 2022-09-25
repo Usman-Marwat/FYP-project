@@ -11,6 +11,7 @@ import {
 import { SharedElement } from "react-navigation-shared-element";
 
 import AppButton from "../components/AppButton";
+import colors from "../config/colors";
 import routes from "../navigation/routes";
 
 const { width, height } = Dimensions.get("screen");
@@ -46,7 +47,8 @@ const DATA = [
     actor: "Supplier",
     key: "3571603",
     title: "Help contractor, and grow your business",
-    description: "We need to program the open-source IB interface!",
+    description:
+      "We need to program the open-source IB interface! hey how are you",
     image: "https://cdn-icons-png.flaticon.com/512/7899/7899473.png",
   },
 ];
@@ -155,7 +157,9 @@ export default function WelcomeScreen({ navigation }) {
               <View style={{ flex: 0.3 }}>
                 <Text style={styles.title}>{item.actor}</Text>
                 <Text style={styles.tagline}>{item.title}</Text>
-                <Text style={styles.description}>{item.description}</Text>
+                <View style={styles.description}>
+                  <Text>{item.description}</Text>
+                </View>
               </View>
             </View>
           );
@@ -212,8 +216,12 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   description: {
-    fontWeight: "300",
-    marginTop: 10,
+    width: "95%",
+    paddingHorizontal: 10,
+    paddingVertical: 2,
+    borderRadius: 10,
+    marginTop: 7,
+    backgroundColor: colors.white,
   },
   imageContainer: {
     flex: 0.7,
@@ -260,5 +268,7 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     fontSize: 32,
     textTransform: "uppercase",
+    // textDecorationLine: "underline",
+    // textDecorationStyle: "dashed",
   },
 });

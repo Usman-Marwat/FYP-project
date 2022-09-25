@@ -13,12 +13,17 @@ import AppButton from "../AppButton";
 
 const otpLength = 6;
 
-const OtpInput = ({ otpVisible, onOtpVisible }) => {
+const OtpInput = ({ otpVisible, onOtpVisible, onSendOtp }) => {
   const [disabled, setDisabled] = useState(true);
+  const [otp, setOtp] = useState("");
+
   const handleInputText = (text) => {
-    if (text.length === otpLength) setDisabled(!disabled);
-    else setDisabled(true);
+    setOtp(text);
+    if (text.length === otpLength) {
+      setDisabled(false);
+    } else setDisabled(true);
   };
+
   return (
     <Modal visible={otpVisible} style={{ backgroundColor: "red", flex: 1 }}>
       <Button title="Close" onPress={() => onOtpVisible(!otpVisible)} />
@@ -32,7 +37,14 @@ const OtpInput = ({ otpVisible, onOtpVisible }) => {
             tintColor="#ff355e"
           />
         </View>
-        <Button disabled={disabled} title="Send" color="white" />
+        <Button
+          disabled={disabled}
+          title="Send"
+          color="white"
+          onPress={() => {
+            onSendOtp(otp);
+          }}
+        />
       </SafeAreaView>
     </Modal>
   );

@@ -81,10 +81,10 @@ function LoginScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+    paddingTop: 0,
   },
   headingConatiner: {
     alignItems: "center",
-    marginTop: 7,
     marginBottom: 20,
   },
   image: {

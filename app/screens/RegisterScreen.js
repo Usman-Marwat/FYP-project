@@ -74,6 +74,11 @@ function RegisterScreen({ route }) {
     auth.logIn(authToken);
   };
 
+  const handleOtp = (otp) => {
+    //take otp and send it with state id
+    console.log(otp);
+  };
+
   return (
     <>
       {/* <ActivityIndicator visible={registerApi.loading || loginApi.loading} /> */}
@@ -88,7 +93,7 @@ function RegisterScreen({ route }) {
           <Text style={styles.title}>{item.actor}</Text>
         </View>
         <Form
-          initialValues={{ name: "", email: "", password: "" }}
+          initialValues={{ name: "", email: "", password: "", phoneNumber: "" }}
           onSubmit={handleSubmit}
           validationSchema={schemaFunction(isValid)}
         >
@@ -126,6 +131,7 @@ function RegisterScreen({ route }) {
         <OtpInput
           otpVisible={otpVisible}
           onOtpVisible={(v) => setOtpVisible(v)}
+          onSendOtp={handleOtp}
         />
       </Screen>
     </>
@@ -135,10 +141,10 @@ function RegisterScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+    paddingTop: 0,
   },
   headingConatiner: {
     alignItems: "center",
-    marginTop: 7,
     marginBottom: 20,
   },
   image: {
