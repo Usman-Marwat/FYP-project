@@ -29,8 +29,6 @@ import OtpInput from "../components/forms/OtpInput";
 const { width, height } = Dimensions.get("screen");
 
 const schemaFunction = (isValid) => {
-  console.log("isValid is " + isValid);
-
   const validationSchema = Yup.object().shape({
     name: Yup.string().required().label("Name"),
     email: Yup.string().required().email().label("Email"),
@@ -40,10 +38,7 @@ const schemaFunction = (isValid) => {
       .test(
         "test-name",
         "phone input should be like (0)3125103497",
-        function (value) {
-          console.log("Yup function value " + value);
-          return isValid;
-        }
+        (value) => isValid
       ),
   });
   return validationSchema;
@@ -58,11 +53,6 @@ function RegisterScreen({ route }) {
   // const loginApi = useApi(authApi.login);
   // const auth = useAuth();
   // const [error, setError] = useState();
-
-  const checkValidity = (val) => {
-    console.log("val is " + val);
-    setIsValid(val);
-  };
 
   const handleSubmit = async (userInfo) => {
     console.log(userInfo);
@@ -127,7 +117,10 @@ function RegisterScreen({ route }) {
             secureTextEntry
             textContentType="password"
           />
-          <AppPhoneInput name="phoneNumber" onCheck={checkValidity} />
+          <AppPhoneInput
+            name="phoneNumber"
+            onCheck={(val) => setIsValid(val)}
+          />
           <SubmitButton title="Register" />
         </Form>
         <OtpInput

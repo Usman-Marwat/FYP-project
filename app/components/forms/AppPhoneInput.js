@@ -8,9 +8,6 @@ import ErrorMessage from "./ErrorMessage";
 import AppButton from "../AppButton";
 
 const AppPhoneInput = ({ name, onCheck }) => {
-  //   const [value, setValue] = useState("");
-  const [formattedValue, setFormattedValue] = useState("");
-  const [valid, setValid] = useState(false);
   const phoneInput = useRef(null);
 
   const { setFieldTouched, setFieldValue, errors, touched, values } =
@@ -18,9 +15,9 @@ const AppPhoneInput = ({ name, onCheck }) => {
 
   const handleText = (text) => {
     const valid = phoneInput.current?.isValidNumber(text);
-    console.log("checkValid value is " + valid);
-    setFieldValue(name, text);
     onCheck(valid);
+    let formatted = phoneInput.current?.getNumberAfterPossiblyEliminatingZero();
+    setFieldValue(name, formatted.formattedNumber);
   };
 
   return (
@@ -31,14 +28,18 @@ const AppPhoneInput = ({ name, onCheck }) => {
           containerStyle={{ width: "100%", height: 55 }}
           flagButtonStyle={styles.phoneButtonStyle}
           defaultCode="PK"
-          onChangeText={handleText}
+          layout="first"
+          // onChangeText={handleText}
           value={values[name]}
-          onChangeFormattedText={(text) => {
-            setFormattedValue(text);
-          }}
+          // onChangeFormattedText={handleFormattedText}
           textInputProps={{
             placeholderTextColor: colors.medium,
-            onBlur: () => setFieldTouched(name),
+            onBlur: () => {
+              return setFieldTouched(name);
+            },
+            onEndEditing: (e) => {
+              handleText(e.nativeEvent.text);
+            },
           }}
           textContainerStyle={styles.phoneInputStyle}
           codeTextStyle={styles.code}
