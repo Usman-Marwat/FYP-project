@@ -28,16 +28,9 @@ import OtpInput from "../components/forms/OtpInput";
 
 const { width, height } = Dimensions.get("screen");
 
-function RegisterScreen({ route }) {
-  // const registerApi = useApi(usersApi.register);
-  // const loginApi = useApi(authApi.login);
-  // const auth = useAuth();
-  // const [error, setError] = useState();
+const schemaFunction = (isValid) => {
+  console.log("isValid is " + isValid);
 
-  const { item } = route.params;
-  const [otpVisible, setOtpVisible] = useState(false);
-
-  const [isValid, setIsValid] = useState(false);
   const validationSchema = Yup.object().shape({
     name: Yup.string().required().label("Name"),
     email: Yup.string().required().email().label("Email"),
@@ -46,13 +39,30 @@ function RegisterScreen({ route }) {
       .required()
       .test(
         "test-name",
-        "phone input should like +(0)3125103497",
+        "phone input should be like (0)3125103497",
         function (value) {
           console.log("Yup function value " + value);
           return isValid;
         }
       ),
   });
+  return validationSchema;
+};
+
+function RegisterScreen({ route }) {
+  const { item } = route.params;
+  const [otpVisible, setOtpVisible] = useState(false);
+  const [isValid, setIsValid] = useState(false);
+
+  // const registerApi = useApi(usersApi.register);
+  // const loginApi = useApi(authApi.login);
+  // const auth = useAuth();
+  // const [error, setError] = useState();
+
+  const checkValidity = (val) => {
+    console.log("val is " + val);
+    setIsValid(val);
+  };
 
   const handleSubmit = async (userInfo) => {
     console.log(userInfo);
@@ -77,6 +87,7 @@ function RegisterScreen({ route }) {
   return (
     <>
       {/* <ActivityIndicator visible={registerApi.loading || loginApi.loading} /> */}
+      {/* <ActivityIndicator visible={true} /> */}
       <Screen style={styles.container}>
         <Button title="open" onPress={() => setOtpVisible(!otpVisible)} />
 
@@ -89,7 +100,7 @@ function RegisterScreen({ route }) {
         <Form
           initialValues={{ name: "", email: "", password: "" }}
           onSubmit={handleSubmit}
-          validationSchema={validationSchema}
+          validationSchema={schemaFunction(isValid)}
         >
           {/* <ErrorMessage error={error} visible={error} /> */}
           <FormField
@@ -116,10 +127,7 @@ function RegisterScreen({ route }) {
             secureTextEntry
             textContentType="password"
           />
-          <AppPhoneInput
-            name="phoneNumber"
-            onCheck={(val) => setIsValid(val)}
-          />
+          <AppPhoneInput name="phoneNumber" onCheck={checkValidity} />
           <SubmitButton title="Register" />
         </Form>
         <OtpInput
