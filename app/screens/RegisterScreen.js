@@ -1,5 +1,12 @@
 import React, { useState, useRef } from "react";
-import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import * as Yup from "yup";
 import { SharedElement } from "react-navigation-shared-element";
 
@@ -17,6 +24,7 @@ import useApi from "../hooks/useApi";
 import ActivityIndicator from "../components/ActivityIndicator";
 import colors from "../config/colors";
 import AppPhoneInput from "../components/forms/AppPhoneInput";
+import OtpInput from "../components/forms/OtpInput";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -27,6 +35,7 @@ function RegisterScreen({ route }) {
   // const [error, setError] = useState();
 
   const { item } = route.params;
+  const [otpVisible, setOtpVisible] = useState(false);
 
   const [isValid, setIsValid] = useState(false);
   const validationSchema = Yup.object().shape({
@@ -46,15 +55,9 @@ function RegisterScreen({ route }) {
   });
 
   const handleSubmit = async (userInfo) => {
-    //userInfo is the objet that formik gives us
     console.log(userInfo);
     const result = await registerApi.request(userInfo);
 
-    //if (!result.ok) returns true that means the result failed
-    //if result has data that means the server properly processed our request and sent us an error
-    // else if the server did not send us the data that means something unexpected happen
-    // maybe the server is offline or we do not have internet connection; we have offline notice
-    // to care of this but its good to show a generic error message
     if (!result.ok) {
       if (result.data) setError(result.data.error);
       else {
@@ -75,6 +78,8 @@ function RegisterScreen({ route }) {
     <>
       {/* <ActivityIndicator visible={registerApi.loading || loginApi.loading} /> */}
       <Screen style={styles.container}>
+        <Button title="open" onPress={() => setOtpVisible(!otpVisible)} />
+
         <View style={styles.headingConatiner}>
           <SharedElement id={`item.${item.key}.image`}>
             <Image source={{ uri: item.image }} style={styles.image} />
@@ -117,6 +122,10 @@ function RegisterScreen({ route }) {
           />
           <SubmitButton title="Register" />
         </Form>
+        <OtpInput
+          otpVisible={otpVisible}
+          onOtpVisible={(v) => setOtpVisible(v)}
+        />
       </Screen>
     </>
   );
@@ -160,3 +169,14 @@ const styles = StyleSheet.create({
 });
 
 export default RegisterScreen;
+
+/* 
+Comments in handleSubmit before - if (!result.ok) 
+
+if (!result.ok) returns true that means the result failed
+    //if result has data that means the server properly processed our request and sent us an error
+    // else if the server did not send us the data that means something unexpected happen
+    // maybe the server is offline or we do not have internet connection; we have offline notice
+    // to care of this but its good to show a generic error message
+    if (!result.ok) {
+*/

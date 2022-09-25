@@ -11,28 +11,28 @@ import OTPTextInput from "react-native-otp-textinput";
 import colors from "../../config/colors";
 import AppButton from "../AppButton";
 
-const OtpInput = () => {
-  const [isVisible, setIsVisible] = useState(true);
-  const [isDisabled, setIsDisabled] = useState(true);
+const otpLength = 6;
+
+const OtpInput = ({ otpVisible, onOtpVisible }) => {
+  const [disabled, setDisabled] = useState(true);
   const handleInputText = (text) => {
-    console.log(text);
+    if (text.length === otpLength) setDisabled(!disabled);
+    else setDisabled(true);
   };
   return (
-    <Modal visible={isVisible} style={{ backgroundColor: "red", flex: 1 }}>
+    <Modal visible={otpVisible} style={{ backgroundColor: "red", flex: 1 }}>
+      <Button title="Close" onPress={() => onOtpVisible(!otpVisible)} />
       <SafeAreaView style={styles.modalContainer}>
         <Text style={styles.text}>Enter your otp</Text>
         <View style={styles.wrapper}>
           <OTPTextInput
-            textInputStyle={{ marginHorizontal: 25, borderWidth: 1 }}
+            textInputStyle={styles.textInput}
             handleTextChange={handleInputText}
+            inputCount={6}
             tintColor="#ff355e"
           />
         </View>
-        <AppButton
-          disabled={isDisabled}
-          title="Send"
-          onPress={() => setIsVisible(false)}
-        />
+        <Button disabled={disabled} title="Send" color="white" />
       </SafeAreaView>
     </Modal>
   );
@@ -54,12 +54,17 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textTransform: "uppercase",
   },
+  textInput: {
+    marginHorizontal: 7,
+    borderWidth: 1,
+    backgroundColor: "white",
+  },
   wrapper: {
-    backgroundColor: colors.light,
+    // backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 20,
-    marginHorizontal: 20,
+    marginHorizontal: 2,
     marginVertical: 10,
     borderRadius: 10,
   },
