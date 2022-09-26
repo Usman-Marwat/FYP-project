@@ -74,7 +74,10 @@ function RegisterScreen({ route }) {
   };
 
   const handleOtp = async (otp) => {
+    setOtpVisible(!otpVisible);
     const result = await registerApi.request({ ...data, otp });
+    if (!result.authenticated) return setError(result.data.error);
+    handleLogin();
   };
 
   return (
@@ -94,7 +97,7 @@ function RegisterScreen({ route }) {
           onSubmit={handleSubmit}
           validationSchema={schemaFunction(isValid)}
         >
-          {/* <ErrorMessage error={error} visible={error} /> */}
+          <ErrorMessage error={error} visible={error} />
           <FormField
             autoCorrect={false}
             icon="account"
