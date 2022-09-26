@@ -1,7 +1,6 @@
 import client from "./client";
 
-const login = (email, password, actor) =>
-  client.post("/auth", { email, password, actor });
+const login = (userInfo) => client.post("/auth", userInfo);
 
 export default {
   login,

@@ -27,6 +27,7 @@ const menuItems = [
 ];
 
 function AccountScreen({ navigation }) {
+  //useAuth is like caaling the context of user/setuser
   const { user, logOut } = useAuth();
 
   return (

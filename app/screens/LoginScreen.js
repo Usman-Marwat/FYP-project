@@ -29,8 +29,8 @@ function LoginScreen({ route }) {
   const [loginFailed, setLoginFailed] = useState(false);
   const { logIn } = useAuth();
 
-  const handleSubmit = async ({ email, password }) => {
-    const result = await authApi.login(email, password, item.actor);
+  const handleSubmit = async (userInfo) => {
+    const result = await authApi.login({ ...userInfo, actor: item.actor });
     if (!result.ok) return setLoginFailed(true);
     setLoginFailed(false);
     logIn(result.data);

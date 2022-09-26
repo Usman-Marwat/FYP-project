@@ -1,23 +1,23 @@
 import React, { useState, useRef, useEffect } from "react";
 import { SafeAreaView, StyleSheet, View, Button } from "react-native";
+import * as SplashScreen from "expo-splash-screen";
 
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import CustomerNavigator from "./app/navigation/CustomerNavigation/CustomerNavigatior";
-import jwtDecode from "jwt-decode";
 import AuthContext from "./app/auth/context";
 import authStorage from "./app/auth/storage";
 import OfflineNotice from "./app/components/OfflineNotice";
 
 const App = () => {
   const [user, setUser] = useState();
-  const restoreToken = async () => {
-    const token = await authStorage.getToken();
-    if (!token) return;
-    setUser(jwtDecode(token));
+
+  const restoreUser = async () => {
+    const user = await authStorage.getUser();
+    if (user) setUser(user);
   };
 
   useEffect(() => {
-    restoreToken();
+    restoreUser();
   }, []);
 
   return (
