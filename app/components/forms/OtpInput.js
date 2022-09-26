@@ -25,7 +25,11 @@ const OtpInput = ({ otpVisible, onOtpVisible, onSendOtp }) => {
   };
 
   return (
-    <Modal visible={otpVisible} style={{ backgroundColor: "red", flex: 1 }}>
+    <Modal
+      animationType="fade"
+      visible={otpVisible}
+      style={{ backgroundColor: "red", flex: 1 }}
+    >
       <Button title="Close" onPress={() => onOtpVisible(!otpVisible)} />
       <SafeAreaView style={styles.modalContainer}>
         <Text style={styles.text}>Enter your otp</Text>

@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Dimensions, StyleSheet, Image, Text, View } from "react-native";
 import * as Yup from "yup";
 import { SharedElement } from "react-navigation-shared-element";
+import * as Animatable from "react-native-animatable";
 
 import Screen from "../components/Screen";
 import {
@@ -15,6 +16,7 @@ import authApi from "../api/auth";
 import useAuth from "../auth/useAuth";
 
 const { width, height } = Dimensions.get("screen");
+const DURATION = 400;
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -42,37 +44,41 @@ function LoginScreen({ route }) {
           <SharedElement id={`item.${item.key}.image`}>
             <Image source={{ uri: item.image }} style={styles.image} />
           </SharedElement>
-          <Text style={styles.title}>{item.actor}</Text>
+          <Animatable.View animation="bounceIn" delay={DURATION}>
+            <Text style={styles.title}>{item.actor}</Text>
+          </Animatable.View>
         </View>
-        <AppForm
-          initialValues={{ email: "", password: "" }}
-          onSubmit={handleSubmit}
-          validationSchema={validationSchema}
-        >
-          <ErrorMessage
-            error="Invalid Email and/or Password."
-            visible={loginFailed}
-          />
-          <AppFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="email"
-            keyboardType="email-address"
-            name="email"
-            placeholder="Email"
-            textContentType="emailAddress"
-          />
-          <AppFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="lock"
-            name="password"
-            placeholder="Password"
-            secureTextEntry
-            textContentType="password"
-          />
-          <SubmitButton title="Login" />
-        </AppForm>
+        <Animatable.View animation="fadeInUp" delay={DURATION}>
+          <AppForm
+            initialValues={{ email: "", password: "" }}
+            onSubmit={handleSubmit}
+            validationSchema={validationSchema}
+          >
+            <ErrorMessage
+              error="Invalid Email and/or Password."
+              visible={loginFailed}
+            />
+            <AppFormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="email"
+              keyboardType="email-address"
+              name="email"
+              placeholder="Email"
+              textContentType="emailAddress"
+            />
+            <AppFormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="lock"
+              name="password"
+              placeholder="Password"
+              secureTextEntry
+              textContentType="password"
+            />
+            <SubmitButton title="Login" />
+          </AppForm>
+        </Animatable.View>
       </Screen>
     </>
   );

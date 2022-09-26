@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import * as Yup from "yup";
 import { SharedElement } from "react-navigation-shared-element";
+import * as Animatable from "react-native-animatable";
 
 import Screen from "../components/Screen";
 import authApi from "../api/auth";
@@ -27,6 +28,7 @@ import AppPhoneInput from "../components/forms/AppPhoneInput";
 import OtpInput from "../components/forms/OtpInput";
 
 const { width, height } = Dimensions.get("screen");
+const DURATION = 400;
 
 const schemaFunction = (isValid) => {
   const validationSchema = Yup.object().shape({
@@ -48,29 +50,24 @@ function RegisterScreen({ route }) {
   const { item } = route.params;
   const [otpVisible, setOtpVisible] = useState(false);
   const [isValid, setIsValid] = useState(false);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState({ actor: item.actor });
+  const [error, setError] = useState();
 
   const registerApi = useApi(usersApi.register);
   const checkApi = useApi(usersApi.check);
   // const loginApi = useApi(authApi.login);
   // const auth = useAuth();
-  const [error, setError] = useState();
 
-  const handleSubmit = async (userInfo) => {
+  const handleSubmit = async (userInfo, { resetForm }) => {
     const result = await checkApi.request(userInfo);
     if (!result.ok) {
       if (result.data) setError(result.data.error);
       else setError("An unexpected error occurred.");
       return;
     }
-    setData({ ...userInfo, ...result.data });
+    setData({ ...data, ...userInfo, ...result.data });
     setOtpVisible(!otpVisible);
-
-    // const { data: authToken } = await loginApi.request(
-    //   userInfo.email,
-    //   userInfo.password
-    // );
-    // auth.logIn(authToken);
+    resetForm();
   };
 
   const handleOtp = async (otp) => {
@@ -80,51 +77,62 @@ function RegisterScreen({ route }) {
     handleLogin();
   };
 
+  const handleLogin = () => {
+    // const { data: authToken } = await loginApi.request(
+    //   userInfo.email,
+    //   userInfo.password
+    // );
+    // auth.logIn(authToken);
+  };
+
   return (
     <>
       <ActivityIndicator visible={registerApi.loading || checkApi.loading} />
       <Screen style={styles.container}>
-        <Button title="open" onPress={() => setOtpVisible(!otpVisible)} />
-
+        {/* <Button title="open" onPress={() => setOtpVisible(!otpVisible)} /> */}
         <View style={styles.headingConatiner}>
           <SharedElement id={`item.${item.key}.image`}>
             <Image source={{ uri: item.image }} style={styles.image} />
           </SharedElement>
-          <Text style={styles.title}>{item.actor}</Text>
+          <Animatable.View animation="bounceIn" delay={DURATION}>
+            <Text style={styles.title}>{item.actor}</Text>
+          </Animatable.View>
         </View>
-        <Form
-          initialValues={{ name: "", email: "", password: "", phone: "" }}
-          onSubmit={handleSubmit}
-          validationSchema={schemaFunction(isValid)}
-        >
-          <ErrorMessage error={error} visible={error} />
-          <FormField
-            autoCorrect={false}
-            icon="account"
-            name="name"
-            placeholder="Name"
-          />
-          <FormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="email"
-            keyboardType="email-address"
-            name="email"
-            placeholder="Email"
-            textContentType="emailAddress"
-          />
-          <FormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="lock"
-            name="password"
-            placeholder="Password"
-            secureTextEntry
-            textContentType="password"
-          />
-          <AppPhoneInput name="phone" onCheck={(val) => setIsValid(val)} />
-          <SubmitButton title="Register" />
-        </Form>
+        <Animatable.View animation="fadeInUp" delay={DURATION}>
+          <Form
+            initialValues={{ name: "", email: "", password: "", phone: "" }}
+            onSubmit={handleSubmit}
+            validationSchema={schemaFunction(isValid)}
+          >
+            <ErrorMessage error={error} visible={error} />
+            <FormField
+              autoCorrect={false}
+              icon="account"
+              name="name"
+              placeholder="Name"
+            />
+            <FormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="email"
+              keyboardType="email-address"
+              name="email"
+              placeholder="Email"
+              textContentType="emailAddress"
+            />
+            <FormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="lock"
+              name="password"
+              placeholder="Password"
+              secureTextEntry
+              textContentType="password"
+            />
+            <AppPhoneInput name="phone" onCheck={(val) => setIsValid(val)} />
+            <SubmitButton title="Register" />
+          </Form>
+        </Animatable.View>
         <OtpInput
           otpVisible={otpVisible}
           onOtpVisible={(v) => setOtpVisible(v)}
