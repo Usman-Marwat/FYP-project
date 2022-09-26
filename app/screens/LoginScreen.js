@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { SharedElement } from "react-navigation-shared-element";
 import * as Animatable from "react-native-animatable";
 
+import ActivityIndicator from "../components/ActivityIndicator";
 import Screen from "../components/Screen";
 import {
   ErrorMessage,
@@ -15,7 +16,7 @@ import {
 import authApi from "../api/auth";
 import useAuth from "../auth/useAuth";
 
-const { width, height } = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
 const DURATION = 400;
 
 const validationSchema = Yup.object().shape({
@@ -24,16 +25,16 @@ const validationSchema = Yup.object().shape({
 });
 
 function LoginScreen({ route }) {
+  const { item } = route.params;
   const [loginFailed, setLoginFailed] = useState(false);
-  // const { logIn } = useAuth();
+  const { logIn } = useAuth();
 
   const handleSubmit = async ({ email, password }) => {
-    const result = await authApi.login(email, password);
+    const result = await authApi.login(email, password, item.actor);
     if (!result.ok) return setLoginFailed(true);
     setLoginFailed(false);
     logIn(result.data);
   };
-  const { item } = route.params;
 
   return (
     <>
@@ -43,7 +44,7 @@ function LoginScreen({ route }) {
           <SharedElement id={`item.${item.key}.image`}>
             <Image source={{ uri: item.image }} style={styles.image} />
           </SharedElement>
-          <Animatable.View animation="bounceIn" delay={DURATION}>
+          <Animatable.View animation="bounceIn" delay={DURATION / 2}>
             <Text style={styles.title}>{item.actor}</Text>
           </Animatable.View>
         </View>

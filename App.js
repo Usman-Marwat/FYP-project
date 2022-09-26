@@ -1,12 +1,31 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { SafeAreaView, StyleSheet, View, Button } from "react-native";
+
 import AuthNavigator from "./app/navigation/AuthNavigator";
-import OTPTextInput from "react-native-otp-textinput";
-import OtpInput from "./app/components/forms/OtpInput";
-import AppButton from "./app/components/AppButton";
+import CustomerNavigator from "./app/navigation/CustomerNavigation/CustomerNavigatior";
+import jwtDecode from "jwt-decode";
+import AuthContext from "./app/auth/context";
+import authStorage from "./app/auth/storage";
+import OfflineNotice from "./app/components/OfflineNotice";
 
 const App = () => {
-  return <AuthNavigator />;
+  const [user, setUser] = useState();
+  const restoreToken = async () => {
+    const token = await authStorage.getToken();
+    if (!token) return;
+    setUser(jwtDecode(token));
+  };
+
+  useEffect(() => {
+    restoreToken();
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ user, setUser }}>
+      <OfflineNotice />
+      {user ? <CustomerNavigator /> : <AuthNavigator />}
+    </AuthContext.Provider>
+  );
 };
 
 const styles = StyleSheet.create({});
