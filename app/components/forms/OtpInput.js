@@ -19,20 +19,19 @@ const OtpInput = ({ otpVisible, onOtpVisible, onSendOtp }) => {
 
   const handleInputText = (text) => {
     setOtp(text);
-    if (text.length === otpLength) {
-      setDisabled(false);
-    } else setDisabled(true);
+    if (text.length === otpLength) setDisabled(false);
+    else setDisabled(true);
   };
 
   return (
     <Modal
-      animationType="fade"
+      animationType="slide"
       visible={otpVisible}
       style={{ backgroundColor: "red", flex: 1 }}
     >
       <Button title="Close" onPress={() => onOtpVisible(!otpVisible)} />
       <SafeAreaView style={styles.modalContainer}>
-        <Text style={styles.text}>Enter your otp</Text>
+        <Text style={styles.text}>Enter Email Otp</Text>
         <View style={styles.wrapper}>
           <OTPTextInput
             textInputStyle={styles.textInput}
@@ -40,15 +39,16 @@ const OtpInput = ({ otpVisible, onOtpVisible, onSendOtp }) => {
             inputCount={6}
             tintColor="#ff355e"
           />
+          <AppButton
+            disabled={disabled}
+            title="Send"
+            titleStyle={{ color: colors.primary }}
+            style={styles.buttonStyle}
+            onPress={() => {
+              onSendOtp(otp);
+            }}
+          />
         </View>
-        <Button
-          disabled={disabled}
-          title="Send"
-          color="white"
-          onPress={() => {
-            onSendOtp(otp);
-          }}
-        />
       </SafeAreaView>
     </Modal>
   );
@@ -57,15 +57,20 @@ const OtpInput = ({ otpVisible, onOtpVisible, onSendOtp }) => {
 export default OtpInput;
 
 const styles = StyleSheet.create({
+  buttonStyle: {
+    backgroundColor: colors.white,
+    width: 120,
+    marginTop: 20,
+  },
   modalContainer: {
     flex: 1,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.2)",
+    backgroundColor: "rgba(0,0,0,0.07)",
   },
   text: {
-    color: colors.white,
+    // color: colors.white,
     fontWeight: "700",
     fontSize: 25,
     textTransform: "uppercase",

@@ -89,7 +89,7 @@ function RegisterScreen({ route }) {
     <>
       <ActivityIndicator visible={registerApi.loading || checkApi.loading} />
       <Screen style={styles.container}>
-        {/* <Button title="open" onPress={() => setOtpVisible(!otpVisible)} /> */}
+        <Button title="open" onPress={() => setOtpVisible(!otpVisible)} />
         <View style={styles.headingConatiner}>
           <SharedElement id={`item.${item.key}.image`}>
             <Image source={{ uri: item.image }} style={styles.image} />

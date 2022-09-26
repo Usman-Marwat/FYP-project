@@ -14,7 +14,12 @@ function AppButton({
 }) {
   return (
     <TouchableOpacity
-      style={[styles.button, { backgroundColor: colors[color] }, style]}
+      style={[
+        styles.button,
+        { backgroundColor: colors[color] },
+        style,
+        { opacity: disabled ? 0.3 : 1 },
+      ]}
       onPress={onPress}
       disabled={disabled}
     >

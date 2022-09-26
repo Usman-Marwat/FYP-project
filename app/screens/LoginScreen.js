@@ -37,9 +37,8 @@ function LoginScreen({ route }) {
 
   return (
     <>
-      {/* <ActivityIndicator visible={registerApi.loading || loginApi.loading} /> */}
+      <ActivityIndicator visible={authApi.loading} />
       <Screen style={styles.container}>
-        {/* <Image style={styles.logo} source={require("../assets/logo-red.png")} /> */}
         <View style={styles.headingConatiner}>
           <SharedElement id={`item.${item.key}.image`}>
             <Image source={{ uri: item.image }} style={styles.image} />
