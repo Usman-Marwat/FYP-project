@@ -29,14 +29,10 @@ const AppPhoneInput = ({ name, onCheck }) => {
           flagButtonStyle={styles.phoneButtonStyle}
           defaultCode="PK"
           layout="first"
-          // onChangeText={handleText}
           value={values[name]}
-          // onChangeFormattedText={handleFormattedText}
           textInputProps={{
             placeholderTextColor: colors.medium,
-            onBlur: () => {
-              return setFieldTouched(name);
-            },
+            onBlur: () => setFieldTouched(name),
             onEndEditing: (e) => {
               handleText(e.nativeEvent.text);
             },

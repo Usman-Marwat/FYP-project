@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Button,
   Dimensions,
@@ -33,7 +33,7 @@ const schemaFunction = (isValid) => {
     name: Yup.string().required().label("Name"),
     email: Yup.string().required().email().label("Email"),
     password: Yup.string().required().min(4).label("Password"),
-    phoneNumber: Yup.string()
+    phone: Yup.string()
       .required()
       .test(
         "test-name",
@@ -48,41 +48,38 @@ function RegisterScreen({ route }) {
   const { item } = route.params;
   const [otpVisible, setOtpVisible] = useState(false);
   const [isValid, setIsValid] = useState(false);
+  const [data, setData] = useState(null);
 
-  // const registerApi = useApi(usersApi.register);
+  const registerApi = useApi(usersApi.register);
+  const checkApi = useApi(usersApi.check);
   // const loginApi = useApi(authApi.login);
   // const auth = useAuth();
-  // const [error, setError] = useState();
+  const [error, setError] = useState();
 
   const handleSubmit = async (userInfo) => {
-    console.log(userInfo);
-    const result = await registerApi.request(userInfo);
-
+    const result = await checkApi.request(userInfo);
     if (!result.ok) {
       if (result.data) setError(result.data.error);
-      else {
-        setError("An unexpected error occurred.");
-        console.log(result);
-      }
+      else setError("An unexpected error occurred.");
       return;
     }
+    setData({ ...userInfo, ...result.data });
+    setOtpVisible(!otpVisible);
 
-    const { data: authToken } = await loginApi.request(
-      userInfo.email,
-      userInfo.password
-    );
-    auth.logIn(authToken);
+    // const { data: authToken } = await loginApi.request(
+    //   userInfo.email,
+    //   userInfo.password
+    // );
+    // auth.logIn(authToken);
   };
 
-  const handleOtp = (otp) => {
-    //take otp and send it with state id
-    console.log(otp);
+  const handleOtp = async (otp) => {
+    const result = await registerApi.request({ ...data, otp });
   };
 
   return (
     <>
-      {/* <ActivityIndicator visible={registerApi.loading || loginApi.loading} /> */}
-      {/* <ActivityIndicator visible={true} /> */}
+      <ActivityIndicator visible={registerApi.loading || checkApi.loading} />
       <Screen style={styles.container}>
         <Button title="open" onPress={() => setOtpVisible(!otpVisible)} />
 
@@ -93,7 +90,7 @@ function RegisterScreen({ route }) {
           <Text style={styles.title}>{item.actor}</Text>
         </View>
         <Form
-          initialValues={{ name: "", email: "", password: "", phoneNumber: "" }}
+          initialValues={{ name: "", email: "", password: "", phone: "" }}
           onSubmit={handleSubmit}
           validationSchema={schemaFunction(isValid)}
         >
@@ -122,10 +119,7 @@ function RegisterScreen({ route }) {
             secureTextEntry
             textContentType="password"
           />
-          <AppPhoneInput
-            name="phoneNumber"
-            onCheck={(val) => setIsValid(val)}
-          />
+          <AppPhoneInput name="phone" onCheck={(val) => setIsValid(val)} />
           <SubmitButton title="Register" />
         </Form>
         <OtpInput
@@ -186,4 +180,16 @@ if (!result.ok) returns true that means the result failed
     // maybe the server is offline or we do not have internet connection; we have offline notice
     // to care of this but its good to show a generic error message
     if (!result.ok) {
+*/
+
+/* 
+"console.log(data)"
+this gives us "null" when printed directly after setData()
+
+"setData({ ...data, otp });
+console.log(data);"
+In handleOTP(), doing this above "const result = await registerApi.request(data)" sends the previous data without otp
+The reason is because the component rerenders which redefines the handleotp() but the previous handleOtp 
+funtion is executed. May be becasue its an asynchronous function because of logic of react.
+
 */
