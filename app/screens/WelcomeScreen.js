@@ -11,42 +11,45 @@ import {
 import { SharedElement } from "react-navigation-shared-element";
 
 import AppButton from "../components/AppButton";
+import colors from "../config/colors";
 import routes from "../navigation/routes";
 
 const { width, height } = Dimensions.get("screen");
 
-const bgs = ["#A5BBFF", "#DDBEFE", "#FF63ED", "#B98EFF"];
+const bgs = ["#ff355e", "#cb4154", "#ffa07a", "#A5BBFF"];
+
 const DATA = [
   {
     actor: "Contractor",
     key: "3571572",
-    title: "Multi-lateral intermediate moratorium",
+    title: "Expand the realm of your business",
     description:
       "I'll back up the multi-byte XSS matrix, that should feed the SCSI WelcomeScreenlication!",
-    image: "https://cdn-icons-png.flaticon.com/512/3571/3571572.png",
+    image: "https://cdn-icons-png.flaticon.com/512/7899/7899486.png",
   },
   {
     actor: "Customer",
     key: "3571747",
-    title: "Automated radical data-warehouse",
+    title: "Find the best makers for your house",
     description:
       "Use the optical SAS system, then you can navigate the auxiliary alarm!",
-    image: "https://cdn-icons-png.flaticon.com/128/3571/3571747.png",
+    image: "https://cdn-icons-png.flaticon.com/512/7899/7899565.png",
   },
   {
     actor: "Employee",
     key: "3571680",
-    title: "Inverse attitude-oriented system engine",
+    title: "Be part of your amazing firm",
     description:
       "The ADP array is down, compress the online sensor so we can input the HTTP panel!",
-    image: "https://cdn-icons-png.flaticon.com/512/3571/3571680.png",
+    image: "https://cdn-icons-png.flaticon.com/512/7899/7899416.png",
   },
   {
     actor: "Supplier",
     key: "3571603",
-    title: "Monitored global data-warehouse",
-    description: "We need to program the open-source IB interface!",
-    image: "https://cdn-icons-png.flaticon.com/512/3571/3571603.png",
+    title: "Help contractor, and grow your business",
+    description:
+      "We need to program the open-source IB interface! hey how are you",
+    image: "https://cdn-icons-png.flaticon.com/512/7899/7899473.png",
   },
 ];
 
@@ -114,7 +117,12 @@ const Square = ({ scrollX }) => {
 export default function WelcomeScreen({ navigation }) {
   const scrollX = useRef(new Animated.Value(0)).current;
   const [currentIndex, setCurrentIndex] = useState(0);
-  console.log(currentIndex);
+
+  const handleCurentIndex = (index) => {
+    if (index < 0) return setCurrentIndex(0);
+    if (index > 3) return setCurrentIndex(3);
+    setCurrentIndex(index);
+  };
   return (
     <View style={styles.container}>
       <StatusBar hidden />
@@ -134,7 +142,7 @@ export default function WelcomeScreen({ navigation }) {
             Math.floor(event.nativeEvent.contentOffset.x) /
               Math.floor(event.nativeEvent.layoutMeasurement.width)
           );
-          setCurrentIndex(index);
+          handleCurentIndex(index);
         }}
         pagingEnabled
         showsHorizontalScrollIndicator={false}
@@ -147,8 +155,11 @@ export default function WelcomeScreen({ navigation }) {
                 </SharedElement>
               </View>
               <View style={{ flex: 0.3 }}>
-                <Text style={styles.title}>{item.title}</Text>
-                <Text style={styles.description}>{item.description}</Text>
+                <Text style={styles.title}>{item.actor}</Text>
+                <Text style={styles.tagline}>{item.title}</Text>
+                <View style={styles.description}>
+                  <Text>{item.description}</Text>
+                </View>
               </View>
             </View>
           );
@@ -159,7 +170,7 @@ export default function WelcomeScreen({ navigation }) {
           color="transparent"
           style={[styles.button, { width: 190 }]}
           title={"Register"}
-          subTitle={"as " + DATA[currentIndex].actor}
+          subTitle={"as " + DATA[currentIndex]?.actor}
           onPress={() =>
             navigation.navigate(routes.REGISTER, {
               item: DATA[currentIndex],
@@ -205,15 +216,20 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   description: {
-    fontWeight: "300",
+    width: "95%",
+    paddingHorizontal: 10,
+    paddingVertical: 2,
+    borderRadius: 10,
+    marginTop: 7,
+    backgroundColor: colors.white,
   },
   imageContainer: {
     flex: 0.7,
     justifyContent: "center",
   },
   image: {
-    width: width / 2,
-    height: width / 2.5,
+    width: width,
+    height: width / 2,
     resizeMode: "contain",
   },
   itemWrapper: {
@@ -242,10 +258,17 @@ const styles = StyleSheet.create({
     top: -height * 0.6,
     left: -height * 0.3,
   },
+  tagline: {
+    color: "#fff",
+    fontWeight: "800",
+    fontSize: 25,
+  },
   title: {
     color: "#fff",
     fontWeight: "800",
-    fontSize: 28,
-    marginBottom: 10,
+    fontSize: 32,
+    textTransform: "uppercase",
+    // textDecorationLine: "underline",
+    // textDecorationStyle: "dashed",
   },
 });

@@ -8,6 +8,8 @@ import CustomDrawer from "../CustomDrawer";
 import MenuFoldButton from "../MenuFoldButton";
 import { translateMenuFold } from "../navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
+import AppButton from "../../components/AppButton";
+import useAuth from "../../auth/useAuth";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -64,10 +66,12 @@ const styles = StyleSheet.create({});
 function Check({ navigation }) {
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
+  const { logOut } = useAuth();
 
   return (
     <View>
       <MenuFoldButton translateX={translateX} navigation={navigation} />
+      <AppButton title="Logout" onPress={() => logOut()} />
     </View>
   );
 }

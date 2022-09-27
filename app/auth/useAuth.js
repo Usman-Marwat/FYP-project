@@ -4,6 +4,9 @@ import jwtDecode from "jwt-decode";
 import AuthContext from "./context";
 import authStorage from "./storage";
 
+//This hook is encapsulating the logic around populating the state [user,setUser]
+//This state could be from context as well
+
 export default useAuth = () => {
   const { user, setUser } = useContext(AuthContext);
 

@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
-import { Dimensions, StyleSheet, Image } from "react-native";
+import { Dimensions, StyleSheet, Image, Text, View } from "react-native";
 import * as Yup from "yup";
 import { SharedElement } from "react-navigation-shared-element";
+import * as Animatable from "react-native-animatable";
 
+import ActivityIndicator from "../components/ActivityIndicator";
 import Screen from "../components/Screen";
 import {
   ErrorMessage,
@@ -13,8 +15,10 @@ import {
 
 import authApi from "../api/auth";
 import useAuth from "../auth/useAuth";
+import useApi from "../hooks/useApi";
 
-const { width, height } = Dimensions.get("screen");
+const { width } = Dimensions.get("screen");
+const DURATION = 400;
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label("Email"),
@@ -22,54 +26,63 @@ const validationSchema = Yup.object().shape({
 });
 
 function LoginScreen({ route }) {
+  const { item } = route.params;
   const [loginFailed, setLoginFailed] = useState(false);
-  // const { logIn } = useAuth();
+  const { logIn } = useAuth();
 
-  const handleSubmit = async ({ email, password }) => {
-    const result = await authApi.login(email, password);
+  const loginApi = useApi(authApi.login);
+
+  const handleSubmit = async (userInfo) => {
+    const result = await loginApi.request({ ...userInfo, actor: item.actor });
+    console.log(result.data);
     if (!result.ok) return setLoginFailed(true);
     setLoginFailed(false);
-    logIn(result.data);
+    // logIn(result.data);
   };
-  const { item } = route.params;
 
   return (
     <>
-      {/* <ActivityIndicator visible={registerApi.loading || loginApi.loading} /> */}
+      <ActivityIndicator visible={loginApi.loading} />
       <Screen style={styles.container}>
-        {/* <Image style={styles.logo} source={require("../assets/logo-red.png")} /> */}
-        <SharedElement id={`item.${item.key}.image`}>
-          <Image source={{ uri: item.image }} style={styles.image} />
-        </SharedElement>
-        <AppForm
-          initialValues={{ email: "", password: "" }}
-          onSubmit={handleSubmit}
-          validationSchema={validationSchema}
-        >
-          <ErrorMessage
-            error="Invalid Email and/or Password."
-            visible={loginFailed}
-          />
-          <AppFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="email"
-            keyboardType="email-address"
-            name="email"
-            placeholder="Email"
-            textContentType="emailAddress"
-          />
-          <AppFormField
-            autoCapitalize="none"
-            autoCorrect={false}
-            icon="lock"
-            name="password"
-            placeholder="Password"
-            secureTextEntry
-            textContentType="password"
-          />
-          <SubmitButton title="Login" />
-        </AppForm>
+        <View style={styles.headingConatiner}>
+          <SharedElement id={`item.${item.key}.image`}>
+            <Image source={{ uri: item.image }} style={styles.image} />
+          </SharedElement>
+          <Animatable.View animation="bounceIn" delay={DURATION / 2}>
+            <Text style={styles.title}>{item.actor}</Text>
+          </Animatable.View>
+        </View>
+        <Animatable.View animation="fadeInUp" delay={DURATION}>
+          <AppForm
+            initialValues={{ email: "", password: "" }}
+            onSubmit={handleSubmit}
+            validationSchema={validationSchema}
+          >
+            <ErrorMessage
+              error="Invalid Email and/or Password."
+              visible={loginFailed}
+            />
+            <AppFormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="email"
+              keyboardType="email-address"
+              name="email"
+              placeholder="Email"
+              textContentType="emailAddress"
+            />
+            <AppFormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="lock"
+              name="password"
+              placeholder="Password"
+              secureTextEntry
+              textContentType="password"
+            />
+            <SubmitButton title="Login" />
+          </AppForm>
+        </Animatable.View>
       </Screen>
     </>
   );
@@ -78,6 +91,19 @@ function LoginScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+    paddingTop: 0,
+  },
+  headingConatiner: {
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  image: {
+    width: width / 2,
+    height: width / 2.5,
+    marginTop: 30,
+    marginBottom: 30,
+    resizeMode: "contain",
+    zIndex: 1,
   },
   logo: {
     width: 80,
@@ -86,13 +112,10 @@ const styles = StyleSheet.create({
     marginTop: 50,
     marginBottom: 20,
   },
-  image: {
-    width: width / 2,
-    height: width / 2.5,
-    marginTop: 30,
-    marginBottom: 30,
-    marginLeft: 90,
-    resizeMode: "contain",
+  title: {
+    fontWeight: "800",
+    fontSize: 32,
+    textTransform: "uppercase",
   },
 });
 

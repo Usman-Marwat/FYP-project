@@ -10,11 +10,18 @@ function AppButton({
   style,
   subTitle,
   titleStyle,
+  disabled,
 }) {
   return (
     <TouchableOpacity
-      style={[styles.button, { backgroundColor: colors[color] }, style]}
+      style={[
+        styles.button,
+        { backgroundColor: colors[color] },
+        style,
+        { opacity: disabled ? 0.3 : 1 },
+      ]}
       onPress={onPress}
+      disabled={disabled}
     >
       <Text style={[styles.text, titleStyle]}>{title}</Text>
       {subTitle && <Text style={styles.subTitle}>{subTitle}</Text>}

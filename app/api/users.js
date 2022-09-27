@@ -1,5 +1,6 @@
 import client from "./client";
 
-const register = (userInfo) => client.post("/users", userInfo);
+const register = (data) => client.post("/users", data);
+const otp = (userInfo) => client.post("/users/otp", userInfo);
 
-export default { register };
+export default { register, otp };
