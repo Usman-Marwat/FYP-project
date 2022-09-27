@@ -72,8 +72,8 @@ export default useNotifications = () => {
     if (user.expoPushToken === "nill") {
       setLoading(true);
       const result = await expoPushTokensApi.register(user.user_id, token.data);
+      if (result.ok) setUser({ ...user, expoPushToken: result.data });
       setLoading(false);
-      if (result.ok) setUser({ ...user, expoPushToken: token.data });
     }
   };
 

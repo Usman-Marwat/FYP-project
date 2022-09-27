@@ -33,7 +33,6 @@ function LoginScreen({ route }) {
 
   const handleSubmit = async (userInfo) => {
     const result = await loginApi.request({ ...userInfo, actor: item.actor });
-    console.log(result.data);
     if (!result.ok) return setError(result.data.email + result.data.password);
     logIn(result.data);
   };

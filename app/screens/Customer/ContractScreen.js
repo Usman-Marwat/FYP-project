@@ -17,7 +17,6 @@ import useNotifications from "../../hooks/useNotifications";
 const ContractScreen = ({ navigation }) => {
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
-
   const { loading } = useNotifications();
 
   return (

@@ -6,8 +6,8 @@ import AuthNavigator from "./app/navigation/AuthNavigator";
 import AuthContext from "./app/auth/context";
 import authStorage from "./app/auth/storage";
 import OfflineNotice from "./app/components/OfflineNotice";
-import useNotifications from "./app/hooks/useNotifications";
 import AppStarter from "./app/start/AppStarter";
+import storage from "./app/auth/storage";
 
 const App = () => {
   const [user, setUser] = useState();
