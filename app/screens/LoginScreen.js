@@ -15,6 +15,7 @@ import {
 
 import authApi from "../api/auth";
 import useAuth from "../auth/useAuth";
+import useApi from "../hooks/useApi";
 
 const { width } = Dimensions.get("screen");
 const DURATION = 400;
@@ -29,16 +30,19 @@ function LoginScreen({ route }) {
   const [loginFailed, setLoginFailed] = useState(false);
   const { logIn } = useAuth();
 
+  const loginApi = useApi(authApi.login);
+
   const handleSubmit = async (userInfo) => {
-    const result = await authApi.login({ ...userInfo, actor: item.actor });
+    const result = await loginApi.request({ ...userInfo, actor: item.actor });
+    console.log(result.data);
     if (!result.ok) return setLoginFailed(true);
     setLoginFailed(false);
-    logIn(result.data);
+    // logIn(result.data);
   };
 
   return (
     <>
-      <ActivityIndicator visible={authApi.loading} />
+      <ActivityIndicator visible={loginApi.loading} />
       <Screen style={styles.container}>
         <View style={styles.headingConatiner}>
           <SharedElement id={`item.${item.key}.image`}>

@@ -7,9 +7,13 @@ import CustomerNavigator from "./app/navigation/CustomerNavigation/CustomerNavig
 import AuthContext from "./app/auth/context";
 import authStorage from "./app/auth/storage";
 import OfflineNotice from "./app/components/OfflineNotice";
+import useNotifications from "./app/hooks/useNotifications";
 
 const App = () => {
   const [user, setUser] = useState();
+  const { token } = useNotifications();
+
+  // expoPushTokensApi.register(token.data);
 
   const restoreUser = async () => {
     const user = await authStorage.getUser();

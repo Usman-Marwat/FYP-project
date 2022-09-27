@@ -50,44 +50,41 @@ function RegisterScreen({ route }) {
   const { item } = route.params;
   const [otpVisible, setOtpVisible] = useState(false);
   const [isValid, setIsValid] = useState(false);
-  const [data, setData] = useState({ actor: item.actor });
+  const [formData, setFormData] = useState({ actor: item.actor });
   const [error, setError] = useState();
 
   const registerApi = useApi(usersApi.register);
-  const checkApi = useApi(usersApi.check);
-  // const loginApi = useApi(authApi.login);
-  // const auth = useAuth();
+  const otpApi = useApi(usersApi.otp);
+  const loginApi = useApi(authApi.login);
+  const { logIn } = useAuth();
 
   const handleSubmit = async (userInfo, { resetForm }) => {
-    const result = await checkApi.request(userInfo);
+    const result = await otpApi.request(userInfo);
     if (!result.ok) {
       if (result.data) setError(result.data.error);
       else setError("An unexpected error occurred.");
       return;
     }
-    setData({ ...data, ...userInfo, ...result.data });
+    setData({ ...formData, ...userInfo, ...result.data });
     setOtpVisible(!otpVisible);
     resetForm();
   };
 
   const handleOtp = async (otp) => {
     setOtpVisible(!otpVisible);
-    const result = await registerApi.request({ ...data, otp });
+    const result = await registerApi.request({ ...formData, otp });
     if (!result.authenticated) return setError(result.data.error);
     handleLogin();
   };
 
-  const handleLogin = () => {
-    // const { data: authToken } = await loginApi.request(
-    //   userInfo.email,
-    //   userInfo.password
-    // );
-    // auth.logIn(authToken);
+  const handleLogin = async () => {
+    const { data: authToken } = await loginApi.request(formData);
+    logIn(authToken);
   };
 
   return (
     <>
-      <ActivityIndicator visible={registerApi.loading || checkApi.loading} />
+      <ActivityIndicator visible={registerApi.loading || otpApi.loading} />
       <Screen style={styles.container}>
         {/* <Button title="open" onPress={() => setOtpVisible(!otpVisible)} /> */}
         <View style={styles.headingConatiner}>
