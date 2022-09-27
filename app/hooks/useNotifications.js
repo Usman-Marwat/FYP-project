@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import * as Notifications from "expo-notifications";
 
 import navigation from "../navigation/rootNavigation";
 
 import expoPushTokensApi from "../api/expoPushTokens";
+import AuthContext from "../auth/context";
 
 // Required
 Notifications.setNotificationHandler({
@@ -16,9 +17,10 @@ Notifications.setNotificationHandler({
 
 export default useNotifications = () => {
   const [notification, setNotification] = useState(false);
-  const [token, setToken] = useState(false);
+  const [loading, setLoading] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
+  const { user, setUser } = useContext(AuthContext);
 
   useEffect(() => {
     registerForPushNotifications();
@@ -59,13 +61,21 @@ export default useNotifications = () => {
         }
       }
       // console.log("permissions granted!");
-
       const token = await Notifications.getExpoPushTokenAsync();
-      setToken(token);
+      patchToken(token);
     } catch (error) {
       console.log("Error getting a push token", error);
     }
   };
 
-  return { token };
+  const patchToken = async (token) => {
+    if (user.expoPushToken === "nill") {
+      setLoading(true);
+      const result = await expoPushTokensApi.register(user.user_id, token.data);
+      setLoading(false);
+      if (result.ok) setUser({ ...user, expoPushToken: token.data });
+    }
+  };
+
+  return { loading };
 };

@@ -11,9 +11,6 @@ import AppStarter from "./app/start/AppStarter";
 
 const App = () => {
   const [user, setUser] = useState();
-  const { token } = useNotifications();
-
-  // expoPushTokensApi.register(token.data);
 
   const restoreUser = async () => {
     const user = await authStorage.getUser();

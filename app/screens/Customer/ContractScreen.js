@@ -1,24 +1,28 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
-import React, { useState, useContext } from "react";
-import { ProfileHeader } from "@freakycoder/react-native-header-view";
+import { View, StyleSheet, ScrollView } from "react-native";
+import React, { useContext } from "react";
 import RNBounceable from "@freakycoder/react-native-bounceable";
 
 import AppText from "../../components/AppTextGeneral";
+import ActivityIndicator from "../../components/ActivityIndicator";
 import Card from "../../components/Card";
 import colors from "../../config/colors";
-import ListItem from "../../components/ListItem";
-import Screen from "../../components/Screen";
-import routes from "../../navigation/routes";
-import MenuFoldButton from "../../navigation/MenuFoldButton";
-import { translateMenuFold } from "../../navigation/navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
+import ListItem from "../../components/ListItem";
+import MenuFoldButton from "../../navigation/MenuFoldButton";
+import routes from "../../navigation/routes";
+import Screen from "../../components/Screen";
+import { translateMenuFold } from "../../navigation/navigationAnimations";
+import useNotifications from "../../hooks/useNotifications";
 
 const ContractScreen = ({ navigation }) => {
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
 
+  const { loading } = useNotifications();
+
   return (
     <>
+      <ActivityIndicator visible={loading} />
       <MenuFoldButton navigation={navigation} translateX={translateX} />
       <Screen>
         <View style={styles.separator}>

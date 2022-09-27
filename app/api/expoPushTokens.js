@@ -1,7 +1,7 @@
 import client from "./client";
 
-const register = (pushToken) =>
-  client.post("/expoPushTokens", { token: pushToken });
+const register = (user_id, expoPushToken) =>
+  client.put("/expoPushTokens", { user_id, expoPushToken });
 
 export default {
   register,
