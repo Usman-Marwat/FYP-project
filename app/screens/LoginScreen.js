@@ -37,7 +37,7 @@ function LoginScreen({ route }) {
     console.log(result.data);
     if (!result.ok) return setLoginFailed(true);
     setLoginFailed(false);
-    // logIn(result.data);
+    logIn(result.data);
   };
 
   return (
