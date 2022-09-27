@@ -65,16 +65,17 @@ function RegisterScreen({ route }) {
       else setError("An unexpected error occurred.");
       return;
     }
-    setData({ ...formData, ...userInfo, ...result.data });
+    setFormData({ ...formData, ...userInfo, ...result.data });
     setOtpVisible(!otpVisible);
-    resetForm();
+    // resetForm();
   };
 
   const handleOtp = async (otp) => {
     setOtpVisible(!otpVisible);
     const result = await registerApi.request({ ...formData, otp });
-    if (!result.authenticated) return setError(result.data.error);
-    handleLogin();
+    console.log(result.data?.error);
+    // if (!result.data) return setError(result.data.error);
+    // handleLogin();
   };
 
   const handleLogin = async () => {

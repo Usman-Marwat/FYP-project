@@ -5,7 +5,7 @@ import ContractNavigator from "../navigation/CustomerNavigation/ContractNavigato
 
 const AppStarter = ({ actor }) => {
   if (actor === "Customer") return <CustomerNavigator />;
-  else if (actor === "Contractor") return <ContractNavigator />;
+  else if (actor === "Contractor") return null;
 };
 
 export default AppStarter;

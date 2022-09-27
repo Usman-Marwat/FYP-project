@@ -27,16 +27,14 @@ const validationSchema = Yup.object().shape({
 
 function LoginScreen({ route }) {
   const { item } = route.params;
-  const [loginFailed, setLoginFailed] = useState(false);
-  const { logIn } = useAuth();
-
+  const [error, setError] = useState();
   const loginApi = useApi(authApi.login);
+  const { logIn } = useAuth();
 
   const handleSubmit = async (userInfo) => {
     const result = await loginApi.request({ ...userInfo, actor: item.actor });
     console.log(result.data);
-    if (!result.ok) return setLoginFailed(true);
-    setLoginFailed(false);
+    if (!result.ok) return setError(result.data.email + result.data.password);
     logIn(result.data);
   };
 
@@ -58,10 +56,7 @@ function LoginScreen({ route }) {
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
           >
-            <ErrorMessage
-              error="Invalid Email and/or Password."
-              visible={loginFailed}
-            />
+            <ErrorMessage error={error} visible={error} />
             <AppFormField
               autoCapitalize="none"
               autoCorrect={false}
