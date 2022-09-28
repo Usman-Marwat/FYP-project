@@ -2,7 +2,6 @@ import {
   Animated,
   Dimensions,
   Image,
-  FlatList,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -13,20 +12,14 @@ import {
 import React, { useContext, useRef } from "react";
 import niceColors from "nice-color-palettes";
 import { faker } from "@faker-js/faker";
-// import {
-//   SharedElement,
-//   SharedElementTransition,
-//   nodeFromRef,
-// } from "react-native-shared-element";
+
 import { SharedElement } from "react-navigation-shared-element";
 
 import AppButton from "../../components/AppButton";
-import Screen from "../../components/Screen";
 import routes from "../../navigation/routes";
 import Header from "../../components/Header";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
-import customerContractApi from "../../api/Customer/contract";
 
 faker.seed(1);
 const colors = [
@@ -102,16 +95,6 @@ const FirmsList = ({ navigation, route }) => {
       useNativeDriver: true,
     }
   );
-
-  sendData = async () => {
-    const result = await customerContractApi.addContract(contract, (prog) =>
-      console.log(prog)
-    );
-    console.log(result.data);
-    if (!result.ok) {
-      return alert("Could not save the listings");
-    }
-  };
 
   return (
     <SafeAreaView style={styles.container}>

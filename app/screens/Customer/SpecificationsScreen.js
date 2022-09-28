@@ -21,6 +21,7 @@ import Tagline from "../../components/Tagline";
 import MaterialInput from "../../components/MaterialInput";
 import _ from "lodash";
 import ImageInputList from "../../components/ImageInputList";
+import customerContractApi from "../../api/Customer/contract";
 
 const colorsPalette = [
   "#3F5B98",
@@ -60,7 +61,7 @@ const SpecificationScreen = ({ navigation, route }) => {
   const translateX = translateMenuFold(animatedValue);
   const scrollY = useRef(new Animated.Value(0)).current;
 
-  //calling handle description againand again is not costly becasue its not changing the UI
+  //calling handle description again and again is not costly becasue its not changing the UI
   //check that using useEffect
   const handleAddDescription = (text, index) => {
     const currentDescriptions = _.cloneDeep(descriptions);
@@ -123,6 +124,17 @@ const SpecificationScreen = ({ navigation, route }) => {
   //   console.log(imagesUris);
   // }, [allValues, imagesUris]);
 
+  const sendData = async () => {
+    const contract = { keys, allValues, descriptions, imagesUris };
+    const result = await customerContractApi.addContract(contract, (prog) =>
+      console.log(prog)
+    );
+    console.log(result.data);
+    if (!result.ok) {
+      return alert("Could not save the Contract");
+    }
+  };
+
   return (
     <>
       <Header navigation={navigation} translateX={translateX} />
@@ -143,6 +155,7 @@ const SpecificationScreen = ({ navigation, route }) => {
 
           {keys.map((key, index) => {
             const { scale, opacity } = calculateAnimations(index);
+            const alias = colorsPalette[index % colorsPalette.length];
             if (key === undefined) return null;
             return (
               <TouchableOpacity
@@ -158,14 +171,7 @@ const SpecificationScreen = ({ navigation, route }) => {
                 activeOpacity={0.9}
               >
                 <View style={[styles.card, { backgroundColor: colors.white }]}>
-                  <Text
-                    style={[
-                      styles.heading,
-                      { color: colorsPalette[index % colorsPalette.length] },
-                    ]}
-                  >
-                    {key}
-                  </Text>
+                  <Text style={[styles.heading, { color: alias }]}>{key}</Text>
                   {index === currentIndex && (
                     <View style={styles.accordianContent}>
                       {allValues[index].map((value, j) => {
@@ -174,24 +180,11 @@ const SpecificationScreen = ({ navigation, route }) => {
                             <View
                               style={[
                                 styles.listItemDot,
-                                {
-                                  backgroundColor:
-                                    colorsPalette[index % colorsPalette.length],
-                                },
+                                { backgroundColor: alias },
                               ]}
                             />
                             <View>
-                              <Text
-                                style={[
-                                  styles.body,
-                                  {
-                                    color:
-                                      colorsPalette[
-                                        index % colorsPalette.length
-                                      ],
-                                  },
-                                ]}
-                              >
+                              <Text style={[styles.body, { color: alias }]}>
                                 {value.name}
                                 <Text style={styles.parent}>
                                   {" - " + value.parent}
@@ -204,21 +197,12 @@ const SpecificationScreen = ({ navigation, route }) => {
                             <View
                               style={[
                                 styles.listItemDot,
-                                {
-                                  backgroundColor:
-                                    colorsPalette[index % colorsPalette.length],
-                                },
+                                { backgroundColor: alias },
                               ]}
                             />
                             <Text
                               key={j}
-                              style={[
-                                styles.body,
-                                {
-                                  color:
-                                    colorsPalette[index % colorsPalette.length],
-                                },
-                              ]}
+                              style={[styles.body, { color: alias }]}
                             >
                               {value}
                             </Text>

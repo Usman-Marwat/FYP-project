@@ -73,7 +73,7 @@ function RegisterScreen({ route }) {
   const handleOtp = async (otp) => {
     setOtpVisible(!otpVisible);
     const result = await registerApi.request({ ...formData, otp });
-    console.log(result.data?.error);
+    console.log(result.data);
     // if (!result.data) return setError(result.data.error);
     // handleLogin();
   };
