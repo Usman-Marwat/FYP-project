@@ -7,6 +7,7 @@ const endpoint = "/customer/contract";
 export const addContract = (contract, onUploadProgress) => {
   const data = new FormData();
   data.append("title", "Contract");
+  data.append("actor_id", contract.actor_id);
   data.append("keys", JSON.stringify(contract.keys));
   data.append("allValues", JSON.stringify(contract.allValues));
   data.append("descriptions", JSON.stringify(contract.descriptions));

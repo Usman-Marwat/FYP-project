@@ -9,19 +9,20 @@ import {
 import { Transition, Transitioning } from "react-native-reanimated";
 import niceColors from "nice-color-palettes";
 
-import colors from "../../config/colors";
-import Icon from "../../components/Icon";
+import AuthContext from "../../auth/context";
 import AppTextInput from "../../components/AppTextInput";
+import colors from "../../config/colors";
 import ContractTable from "../../components/ContractTable";
-import routes from "../../navigation/routes";
-import { translateMenuFold } from "../../navigation/navigationAnimations";
+import customerContractApi from "../../api/Customer/contract";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import Header from "../../components/Header";
-import Tagline from "../../components/Tagline";
-import MaterialInput from "../../components/MaterialInput";
-import _ from "lodash";
+import Icon from "../../components/Icon";
 import ImageInputList from "../../components/ImageInputList";
-import customerContractApi from "../../api/Customer/contract";
+import MaterialInput from "../../components/MaterialInput";
+import routes from "../../navigation/routes";
+import { translateMenuFold } from "../../navigation/navigationAnimations";
+import Tagline from "../../components/Tagline";
+import _ from "lodash";
 
 const colorsPalette = [
   "#3F5B98",
@@ -54,6 +55,7 @@ const SpecificationScreen = ({ navigation, route }) => {
   const [imagesUris, setImagesUris] = useState(route.params.imagesUris);
   const [keys, setKeys] = useState(route.params.keysValues);
   const [allValues, setAllValues] = useState(route.params.allValues);
+  const { user } = useContext(AuthContext);
 
   const ref = React.useRef();
   const scrollView = useRef();
@@ -126,8 +128,9 @@ const SpecificationScreen = ({ navigation, route }) => {
 
   const sendData = async () => {
     const contract = { keys, allValues, descriptions, imagesUris };
-    const result = await customerContractApi.addContract(contract, (prog) =>
-      console.log(prog)
+    const result = await customerContractApi.addContract(
+      { actor_id: user.actor_id, ...contract },
+      (prog) => console.log(prog)
     );
     console.log(result.data);
     if (!result.ok) {
@@ -250,7 +253,10 @@ const SpecificationScreen = ({ navigation, route }) => {
       </Animated.ScrollView>
 
       <View style={styles.row}>
-        <TouchableOpacity style={[styles.shadow, { alignItems: "center" }]}>
+        <TouchableOpacity
+          onPress={() => sendData()}
+          style={[styles.shadow, { alignItems: "center" }]}
+        >
           <Icon
             name="bookmark"
             iconColor="#222"
