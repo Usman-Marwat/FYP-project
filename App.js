@@ -1,34 +1,43 @@
-import React, { useState, useRef, useEffect } from "react";
-import { SafeAreaView, StyleSheet, View, Button } from "react-native";
-import * as SplashScreen from "expo-splash-screen";
+import * as React from "react";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import { StyleSheet, Text, View, Dimensions } from "react-native";
+import useLocations from "./app/hooks/useLocations";
 
-import AuthNavigator from "./app/navigation/AuthNavigator";
-import AuthContext from "./app/auth/context";
-import authStorage from "./app/auth/storage";
-import OfflineNotice from "./app/components/OfflineNotice";
-import AppStarter from "./app/start/AppStarter";
-import storage from "./app/auth/storage";
-
-const App = () => {
-  const [user, setUser] = useState();
-
-  const restoreUser = async () => {
-    const user = await authStorage.getUser();
-    if (user) setUser(user);
-  };
-
-  useEffect(() => {
-    restoreUser();
-  }, []);
-
+export default function App() {
+  const { latitude, longitude } = useLocations();
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
-      <OfflineNotice />
-      {user ? <AppStarter actor={user.actor} /> : <AuthNavigator />}
-    </AuthContext.Provider>
+    <View style={styles.container}>
+      {latitude && (
+        <MapView
+          provider={PROVIDER_GOOGLE}
+          style={styles.map}
+          initialRegion={{
+            latitude,
+            longitude,
+            latitudeDelta: 0.017,
+            longitudeDelta: 0.017,
+          }}
+        >
+          <Marker
+            draggable
+            coordinate={{ latitude, longitude }}
+            onDragEnd={(e) => console.log(e.nativeEvent.coordinate)}
+          />
+        </MapView>
+      )}
+    </View>
   );
-};
+}
 
-const styles = StyleSheet.create({});
-
-export default App;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  map: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
+  },
+});
