@@ -25,7 +25,7 @@ const colorsP = [
 ];
 
 const DocumentPicker = () => {
-  const [filesUris, setFilesUris] = useState([]);
+  const [files, setFiles] = useState([]);
   const scrollView = useRef();
 
   const handleDocumentSelection = async () => {
@@ -34,13 +34,17 @@ const DocumentPicker = () => {
         copyToCacheDirectory: false,
       });
       if (response.type === "cancel") throw Error("Canceled");
-      const filesUris2 = _.cloneDeep(filesUris);
-      filesUris2.push(response);
-      console.log(filesUris2.length);
-      setFilesUris(filesUris2);
+      const files2 = _.cloneDeep(files);
+      files2.push(response);
+      console.log(files2.length);
+      setFiles(files2);
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const handleRemove = (fileUri) => {
+    setFiles(files.filter((f) => f.uri !== fileUri));
   };
 
   return (
@@ -51,11 +55,12 @@ const DocumentPicker = () => {
         showsHorizontalScrollIndicator={false}
         onContentSizeChange={() => scrollView.current.scrollToEnd()}
       >
-        {filesUris.map((file, index) => {
+        {files.map(({ uri, name }, index) => {
           return (
             <TouchableOpacity
+              key={index}
+              onPress={() => handleRemove(uri)}
               style={styles.itemContainer}
-              key={index.toString()}
             >
               <View
                 style={[
@@ -63,7 +68,7 @@ const DocumentPicker = () => {
                   { backgroundColor: colorsP[index] },
                 ]}
               />
-              <Text style={styles.fileName}>{file?.name}</Text>
+              <Text style={styles.fileName}>{name}</Text>
             </TouchableOpacity>
           );
         })}
