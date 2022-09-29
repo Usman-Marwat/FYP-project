@@ -10,6 +10,7 @@ import { translateMenuFold } from "../navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import AppButton from "../../components/AppButton";
 import useAuth from "../../auth/useAuth";
+import SavedContractsNavigator from "./SavedContractsNavigator";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -52,6 +53,10 @@ const CustomerNavigator = () => {
           <DrawerNavigator.Screen
             name="Contracts"
             component={ContractNavigator}
+          />
+          <DrawerNavigator.Screen
+            name="SavedContracts"
+            component={SavedContractsNavigator}
           />
         </DrawerNavigator.Navigator>
       </NavigationContainer>
