@@ -281,7 +281,7 @@ const SpecificationScreen = ({ navigation, route }) => {
         <TouchableOpacity
           style={[styles.shadow, { alignItems: "center" }]}
           onPress={() =>
-            navigation.navigate(routes.FIRMSLIST, {
+            navigation.navigate(routes.CREDENTIALS, {
               contract: { keys, allValues, descriptions, imagesUris },
             })
           }

@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import { SafeAreaView, StyleSheet, View, Button } from "react-native";
-import * as SplashScreen from "expo-splash-screen";
 
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import AuthContext from "./app/auth/context";

@@ -8,6 +8,7 @@ export default Object.freeze({
   CONTRACT: "Contract",
   MATERIAL: "Material",
   SPECIFICATIONS: "Specifications",
+  CREDENTIALS: "Credentials",
   FIRMSLIST: "FirmsList",
   FIRMSLISTDETAILS: "FirmsListDetails",
 });

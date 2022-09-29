@@ -10,6 +10,7 @@ import { translateMenuFold } from "../navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import AppButton from "../../components/AppButton";
 import useAuth from "../../auth/useAuth";
+import navigationTheme from "../navigationTheme";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -23,7 +24,7 @@ const CustomerNavigator = () => {
     <DrawerAnimationContext.Provider
       value={{ fromCords, toCords, animatedValue }}
     >
-      <NavigationContainer>
+      <NavigationContainer theme={navigationTheme}>
         <DrawerNavigator.Navigator
           screenOptions={{
             headerShown: false,
@@ -69,9 +70,15 @@ function Check({ navigation }) {
   const { logOut } = useAuth();
 
   return (
-    <View>
+    <>
       <MenuFoldButton translateX={translateX} navigation={navigation} />
-      <AppButton title="Logout" onPress={() => logOut()} />
-    </View>
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <AppButton
+          title="Logout"
+          onPress={() => logOut()}
+          style={{ width: 150 }}
+        />
+      </View>
+    </>
   );
 }
