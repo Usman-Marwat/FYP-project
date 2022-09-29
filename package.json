@@ -24,6 +24,7 @@
     "expo": "~46.0.9",
     "expo-auth-session": "~3.7.1",
     "expo-blur": "~11.2.0",
+    "expo-document-picker": "~10.3.0",
     "expo-image-picker": "~13.3.1",
     "expo-location": "~14.3.0",
     "expo-notifications": "~0.16.1",

@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     height: 60,
     justifyContent: "space-between",
     width: "100%",
-    paddingTop: 0,
+    paddingTop: 20,
     paddingHorizontal: 17,
     borderBottomColor: "silver",
 

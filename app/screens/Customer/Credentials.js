@@ -12,6 +12,7 @@ import Screen from "../../components/Screen";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import Header from "../../components/Header";
+import DocumentPicker from "../../components/DocumentPicker";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().label("Title"),
@@ -25,37 +26,40 @@ const Credentials = ({ navigation }) => {
   const handleSubmit = async (credentials) => {};
 
   return (
-    <Screen style={styles.screen}>
+    <>
       <Header navigation={navigation} translateX={translateX} />
-      <AppForm
-        initialValues={{ title: "", address: "" }}
-        onSubmit={handleSubmit}
-        validationSchema={validationSchema}
-      >
-        <AppFormField
-          autoCapitalize="none"
-          autoCorrect={false}
-          icon="email"
-          name="title"
-          placeholder="Title"
-          width="50%"
-        />
-        <AppFormField
-          autoCapitalize="none"
-          autoCorrect={false}
-          icon="email"
-          name="address"
-          placeholder="Address"
-        />
-      </AppForm>
-    </Screen>
+      <Screen style={styles.screen}>
+        <AppForm
+          initialValues={{ title: "", address: "" }}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
+        >
+          <AppFormField
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="format-title"
+            name="title"
+            placeholder="Title"
+            width="50%"
+          />
+          <AppFormField
+            autoCapitalize="none"
+            autoCorrect={false}
+            icon="select-place"
+            name="address"
+            placeholder="Address"
+          />
+        </AppForm>
+        <DocumentPicker />
+      </Screen>
+    </>
   );
 };
 
 export default Credentials;
 const styles = StyleSheet.create({
   screen: {
-    paddingTop: 50,
+    paddingTop: 45,
     paddingHorizontal: 10,
   },
 });
