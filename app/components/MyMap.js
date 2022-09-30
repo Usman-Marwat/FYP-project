@@ -5,7 +5,7 @@ import useLocations from "../hooks/useLocations";
 
 const { width, height } = Dimensions.get("window");
 
-const MyMap = ({ initialRegion = null, onMarkerPress, onDragEnd }) => {
+const MyMap = ({ initialRegion = null, onAddlocation, style }) => {
   const { latitude, longitude } = useLocations();
   const defaultRegion = {
     latitude,
@@ -15,8 +15,8 @@ const MyMap = ({ initialRegion = null, onMarkerPress, onDragEnd }) => {
   };
 
   return (
-    <View style={styles.mapContainer}>
-      {latitude && (
+    <View style={[styles.mapContainer, style]}>
+      {latitude && longitude && (
         <MapView
           provider={PROVIDER_GOOGLE}
           style={styles.map}
@@ -25,8 +25,7 @@ const MyMap = ({ initialRegion = null, onMarkerPress, onDragEnd }) => {
           <Marker
             draggable
             coordinate={{ latitude, longitude }}
-            onDragEnd={(e) => onDragEnd(e.nativeEvent.coordinate)}
-            onPress={onMarkerPress}
+            onDragEnd={(e) => onAddlocation(e.nativeEvent.coordinate)}
           >
             <Callout>
               <Text>Select an approximate location of site</Text>

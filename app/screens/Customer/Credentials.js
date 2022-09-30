@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import * as Yup from "yup";
 
 import { AppForm, AppFormField, SubmitButton } from "../../components/forms";
@@ -8,6 +8,9 @@ import { translateMenuFold } from "../../navigation/navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import Header from "../../components/Header";
 import AppFormDocumentPicker from "../../components/forms/AppFormDocumentPicker";
+import AppFormMap from "../../components/forms/AppFormMap";
+
+const width = Dimensions.get("screen").width;
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().label("Title"),
@@ -27,7 +30,7 @@ const Credentials = ({ navigation }) => {
       <Header navigation={navigation} translateX={translateX} />
       <Screen style={styles.screen}>
         <AppForm
-          initialValues={{ title: "", address: "", files: [] }}
+          initialValues={{ title: "", address: "", files: [], location: {} }}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >
@@ -47,7 +50,8 @@ const Credentials = ({ navigation }) => {
             placeholder="Address"
           />
           <AppFormDocumentPicker name="files" />
-          <SubmitButton title="Post" />
+          <AppFormMap name="location" />
+          <SubmitButton title="Send" />
         </AppForm>
       </Screen>
     </>
