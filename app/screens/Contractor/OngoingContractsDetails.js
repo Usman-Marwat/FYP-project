@@ -12,6 +12,7 @@ import niceColors from "nice-color-palettes";
 import { AntDesign } from "@expo/vector-icons";
 import { SharedElement } from "react-navigation-shared-element";
 import * as Animatable from "react-native-animatable";
+import CircularProgress from "react-native-circular-progress-indicator";
 
 import Screen from "../../components/Screen";
 
@@ -31,14 +32,17 @@ const OngoingContractsDetails = ({ navigation, route }) => {
   return (
     <View>
       <SharedElement id={`item.${item.key}.image`} style={styles.image}>
-        <Image
-          source={{ uri: item.image }}
-          style={{
-            resizeMode: "contain",
-            width: width * 2.1,
-            height: width * 0.7,
-          }}
-        />
+        <View style={styles.progressContainer}>
+          <CircularProgress
+            value={70}
+            inActiveStrokeColor={"#9b59b6"}
+            inActiveStrokeOpacity={0.4}
+            radius={70}
+            inActiveStrokeWidth={30}
+            activeStrokeWidth={20}
+            progressValueStyle={{ fontWeight: "100", color: "grey" }}
+          />
+        </View>
       </SharedElement>
       <View style={styles.meta}>
         <SharedElement id={`item.${item.key}.modal`}>
@@ -108,6 +112,11 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: "700",
     position: "absolute",
+  },
+  progressContainer: {
+    position: "absolute",
+    bottom: 80,
+    left: 250,
   },
   swatch: {
     height: 56,
