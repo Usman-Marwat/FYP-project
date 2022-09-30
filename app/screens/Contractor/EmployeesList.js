@@ -49,7 +49,7 @@ const EmployeesList = ({ navigation }) => {
   const translateX = translateMenuFold(animatedValue);
 
   return (
-    <Screen style={{ paddingTop: 50 }}>
+    <Screen style={{ paddingTop: 40 }}>
       <MenuFoldButton translateX={translateX} navigation={navigation} />
       <Image
         source={{ uri: BG_IMG }}

@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import niceColors from "nice-color-palettes";
 import { faker } from "@faker-js/faker";
 import { SharedElement } from "react-navigation-shared-element";
@@ -66,9 +66,21 @@ const FULL_SIZE = CELL_WIDTH + SPACING * 2;
 
 const ReceivedContracts = ({ navigation }) => {
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
+
+  const handleCurentIndex = (index) => {
+    if (index < 0) return setCurrentIndex(0);
+    if (index > fakerData.length - 1)
+      return setCurrentIndex(fakerData.length - 1);
+    setCurrentIndex(index);
+  };
+
+  useEffect(() => {
+    console.log(currentIndex);
+  }, [currentIndex]);
 
   return (
     <>
@@ -81,6 +93,7 @@ const ReceivedContracts = ({ navigation }) => {
             style={{ flexGrow: 1, marginHorizontal: 50 }}
             contentContainerStyle={{ padding: SPACING }}
             showsHorizontalScrollIndicator={false}
+            decelerationRate="fast"
             keyExtractor={(item, index) => `${item}-${index}`}
             renderItem={({ item: tab }) => {
               return (
@@ -112,11 +125,17 @@ const ReceivedContracts = ({ navigation }) => {
           <FlatList
             data={fakerData}
             horizontal
-            contentContainerStyle={{ padding: SPACING }}
             showsHorizontalScrollIndicator={false}
             keyExtractor={(item) => item.key}
-            snapToInterval={FULL_SIZE}
             decelerationRate="fast"
+            pagingEnabled
+            onMomentumScrollEnd={(e) => {
+              const index = Math.floor(
+                Math.floor(e.nativeEvent.contentOffset.x) /
+                  Math.floor(e.nativeEvent.layoutMeasurement.width)
+              );
+              handleCurentIndex(index);
+            }}
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity
@@ -172,7 +191,7 @@ const ReceivedContracts = ({ navigation }) => {
                   style={{
                     height: 50,
                     width: "80%",
-                    marginVertical: 30,
+                    marginVertical: 3,
                     backgroundColor: "coral",
                     alignItems: "center",
                     justifyContent: "center",
@@ -194,7 +213,7 @@ export default ReceivedContracts;
 const styles = StyleSheet.create({
   itemCell: {
     height: CELL_WIDTH,
-    width: CELL_WIDTH,
+    width: width - 20,
     margin: SPACING,
   },
   itemContainer: {

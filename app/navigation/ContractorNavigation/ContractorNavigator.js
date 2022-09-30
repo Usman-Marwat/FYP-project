@@ -48,11 +48,11 @@ const ContractorNavigator = () => {
 
           <DrawerNavigator.Screen name="Employees" component={EmployeesList} />
           <DrawerNavigator.Screen
-            name="ReceivedContract"
+            name="Received"
             component={ReceivedContractNavigator}
           />
           <DrawerNavigator.Screen
-            name="OngoingContracts"
+            name="Ongoing"
             component={OngoingContractsNavigator}
           />
         </DrawerNavigator.Navigator>
