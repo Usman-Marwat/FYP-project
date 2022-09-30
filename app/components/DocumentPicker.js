@@ -24,27 +24,22 @@ const colorsP = [
   ...niceColors[6],
 ];
 
-const DocumentPicker = () => {
-  const [files, setFiles] = useState([]);
+const DocumentPicker = ({ onRemoveFile, onAddFile }) => {
   const scrollView = useRef();
+  const [files, setFiles] = useState([]);
 
   const handleDocumentSelection = async () => {
-    try {
-      const response = await DP.getDocumentAsync({
-        copyToCacheDirectory: false,
-      });
-      if (response.type === "cancel") throw Error("Canceled");
-      const files2 = _.cloneDeep(files);
-      files2.push(response);
-      console.log(files2.length);
-      setFiles(files2);
-    } catch (err) {
-      console.log(err);
-    }
+    const response = await DP.getDocumentAsync({
+      copyToCacheDirectory: false,
+    });
+    if (response.type === "cancel");
+    setFiles([...files, response]);
+    onAddFile(response.uri);
   };
 
-  const handleRemove = (fileUri) => {
-    setFiles(files.filter((f) => f.uri !== fileUri));
+  const handleDocumentRemoval = (uri) => {
+    setFiles(files.filter((f) => f.uri !== uri));
+    onRemoveFile(uri);
   };
 
   return (
@@ -59,7 +54,7 @@ const DocumentPicker = () => {
           return (
             <TouchableOpacity
               key={index}
-              onPress={() => handleRemove(uri)}
+              onPress={() => handleDocumentRemoval(uri)}
               style={styles.itemContainer}
             >
               <View

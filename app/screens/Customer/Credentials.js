@@ -1,18 +1,13 @@
 import React, { useContext } from "react";
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
 import * as Yup from "yup";
 
-import {
-  ErrorMessage,
-  AppForm,
-  AppFormField,
-  SubmitButton,
-} from "../../components/forms";
+import { AppForm, AppFormField, SubmitButton } from "../../components/forms";
 import Screen from "../../components/Screen";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import Header from "../../components/Header";
-import DocumentPicker from "../../components/DocumentPicker";
+import AppFormDocumentPicker from "../../components/forms/AppFormDocumentPicker";
 
 const validationSchema = Yup.object().shape({
   title: Yup.string().required().label("Title"),
@@ -23,14 +18,16 @@ const Credentials = ({ navigation }) => {
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
 
-  const handleSubmit = async (credentials) => {};
+  const handleSubmit = async (credentials) => {
+    console.log(credentials);
+  };
 
   return (
     <>
       <Header navigation={navigation} translateX={translateX} />
       <Screen style={styles.screen}>
         <AppForm
-          initialValues={{ title: "", address: "" }}
+          initialValues={{ title: "", address: "", files: [] }}
           onSubmit={handleSubmit}
           validationSchema={validationSchema}
         >
@@ -49,8 +46,9 @@ const Credentials = ({ navigation }) => {
             name="address"
             placeholder="Address"
           />
+          <AppFormDocumentPicker name="files" />
+          <SubmitButton title="Post" />
         </AppForm>
-        <DocumentPicker />
       </Screen>
     </>
   );

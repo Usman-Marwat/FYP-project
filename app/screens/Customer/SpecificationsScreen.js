@@ -253,10 +253,7 @@ const SpecificationScreen = ({ navigation, route }) => {
       </Animated.ScrollView>
 
       <View style={styles.row}>
-        <TouchableOpacity
-          onPress={() => sendData()}
-          style={[styles.shadow, { alignItems: "center" }]}
-        >
+        <TouchableOpacity style={[styles.shadow, { alignItems: "center" }]}>
           <Icon
             name="bookmark"
             iconColor="#222"
@@ -286,7 +283,12 @@ const SpecificationScreen = ({ navigation, route }) => {
             })
           }
         >
-          <Icon name="arrow-right" size={35} backgroundColor={colors.primary} />
+          <Icon
+            name="arrow-right"
+            size={35}
+            iconColor="#222"
+            backgroundColor={colors.white}
+          />
           <Text style={styles.buttonTitle}>Send</Text>
         </TouchableOpacity>
       </View>
