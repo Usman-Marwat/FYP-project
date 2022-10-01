@@ -76,7 +76,7 @@ const OngoingContracts = ({ navigation }) => {
                     value={70}
                     inActiveStrokeColor={"#9b59b6"}
                     inActiveStrokeOpacity={0.4}
-                    inActiveStrokeWidth={30}
+                    inActiveStrokeWidth={25}
                     activeStrokeWidth={20}
                     progressValueStyle={{ fontWeight: "100", color: "grey" }}
                   />
