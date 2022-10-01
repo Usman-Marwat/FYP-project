@@ -1,9 +1,11 @@
 import client from "./client";
 
-const send = (message, listingId) =>
+const send = (expoPushToken, title, subtitle, body) =>
   client.post("/messages", {
-    message,
-    listingId,
+    expoPushToken,
+    title,
+    subtitle,
+    body,
   });
 
 export default {
