@@ -8,6 +8,7 @@ import MaterialScreen from "../../screens/Customer/MaterialScreen";
 import SpecificationScreen from "../../screens/Customer/SpecificationsScreen";
 import FirmsList from "../../screens/Customer/FirmsList";
 import FirmsListDetailsScreen from "../../screens/Customer/FirmsListDetailsScreen";
+import Credentials from "../../screens/Customer/Credentials";
 
 const Stack = createSharedElementStackNavigator();
 
@@ -17,6 +18,7 @@ export default function ContractNavigator() {
       <Stack.Screen name="Contract" component={ContractScreen} />
       <Stack.Screen name="Material" component={MaterialScreen} />
       <Stack.Screen name="Specifications" component={SpecificationScreen} />
+      <Stack.Screen name="Credentials" component={Credentials} />
       <Stack.Screen name="FirmsList" component={FirmsList} />
       <Stack.Screen
         name="FirmsListDetails"

@@ -11,6 +11,8 @@ import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import AppButton from "../../components/AppButton";
 import useAuth from "../../auth/useAuth";
 import BottomTabNavigator from "../../Chat/BottomTabNavigator";
+import navigationTheme from "../navigationTheme";
+import SavedContractsNavigator from "./SavedContractsNavigator";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -24,7 +26,7 @@ const CustomerNavigator = () => {
     <DrawerAnimationContext.Provider
       value={{ fromCords, toCords, animatedValue }}
     >
-      <NavigationContainer>
+      <NavigationContainer theme={navigationTheme}>
         <DrawerNavigator.Navigator
           screenOptions={{
             headerShown: false,
@@ -55,6 +57,10 @@ const CustomerNavigator = () => {
             component={ContractNavigator}
           />
           <DrawerNavigator.Screen name="Chat" component={BottomTabNavigator} />
+          <DrawerNavigator.Screen
+            name="SavedContracts"
+            component={SavedContractsNavigator}
+          />
         </DrawerNavigator.Navigator>
       </NavigationContainer>
     </DrawerAnimationContext.Provider>
@@ -71,9 +77,15 @@ function Check({ navigation }) {
   const { logOut } = useAuth();
 
   return (
-    <View>
+    <>
       <MenuFoldButton translateX={translateX} navigation={navigation} />
-      <AppButton title="Logout" onPress={() => logOut()} />
-    </View>
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <AppButton
+          title="Logout"
+          onPress={() => logOut()}
+          style={{ width: 150 }}
+        />
+      </View>
+    </>
   );
 }

@@ -67,8 +67,8 @@ const ITEM_HEIGHT = height * 0.18;
 const SPACING = 10;
 
 const FirmsList = ({ navigation, route }) => {
-  const { contract } = route.params;
-  console.log(contract);
+  // const { contract } = route.params;
+  // console.log(contract);
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
 
@@ -98,7 +98,6 @@ const FirmsList = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <AppButton title="Send" onPress={sendData} />
       <Animated.View style={{ zIndex: 1, transform: [{ translateY }] }}>
         <Header navigation={navigation} translateX={translateX} />
       </Animated.View>

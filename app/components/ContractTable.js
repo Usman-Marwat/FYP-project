@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Dimensions,
   Modal,
   StyleSheet,
   View,
@@ -12,12 +11,9 @@ import {
 } from "react-native";
 import niceColors from "nice-color-palettes";
 
-import AppButton from "./AppButton";
 import Icon from "./Icon";
 import colors from "../config/colors";
-import auth from "../api/auth";
 
-const { width, height } = Dimensions.get("window");
 const colorsPalette = [
   "#3F5B98",
   ...niceColors[39],
@@ -48,14 +44,6 @@ export default ContractTable = ({
   isVisible,
   onModalVisible,
 }) => {
-  console.log("-----------------Keys--------------------");
-  console.log(keys);
-  console.log("------------------All values-------------------");
-  console.log(allValues);
-  console.log("----------------descriptions---------------------");
-  console.log(descriptions);
-  console.log("-----------------imageUris--------------------");
-  console.log(imageUris);
   const MapHeadings = () => {
     return (
       <View style={{ flexDirection: "row" }}>

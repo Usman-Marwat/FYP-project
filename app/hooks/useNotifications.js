@@ -69,7 +69,6 @@ export default useNotifications = () => {
   };
 
   const patchToken = async (token) => {
-    console.log(user);
     if (user.expoPushToken !== token.data) {
       setLoading(true);
       const result = await expoPushTokensApi.register(user.user_id, token.data);
