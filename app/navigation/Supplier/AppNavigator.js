@@ -4,10 +4,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import AccountNavigator from "./AccountNavigator";
 import FeedNavigator from "./FeedNavigator";
-import ListingEditScreen from "../screens/ListingEditScreen";
+import ListingEditScreen from "../../screens/Supplier/ListingEditScreen";
 import NewListingButton from "./NewListingButton";
-import routes from "./routes";
-import useNotifications from "../hooks/useNotifications";
+import routes from "../routes";
+import useNotifications from "../../hooks/useNotifications";
 
 const Tab = createBottomTabNavigator();
 

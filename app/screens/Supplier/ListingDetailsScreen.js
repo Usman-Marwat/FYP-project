@@ -8,10 +8,10 @@ import {
 } from "react-native";
 import { Image } from "react-native-expo-image-cache";
 
-import colors from "../config/colors";
-import ContactSellerForm from "../components/ContactSellerForm";
-import ListItem from "../components/lists/ListItem";
-import AppText from "../components/AppText";
+import colors from "../../config/colors";
+import ContactSellerForm from "../../components/ContactSellerForm";
+import ListItem from "../../components/lists/ListItem";
+import AppText from "../../components/AppText";
 
 function ListingDetailsScreen({ route }) {
   const listing = route.params;

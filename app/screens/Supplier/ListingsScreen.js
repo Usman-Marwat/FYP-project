@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { FlatList, StyleSheet } from "react-native";
 
-import AppButton from "../components/AppButton";
-import ActivityIndicator from "../components/ActivityIndicator";
-import AppText from "../components/AppText";
-import Card from "../components/Card";
-import colors from "../config/colors";
-import listingsApi from "../api/listings";
-import routes from "../navigation/routes";
-import Screen from "../components/Screen";
-import useApi from "../hooks/useApi";
+import AppButton from "../../components/AppButton";
+import ActivityIndicator from "../../components/ActivityIndicator";
+import AppText from "../../components/AppText";
+import Card from "../../components/Card";
+import colors from "../../config/colors";
+import listingsApi from "../../api/listings";
+import routes from "../../navigation/routes";
+import Screen from "../../components/Screen";
+import useApi from "../../hooks/useApi";
 
 function ListingsScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);

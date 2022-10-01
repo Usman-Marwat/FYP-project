@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useContext } from "react";
 import * as Notifications from "expo-notifications";
 
-import navigation from "../navigation/rootNavigation";
+import navigation from "../navigation/Supplier/rootNavigation";
 
 import expoPushTokensApi from "../api/expoPushTokens";
 import AuthContext from "../auth/context";
