@@ -10,4 +10,7 @@ export default Object.freeze({
   SPECIFICATIONS: "Specifications",
   FIRMSLIST: "FirmsList",
   FIRMSLISTDETAILS: "FirmsListDetails",
+
+  RECEIVED_CONTRACT_DETAILS: "RecievedContractDetails",
+  ONGOING_CONTRACTS_DETAILS: "OngoingContractsDetails",
 });

@@ -164,8 +164,8 @@ const styles = StyleSheet.create({
   },
   closeIcon: {
     position: "absolute",
-    top: 40,
-    right: 20,
+    top: 35,
+    right: 17,
     backgroundColor: "transparent",
   },
   menu: {
