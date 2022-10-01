@@ -17,6 +17,7 @@ import { SharedElement } from "react-navigation-shared-element";
 
 import { combineData } from "../../utility/dataHelper";
 import TaskInfo from "../../components/TaskInfo";
+import CreateTask from "../../components/CreateTask";
 
 const AnimatableScrollview = Animatable.createAnimatableComponent(ScrollView);
 const animation = {
