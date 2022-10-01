@@ -118,21 +118,27 @@ const OngoingContractsDetails = ({ navigation, route }) => {
           </SharedElement>
         </View>
       </View>
-      <View style={{ bottom: 120, left: 30 }}>
-        <Text style={styles.projectTeamTitle}>Team</Text>
-        <View style={styles.projectTeamWrapper}>
-          {dataImages.map((member) => (
-            <Image
-              key={Math.random().toString()}
-              style={styles.projectMemberPhoto}
-              source={{ uri: member.image }}
-            />
-          ))}
-          <TouchableOpacity style={styles.plusBtnContainer}>
-            <MaterialCommunityIcons name="plus" size={22} color="#fff" />
-          </TouchableOpacity>
+      <SharedElement id={`item.${item.key}.team`}>
+        <View style={{ bottom: 120, left: 30 }}>
+          <Text style={styles.projectTeamTitle}>Team</Text>
+          <View style={styles.projectTeamWrapper}>
+            {dataImages.map((member) => (
+              <Image
+                key={Math.random().toString()}
+                style={styles.projectMemberPhoto}
+                source={{ uri: member.image }}
+              />
+            ))}
+            <TouchableOpacity style={styles.plusBtnContainer}>
+              <MaterialCommunityIcons
+                name="plus"
+                size={22}
+                color={colors.primary}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </SharedElement>
 
       <AnimatableScrollview
         useNativeDriver
@@ -153,7 +159,12 @@ const OngoingContractsDetails = ({ navigation, route }) => {
         })}
       </AnimatableScrollview>
 
-      <View style={styles.projectBody}>
+      <Animatable.View
+        useNativeDriver
+        animation={animation}
+        delay={400}
+        style={styles.projectBody}
+      >
         <View style={styles.projectTabs}>
           {tabs?.map((tab) => (
             <TouchableOpacity
@@ -231,7 +242,7 @@ const OngoingContractsDetails = ({ navigation, route }) => {
         ) : data?.activeTab === "File" ? (
           <></>
         ) : null}
-      </View>
+      </Animatable.View>
       <CreateTask
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}

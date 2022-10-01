@@ -81,25 +81,27 @@ const OngoingContracts = ({ navigation }) => {
                     progressValueStyle={{ fontWeight: "100", color: "grey" }}
                   />
                 </SharedElement>
-                <View style={{ top: 80, left: 25 }}>
-                  <Text style={styles.projectTeamTitle}>Team</Text>
-                  <View style={styles.projectTeamWrapper}>
-                    {data.map((member) => (
-                      <Image
-                        key={Math.random().toString()}
-                        style={styles.projectMemberPhoto}
-                        source={{ uri: member?.image }}
-                      />
-                    ))}
-                    <TouchableOpacity style={styles.plusBtnContainer}>
-                      <MaterialCommunityIcons
-                        name="plus"
-                        size={22}
-                        color="#fff"
-                      />
-                    </TouchableOpacity>
+                <SharedElement id={`item.${item.key}.team`}>
+                  <View style={{ top: 80, left: 25 }}>
+                    <Text style={styles.projectTeamTitle}>Team</Text>
+                    <View style={styles.projectTeamWrapper}>
+                      {data.map((member) => (
+                        <Image
+                          key={Math.random().toString()}
+                          style={styles.projectMemberPhoto}
+                          source={{ uri: member?.image }}
+                        />
+                      ))}
+                      <TouchableOpacity style={styles.plusBtnContainer}>
+                        <MaterialCommunityIcons
+                          name="plus"
+                          size={22}
+                          color="#fff"
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                </View>
+                </SharedElement>
                 <View style={styles.rowJustifyBetween}>
                   <View style={styles.flexRow}>
                     <MaterialCommunityIcons
