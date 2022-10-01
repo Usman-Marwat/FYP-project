@@ -13,6 +13,7 @@ import useAuth from "../../auth/useAuth";
 import BottomTabNavigator from "../../Chat/BottomTabNavigator";
 import navigationTheme from "../navigationTheme";
 import SavedContractsNavigator from "./SavedContractsNavigator";
+import RootNavigator from "../../Chat/RootNavigator";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -56,7 +57,7 @@ const CustomerNavigator = () => {
             name="Contracts"
             component={ContractNavigator}
           />
-          <DrawerNavigator.Screen name="Chat" component={BottomTabNavigator} />
+          <DrawerNavigator.Screen name="Chat" component={RootNavigator} />
           <DrawerNavigator.Screen
             name="SavedContracts"
             component={SavedContractsNavigator}

@@ -2,11 +2,10 @@ import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, SafeAreaView, Text } from "react-native";
 import CustomerNavigator from "../navigation/CustomerNavigation/CustomerNavigatior";
-import ContractNavigator from "../navigation/CustomerNavigation/ContractNavigator";
 
 import { StreamChat } from "stream-chat";
 import { Chat, OverlayProvider } from "stream-chat-expo";
-import { NavigationContainer } from "@react-navigation/native";
+import ContractorNavigator from "../navigation/ContractorNavigation/ContractorNavigator";
 
 const Api_Key = "fnmp8yh8yfe2";
 const client = StreamChat.getInstance(Api_Key);
@@ -34,7 +33,7 @@ const AppStarter = ({ actor }) => {
       <SafeAreaView style={styles.container}>
         <Chat client={client}>
           {actor === "Customer" && <CustomerNavigator />}
-          {actor === "Contractor" && <Text>Contractor</Text>}
+          {actor === "Contractor" && <ContractorNavigator />}
         </Chat>
       </SafeAreaView>
     </OverlayProvider>

@@ -10,9 +10,8 @@ import ChannelScreen from "./ChannelScreen";
 const Tab = createBottomTabNavigator();
 export default function BottomTabNavigator() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="list" component={ChannelListScreen} />
-      <Tab.Screen name="Channel" component={ChannelScreen} />
       <Tab.Screen name="users" component={UsersScreen} />
     </Tab.Navigator>
   );

@@ -2,7 +2,9 @@ import React, { useContext, useEffect } from "react";
 import { ChannelList, useChatContext } from "stream-chat-expo";
 import { StyleSheet, Text, View } from "react-native";
 
-// import AuthContext from "./Authentication";
+import { translateMenuFold } from "../navigation/navigationAnimations";
+import DrawerAnimationContext from "../contexts/drawerAnimationContext";
+import Header from "../components/Header";
 
 import { ListPreviewMessage } from "./ListPreviewMessage";
 
@@ -12,9 +14,11 @@ const options = {
 };
 
 export default function ChannelListScreen({ navigation }) {
-  // const { userId } = useContext(AuthContext);
   const userId = "Contractor";
   const { client } = useChatContext();
+  const { animatedValue } = useContext(DrawerAnimationContext);
+  const translateX = translateMenuFold(animatedValue);
+
   const handleChannelPressed = (channel) => {
     navigation.navigate("Channel", { cid: channel.cid });
   };
@@ -56,7 +60,8 @@ export default function ChannelListScreen({ navigation }) {
   }, []);
 
   return (
-    <View style={{ height: "100%" }}>
+    <View style={styles.container}>
+      <Header navigation={navigation} translateX={translateX} />
       <ChannelList
         PreviewMessage={ListPreviewMessage}
         onSelect={handleChannelPressed}
@@ -66,3 +71,10 @@ export default function ChannelListScreen({ navigation }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    height: "100%",
+    paddingTop: 50,
+  },
+});
