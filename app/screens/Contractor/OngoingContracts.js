@@ -9,12 +9,14 @@ import {
 import React, { useContext } from "react";
 import { faker } from "@faker-js/faker";
 import { SharedElement } from "react-navigation-shared-element";
+import CircularProgress from "react-native-circular-progress-indicator";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import Screen from "../../components/Screen";
 import routes from "../../navigation/routes";
 import MenuFoldButton from "../../navigation/MenuFoldButton";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
+import colors from "../../config/colors";
 
 faker.seed(1);
 
@@ -24,10 +26,6 @@ const data = [
   { image: "https://cdn-icons-png.flaticon.com/512/8360/8360535.png" },
   { image: "https://cdn-icons-png.flaticon.com/512/5046/5046935.png" },
   { image: "https://cdn-icons-png.flaticon.com/512/7153/7153980.png" },
-  { image: "https://cdn-icons-png.flaticon.com/512/7880/7880183.png" },
-  { image: "https://cdn-icons-png.flaticon.com/512/5046/5046934.png" },
-  { image: "https://cdn-icons-png.flaticon.com/512/6664/6664537.png" },
-  { image: "https://cdn-icons-png.flaticon.com/512/4982/4982394.png" },
 ];
 const fakerData = data.map((item, index) => ({
   ...item,
@@ -74,11 +72,54 @@ const OngoingContracts = ({ navigation }) => {
                   id={`item.${item.key}.image`}
                   style={styles.image}
                 >
-                  <Image
-                    source={{ uri: item.image }}
-                    style={{ flex: 1, resizeMode: "contain" }}
+                  <CircularProgress
+                    value={70}
+                    inActiveStrokeColor={"#9b59b6"}
+                    inActiveStrokeOpacity={0.4}
+                    inActiveStrokeWidth={25}
+                    activeStrokeWidth={20}
+                    progressValueStyle={{ fontWeight: "100", color: "grey" }}
                   />
                 </SharedElement>
+                <SharedElement id={`item.${item.key}.team`}>
+                  <View style={{ top: 80, left: 25 }}>
+                    <Text style={styles.projectTeamTitle}>Team</Text>
+                    <View style={styles.projectTeamWrapper}>
+                      {data.map((member) => (
+                        <Image
+                          key={Math.random().toString()}
+                          style={styles.projectMemberPhoto}
+                          source={{ uri: member?.image }}
+                        />
+                      ))}
+                      <TouchableOpacity style={styles.plusBtnContainer}>
+                        <MaterialCommunityIcons
+                          name="plus"
+                          size={22}
+                          color="#fff"
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </SharedElement>
+                <View style={styles.rowJustifyBetween}>
+                  <View style={styles.flexRow}>
+                    <MaterialCommunityIcons
+                      name="calendar-month-outline"
+                      size={20}
+                      color={colors.medium}
+                    />
+                    <Text style={styles.projectBottomText}>12 10 2020</Text>
+                  </View>
+                  <View style={styles.flexRow}>
+                    <MaterialCommunityIcons
+                      name="checkbox-marked"
+                      size={20}
+                      color={colors.medium}
+                    />
+                    <Text style={styles.projectBottomText}>Tasks</Text>
+                  </View>
+                </View>
               </View>
             </TouchableOpacity>
           );
@@ -110,11 +151,58 @@ const styles = StyleSheet.create({
     width: "100%",
     position: "absolute",
     bottom: 10,
-    right: "-30%",
+    right: "-60%",
   },
   model: {
     fontSize: 18,
     fontWeight: "700",
     position: "absolute",
+  },
+  rowJustifyBetween: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    top: 170,
+  },
+  flexRow: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  projectBottomText: {
+    marginLeft: 5,
+    fontSize: 14,
+  },
+  projectDescription: {
+    color: colors.medium,
+    marginBottom: 10,
+  },
+  projectTeamTitle: {
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  projectTeamWrapper: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingLeft: 10,
+  },
+  projectMemberPhoto: {
+    height: 40,
+    width: 40,
+    borderRadius: 50,
+    marginLeft: -17,
+  },
+  plusBtnContainer: {
+    backgroundColor: colors.primary,
+    height: 40,
+    width: 40,
+    borderRadius: 50,
+    marginLeft: -10,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

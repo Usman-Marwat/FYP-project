@@ -10,6 +10,7 @@ import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import ReceivedContractNavigator from "./ReceivedContractNavigator";
 import OngoingContractsNavigator from "./OngoingContractsNavigator";
 import EmployeesList from "../../screens/Contractor/EmployeesList";
+import navigationTheme from "../navigationTheme";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -23,7 +24,7 @@ const ContractorNavigator = () => {
     <DrawerAnimationContext.Provider
       value={{ fromCords, toCords, animatedValue }}
     >
-      <NavigationContainer>
+      <NavigationContainer theme={navigationTheme}>
         <DrawerNavigator.Navigator
           screenOptions={{
             headerShown: false,
