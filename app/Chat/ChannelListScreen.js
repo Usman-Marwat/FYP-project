@@ -7,6 +7,7 @@ import DrawerAnimationContext from "../contexts/drawerAnimationContext";
 import Header from "../components/Header";
 
 import { ListPreviewMessage } from "./ListPreviewMessage";
+import AuthContext from "../auth/context";
 
 const options = {
   state: true,
@@ -14,7 +15,7 @@ const options = {
 };
 
 export default function ChannelListScreen({ navigation }) {
-  const userId = "Contractor";
+  const { user } = useContext(AuthContext);
   const { client } = useChatContext();
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
@@ -24,7 +25,7 @@ export default function ChannelListScreen({ navigation }) {
   };
   const filters = {
     members: {
-      $in: [userId],
+      $in: [user.user_id],
     },
   };
 

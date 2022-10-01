@@ -3,17 +3,14 @@ import React, { useContext } from "react";
 import { useChatContext } from "stream-chat-expo";
 import { useNavigation } from "@react-navigation/native";
 
-// import AuthContext from "./Authentication";
-
-export default function UserListItem({ user }) {
+export default function UserListItem({ chatUser, user }) {
   const { client } = useChatContext();
-  // const { userId } = useContext(AuthContext);
-  const userId = "Contractor";
-
   const navigation = useNavigation();
 
   const handlePress = async () => {
-    const channel = client.channel("messaging", { members: [user.id, userId] });
+    const channel = client.channel("messaging", {
+      members: [chatUser.id, user.user_id],
+    });
     await channel.watch();
     navigation.navigate("Channel", { cid: channel.cid });
   };
@@ -21,7 +18,7 @@ export default function UserListItem({ user }) {
   return (
     <Pressable onPress={handlePress} style={styles.root}>
       <Image style={styles.image} source={{ uri: user.image }}></Image>
-      <Text>{user.name}</Text>
+      <Text>{chatUser.name}</Text>
     </Pressable>
   );
 }

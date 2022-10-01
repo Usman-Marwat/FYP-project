@@ -2,22 +2,21 @@ import { StyleSheet, View, FlatList } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 import { useChatContext } from "stream-chat-expo";
 
-// import AuthContext from "./Authentication";
 import UserListItem from "./UserListItem";
+import AuthContext from "../auth/context";
 
 export default function UsersScreen() {
-  const [users, setUsers] = useState([]);
+  const { user } = useContext(AuthContext);
+  const [chatUsers, setChatUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const { client } = useChatContext();
-  // const { userId } = useContext(AuthContext);
-  const userId = "Contractor";
 
   const fetchUsers = async () => {
     setIsLoading(true);
     const response = await client.queryUsers({
-      id: { $nin: ["usman-marwat", userId] },
+      id: { $nin: ["usman-marwat", user.user_id] },
     });
-    setUsers(response.users);
+    setChatUsers(response.users);
     setIsLoading(false);
   };
 
@@ -28,8 +27,8 @@ export default function UsersScreen() {
   return (
     <View style={styles.container}>
       <FlatList
-        data={users}
-        renderItem={({ item }) => <UserListItem user={item} />}
+        data={chatUsers}
+        renderItem={({ item }) => <UserListItem chatUser={item} user={user} />}
         refreshing={isLoading}
         onRefresh={fetchUsers}
       />

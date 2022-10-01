@@ -37,7 +37,7 @@ const App = () => {
     <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
       <AuthContext.Provider value={{ user, setUser }}>
         <OfflineNotice />
-        {user ? <AppStarter actor={user.actor} /> : <AuthNavigator />}
+        {user ? <AppStarter user={user} /> : <AuthNavigator />}
       </AuthContext.Provider>
     </View>
   );
