@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Text } from "react-native";
+import { useState, useEffect, useContext } from "react";
+import { Text, View } from "react-native";
 import React from "react";
 import {
   Channel,
@@ -9,16 +9,22 @@ import {
   InputGiphySearch,
 } from "stream-chat-expo";
 import { useRoute } from "@react-navigation/native";
+import { translateMenuFold } from "../navigation/navigationAnimations";
+import DrawerAnimationContext from "../contexts/drawerAnimationContext";
 
 import { VoiceMessageAttachment } from "./VoiceMessageAttachment";
 import { CustomSendButton } from "./CustomSendButton";
 import { InputBox } from "./InputBox";
+import Header from "../components/Header";
 
-export default function ChannelScreen() {
+export default function ChannelScreen({ navigation }) {
   const [channel, setChannel] = useState(null);
   const route = useRoute();
   const cid = route.params?.cid;
   const { client } = useChatContext();
+
+  const { animatedValue } = useContext(DrawerAnimationContext);
+  const translateX = translateMenuFold(animatedValue);
 
   const getChannel = async () => {
     const channel = await client.queryChannels({
@@ -62,15 +68,18 @@ export default function ChannelScreen() {
 
   if (channel === null) return <Text>Channel Not Found</Text>;
   return (
-    <Channel
-      channel={channel}
-      Card={VoiceMessageAttachment}
-      Input={InputBox}
-      InputGiphySearch={InputGiphySearch}
-    >
-      <MessageList />
-      <MessageInput />
-    </Channel>
+    <>
+      <Header navigation={navigation} translateX={translateX} />
+      <Channel
+        channel={channel}
+        Card={VoiceMessageAttachment}
+        Input={InputBox}
+        InputGiphySearch={InputGiphySearch}
+      >
+        <MessageList />
+        <MessageInput />
+      </Channel>
+    </>
   );
 }
 

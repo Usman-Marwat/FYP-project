@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { ChannelList, useChatContext } from "stream-chat-expo";
 import { StyleSheet, Text, View } from "react-native";
 
-import AuthContext from "./Authentication";
+// import AuthContext from "./Authentication";
 
 import { ListPreviewMessage } from "./ListPreviewMessage";
 
@@ -12,7 +12,8 @@ const options = {
 };
 
 export default function ChannelListScreen({ navigation }) {
-  const { userId } = useContext(AuthContext);
+  // const { userId } = useContext(AuthContext);
+  const userId = "Contractor";
   const { client } = useChatContext();
   const handleChannelPressed = (channel) => {
     navigation.navigate("Channel", { cid: channel.cid });

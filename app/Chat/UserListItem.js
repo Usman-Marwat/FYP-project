@@ -3,11 +3,13 @@ import React, { useContext } from "react";
 import { useChatContext } from "stream-chat-expo";
 import { useNavigation } from "@react-navigation/native";
 
-import AuthContext from "./Authentication";
+// import AuthContext from "./Authentication";
 
 export default function UserListItem({ user }) {
   const { client } = useChatContext();
-  const { userId } = useContext(AuthContext);
+  // const { userId } = useContext(AuthContext);
+  const userId = "Contractor";
+
   const navigation = useNavigation();
 
   const handlePress = async () => {

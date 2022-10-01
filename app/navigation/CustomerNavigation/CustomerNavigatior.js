@@ -10,6 +10,7 @@ import { translateMenuFold } from "../navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import AppButton from "../../components/AppButton";
 import useAuth from "../../auth/useAuth";
+import BottomTabNavigator from "../../Chat/BottomTabNavigator";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -53,6 +54,7 @@ const CustomerNavigator = () => {
             name="Contracts"
             component={ContractNavigator}
           />
+          <DrawerNavigator.Screen name="Chat" component={BottomTabNavigator} />
         </DrawerNavigator.Navigator>
       </NavigationContainer>
     </DrawerAnimationContext.Provider>
