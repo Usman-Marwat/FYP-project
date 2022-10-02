@@ -10,7 +10,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import RNBounceable from "@freakycoder/react-native-bounceable";
 import { AntDesign } from "@expo/vector-icons";
 import { faker } from "@faker-js/faker";
@@ -76,9 +76,12 @@ const Content = ({ item }) => {
 };
 
 const ContractScreen = ({ navigation }) => {
+  const { loading } = useNotifications();
+
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
-  const { loading } = useNotifications();
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const progress = Animated.modulo(Animated.divide(scrollX, width), width);
 
   return (
     <>
@@ -89,30 +92,95 @@ const ContractScreen = ({ navigation }) => {
         <StatusBar hidden />
         <SafeAreaView style={{ marginTop: SPACING * 4 }}>
           <View style={{ height: IMAGE_HEIGHT * 2.1 }}>
-            <FlatList
+            <Animated.FlatList
               data={DATA}
               keyExtractor={(item) => item.key}
               horizontal
               pagingEnabled
               bounces={false}
-              style={{ flexGrow: 0 }}
-              contentContainerStyle={{
-                height: IMAGE_HEIGHT + SPACING * 2,
-                paddingHorizontal: SPACING * 2,
-              }}
+              style={{ flexGrow: 0, zIndex: 9999 }}
               showsHorizontalScrollIndicator={false}
+              onScroll={Animated.event(
+                [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+                { useNativeDriver: true }
+              )}
               renderItem={({ item, index }) => {
+                const inputRange = [
+                  (index - 1) * width,
+                  index * width,
+                  (index + 1) * width,
+                ];
+                const opacity = scrollX.interpolate({
+                  inputRange,
+                  outputRange: [0, 1, 0],
+                });
+                const translateY = scrollX.interpolate({
+                  inputRange,
+                  outputRange: [50, 0, 20],
+                });
+
                 return (
-                  <View style={styles.imageContainer}>
+                  <Animated.View
+                    style={[
+                      styles.imageContainer,
+                      { opacity, transform: [{ translateY }] },
+                    ]}
+                  >
                     <Image source={{ uri: item.image }} style={styles.image} />
-                  </View>
+                  </Animated.View>
                 );
               }}
             />
             <View style={styles.contentContainer}>
-              <Content item={DATA[0]} />
+              {DATA.map((item, index) => {
+                const inputRange = [
+                  (index - 0.2) * width,
+                  index * width,
+                  (index + 0.2) * width,
+                ];
+                const opacity = scrollX.interpolate({
+                  inputRange,
+                  outputRange: [0, 1, 0],
+                });
+                const rotateY = scrollX.interpolate({
+                  inputRange,
+                  outputRange: ["45deg", "0deg", "45deg"],
+                });
+                return (
+                  <Animated.View
+                    key={item.key}
+                    style={{
+                      position: "absolute",
+                      opacity,
+                      transform: [
+                        { perspective: IMAGE_WIDTH * 4 },
+                        { rotateY },
+                      ],
+                    }}
+                  >
+                    <Content item={item} />
+                  </Animated.View>
+                );
+              })}
             </View>
-            <View style={styles.underlay} />
+            <Animated.View
+              style={[
+                styles.underlay,
+                {
+                  transform: [
+                    {
+                      perspective: IMAGE_WIDTH * 4,
+                    },
+                    {
+                      rotateY: progress.interpolate({
+                        inputRange: [0, 0.5, 1],
+                        outputRange: ["0deg", "90deg", "180deg"],
+                      }),
+                    },
+                  ],
+                },
+              ]}
+            />
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={() => {}}>
@@ -210,11 +278,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: SPACING * 2,
     marginLeft: SPACING * 2,
+    zIndex: 99,
   },
 
   imageContainer: {
     width,
     paddingVertical: SPACING,
+    height: IMAGE_HEIGHT + SPACING * 2,
+    paddingHorizontal: SPACING * 2,
   },
   image: {
     width: IMAGE_WIDTH,
@@ -239,20 +310,3 @@ const styles = StyleSheet.create({
     },
   },
 });
-
-/* 
-import RNBounceable from "@freakycoder/react-native-bounceable";
-
-
-You can put ANY children component inside the RNBounceable component, it will make it bounce when it is pressed
-
-<RNBounceable onPress={() => {}}>
-  <View style={styles.bounceButtonStyle}>
-    <Text style={styles.bounceButtonTextStyle}>Bounce</Text>
-  </View>
-</RNBounceable>
-
-*/
-
-const imageUrl =
-  "https://images.unsplash.com/photo-1661977597155-1277a81affcd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80";
