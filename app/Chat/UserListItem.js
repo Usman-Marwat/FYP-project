@@ -17,7 +17,6 @@ export default function UserListItem({ chatUser, user }) {
   const handlePress = async () => {
     const channel = client.channel("messaging", {
       members: [chatUser.id, user.user_id],
-      targetUser: 1234567890,
     });
     //we do not need the target user prop; the chatUser will be the one we are clicking on
     await channel.watch();

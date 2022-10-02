@@ -1,8 +1,8 @@
 import client from "./client";
 
-const send = (expoPushToken, title, subtitle, body) =>
+const send = (user_id, title, subtitle, body) =>
   client.post("/messages", {
-    expoPushToken,
+    user_id,
     title,
     subtitle,
     body,

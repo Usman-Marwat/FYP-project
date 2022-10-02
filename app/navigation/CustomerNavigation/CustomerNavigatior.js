@@ -57,11 +57,12 @@ const CustomerNavigator = () => {
             name="Contracts"
             component={ContractNavigator}
           />
-          <DrawerNavigator.Screen name="Chat" component={RootNavigator} />
+
           <DrawerNavigator.Screen
             name="SavedContracts"
             component={SavedContractsNavigator}
           />
+          <DrawerNavigator.Screen name="Chat" component={RootNavigator} />
         </DrawerNavigator.Navigator>
       </NavigationContainer>
     </DrawerAnimationContext.Provider>

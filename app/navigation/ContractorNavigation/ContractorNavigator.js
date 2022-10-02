@@ -11,6 +11,7 @@ import ReceivedContractNavigator from "./ReceivedContractNavigator";
 import OngoingContractsNavigator from "./OngoingContractsNavigator";
 import EmployeesList from "../../screens/Contractor/EmployeesList";
 import navigationTheme from "../navigationTheme";
+import RootNavigator from "../../Chat/RootNavigator";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -56,6 +57,7 @@ const ContractorNavigator = () => {
             name="Ongoing"
             component={OngoingContractsNavigator}
           />
+          <DrawerNavigator.Screen name="Chat" component={RootNavigator} />
         </DrawerNavigator.Navigator>
       </NavigationContainer>
     </DrawerAnimationContext.Provider>

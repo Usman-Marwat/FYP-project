@@ -1,23 +1,15 @@
 import React, { useContext } from "react";
-import { SendButton, Channel, useMessageInputContext } from "stream-chat-expo";
+import { SendButton, useMessageInputContext } from "stream-chat-expo";
 
 import useApi from "../hooks/useApi";
 import messagesApi from "../api/messages";
-import AuthContext from "../auth/context";
 
-export const CustomSendButton = () => {
+export const CustomSendButton = ({ targetIds }) => {
   const { sendMessage, text } = useMessageInputContext();
-
   const sendApi = useApi(messagesApi.send);
-  const { user } = useContext(AuthContext);
 
   const handleMessage = async () => {
-    await sendApi.request(
-      user.expoPushToken,
-      "Stream Chat",
-      "Check Message",
-      text
-    );
+    await sendApi.request(targetIds[0], "SCC", "Check Message", text);
     sendMessage();
   };
 

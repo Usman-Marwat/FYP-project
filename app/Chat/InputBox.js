@@ -24,7 +24,7 @@ function getDurationFormatted(millis) {
   return `${minutesDisplay}:${secondsDisplay}`;
 }
 
-export const InputBox = () => {
+export const InputBox = ({ targetIds }) => {
   const { client } = useChatContext();
   const {
     text,
@@ -144,7 +144,7 @@ export const InputBox = () => {
             <MaterialCommunityIcons name="microphone" size={22} color="black" />
           </TouchableOpacity>
         ) : (
-          <CustomSendButton />
+          <CustomSendButton targetIds={targetIds} />
         )}
       </View>
     </View>

@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from "react";
-import { Text, View } from "react-native";
 import React from "react";
 import {
   Channel,
@@ -8,15 +7,16 @@ import {
   useChatContext,
   InputGiphySearch,
 } from "stream-chat-expo";
-import { useRoute } from "@react-navigation/native";
+import _ from "lodash";
 
 import { VoiceMessageAttachment } from "./VoiceMessageAttachment";
 import { InputBox } from "./InputBox";
 import ActivityIndicator from "../components/ActivityIndicator";
+import AuthContext from "../auth/context";
 
-export default function ChannelScreen({ navigation }) {
+export default function ChannelScreen({ navigation, route }) {
+  const { user } = useContext(AuthContext);
   const [channel, setChannel] = useState(null);
-  const route = useRoute();
   const cid = route.params?.cid;
   const { client } = useChatContext();
 
@@ -62,11 +62,13 @@ export default function ChannelScreen({ navigation }) {
   }, []);
 
   if (channel === null) return <ActivityIndicator visible={true} />;
+  const targetIds = _.pull(Object.keys(channel?.state.members), user.user_id);
+
   return (
     <Channel
       channel={channel}
       Card={VoiceMessageAttachment}
-      Input={InputBox}
+      Input={() => <InputBox targetIds={targetIds} />}
       InputGiphySearch={InputGiphySearch}
     >
       <MessageList />
