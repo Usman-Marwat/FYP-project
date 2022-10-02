@@ -19,6 +19,7 @@ export default function ChannelScreen({ navigation }) {
   const cid = route.params?.cid;
   const { client } = useChatContext();
 
+  //we are querry the channel again instead of passing it as prop because of not serializable issue
   const getChannel = async () => {
     const channel = await client.queryChannels({
       cid: cid,

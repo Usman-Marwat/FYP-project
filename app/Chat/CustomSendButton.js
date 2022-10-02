@@ -18,7 +18,6 @@ export const CustomSendButton = () => {
       "Check Message",
       text
     );
-    console.log("Message was sent from CustomSendButton------>>>> " + text);
     sendMessage();
   };
 

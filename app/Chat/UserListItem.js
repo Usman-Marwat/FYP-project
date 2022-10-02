@@ -1,4 +1,11 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useContext } from "react";
 import { useChatContext } from "stream-chat-expo";
 import { useNavigation } from "@react-navigation/native";
@@ -10,16 +17,19 @@ export default function UserListItem({ chatUser, user }) {
   const handlePress = async () => {
     const channel = client.channel("messaging", {
       members: [chatUser.id, user.user_id],
+      targetUser: 1234567890,
     });
+    //we do not need the target user prop; the chatUser will be the one we are clicking on
     await channel.watch();
+    console.log(channel._data);
     navigation.navigate("Channel", { cid: channel.cid });
   };
 
   return (
-    <Pressable onPress={handlePress} style={styles.root}>
+    <TouchableOpacity onPress={handlePress} style={styles.root}>
       <Image style={styles.image} source={{ uri: user.image }}></Image>
       <Text>{chatUser.name}</Text>
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 
