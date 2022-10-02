@@ -10,7 +10,7 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import RNBounceable from "@freakycoder/react-native-bounceable";
 import { AntDesign } from "@expo/vector-icons";
 import { faker } from "@faker-js/faker";
@@ -26,6 +26,7 @@ import routes from "../../navigation/routes";
 import Screen from "../../components/Screen";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import useNotifications from "../../hooks/useNotifications";
+import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("screen");
 const IMAGE_WIDTH = width * 0.65;
@@ -60,7 +61,35 @@ const DATA = [...Array(images.length).keys()].map((_, i) => {
   };
 });
 
+const renovation = [
+  {
+    category: "Painting",
+    image: "https://cdn-icons-png.flaticon.com/128/1001/1001327.png",
+  },
+  {
+    category: "Plumbing",
+    image: "https://cdn-icons-png.flaticon.com/128/313/313022.png",
+  },
+  {
+    category: "flooring",
+    image: "https://cdn-icons-png.flaticon.com/128/4647/4647616.png",
+  },
+  {
+    category: "Wiring",
+    image: "https://cdn-icons-png.flaticon.com/128/3540/3540105.png",
+  },
+  {
+    category: "Carpentry",
+    image: "https://cdn-icons-png.flaticon.com/128/7482/7482326.png",
+  },
+  {
+    category: "Roofing",
+    image: "https://cdn-icons-png.flaticon.com/128/7899/7899526.png",
+  },
+];
+
 const Content = ({ item }) => {
+  const navigation = useNavigation();
   return (
     <>
       <Text style={styles.contentTitle} numberOfLines={1} adjustsFontSizeToFit>
@@ -71,6 +100,12 @@ const Content = ({ item }) => {
         <Text style={styles.contentPrice}>{item.price}</Text>
         <Text style={styles.contentCurrency}>USD</Text>
       </View>
+      <TouchableOpacity
+        style={{ position: "absolute", bottom: "-20%", right: "-30%" }}
+        onPress={() => navigation.navigate(routes.MATERIAL)}
+      >
+        <AntDesign name="swapright" size={42} color="red" />
+      </TouchableOpacity>
     </>
   );
 };
@@ -82,6 +117,7 @@ const ContractScreen = ({ navigation }) => {
   const translateX = translateMenuFold(animatedValue);
   const scrollX = useRef(new Animated.Value(0)).current;
   const progress = Animated.modulo(Animated.divide(scrollX, width), width);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   return (
     <>
@@ -90,7 +126,7 @@ const ContractScreen = ({ navigation }) => {
 
       <View style={{ backgroundColor: "#A5F1FA", flex: 1 }}>
         <StatusBar hidden />
-        <SafeAreaView style={{ marginTop: SPACING * 4 }}>
+        <View style={{ marginTop: SPACING * 2 }}>
           <View style={{ height: IMAGE_HEIGHT * 2.1 }}>
             <Animated.FlatList
               data={DATA}
@@ -100,6 +136,14 @@ const ContractScreen = ({ navigation }) => {
               bounces={false}
               style={{ flexGrow: 0, zIndex: 9999 }}
               showsHorizontalScrollIndicator={false}
+              onMomentumScrollEnd={(event) => {
+                setCurrentIndex(
+                  Math.floor(
+                    Math.floor(event.nativeEvent.contentOffset.x) /
+                      Math.floor(event.nativeEvent.layoutMeasurement.width)
+                  )
+                );
+              }}
               onScroll={Animated.event(
                 [{ nativeEvent: { contentOffset: { x: scrollX } } }],
                 { useNativeDriver: true }
@@ -182,7 +226,7 @@ const ContractScreen = ({ navigation }) => {
               ]}
             />
           </View>
-          <View style={styles.buttonContainer}>
+          {/* <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={() => {}}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <AntDesign name="swapleft" size={42} color="black" />
@@ -195,12 +239,34 @@ const ContractScreen = ({ navigation }) => {
                 <AntDesign name="swapright" size={42} color="black" />
               </View>
             </TouchableOpacity>
-          </View>
-        </SafeAreaView>
+          </View> */}
+        </View>
+        <FlatList
+          data={renovation}
+          keyExtractor={(item) => item.category}
+          numColumns={2}
+          renderItem={({ item, index }) => {
+            return (
+              <View
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.7)",
+                  margin: 10,
+                  borderRadius: 30,
+                }}
+              >
+                <Image
+                  source={{ uri: item.image }}
+                  style={{ width: width / 3, height: width / 3 }}
+                />
+              </View>
+            );
+          }}
+        />
       </View>
-
-      {/* <ScrollView
-          contentContainerStyle={styles.contentContainer}
+      {/* 
+      <View style={{ flex: 1, marginTop: 100 }}>
+        <ScrollView
+          contentContainerStyle={{}}
           showsHorizontalScrollIndicator={false}
           style={{ flex: 1 }}
         >
@@ -231,16 +297,8 @@ const ContractScreen = ({ navigation }) => {
               />
             </View>
           </RNBounceable>
-          <RNBounceable>
-            <View>
-              <ListItem
-                image={require("../../assets/pi.jpg")}
-                title="Usman Marwat"
-                subTitle="5 vitual shops"
-              />
-            </View>
-          </RNBounceable>
-        </ScrollView> */}
+        </ScrollView>
+      </View> */}
     </>
   );
 };
@@ -277,7 +335,7 @@ const styles = StyleSheet.create({
     width: IMAGE_WIDTH,
     alignItems: "center",
     paddingHorizontal: SPACING * 2,
-    marginLeft: SPACING * 2,
+    marginLeft: SPACING * 3.5,
     zIndex: 99,
   },
 
@@ -285,7 +343,7 @@ const styles = StyleSheet.create({
     width,
     paddingVertical: SPACING,
     height: IMAGE_HEIGHT + SPACING * 2,
-    paddingHorizontal: SPACING * 2,
+    paddingHorizontal: SPACING * 3.5,
   },
   image: {
     width: IMAGE_WIDTH,
@@ -293,14 +351,14 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
   underlay: {
-    width: IMAGE_WIDTH + SPACING * 2,
+    width: IMAGE_WIDTH + SPACING * 4 + 20,
     position: "absolute",
     backgroundColor: "white",
     backfaceVisibility: true,
     zIndex: -1,
     top: SPACING * 2,
     left: SPACING,
-    bottom: 0,
+    bottom: 30,
     shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowRadius: 24,
