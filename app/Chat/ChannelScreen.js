@@ -12,6 +12,7 @@ import { useRoute } from "@react-navigation/native";
 
 import { VoiceMessageAttachment } from "./VoiceMessageAttachment";
 import { InputBox } from "./InputBox";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 export default function ChannelScreen({ navigation }) {
   const [channel, setChannel] = useState(null);
@@ -60,7 +61,7 @@ export default function ChannelScreen({ navigation }) {
     getChannel();
   }, []);
 
-  if (channel === null) return <Text>Channel Not Found</Text>;
+  if (channel === null) return <ActivityIndicator visible={true} />;
   return (
     <Channel
       channel={channel}

@@ -4,10 +4,11 @@ import { useChatContext } from "stream-chat-expo";
 
 import UserListItem from "./UserListItem";
 import AuthContext from "../auth/context";
+import ActivityIndicator from "../components/ActivityIndicator";
 
 export default function UsersScreen() {
   const { user } = useContext(AuthContext);
-  const [chatUsers, setChatUsers] = useState([]);
+  const [chatUsers, setChatUsers] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const { client } = useChatContext();
 
@@ -25,14 +26,15 @@ export default function UsersScreen() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <>
+      <ActivityIndicator visible={!chatUsers} />
       <FlatList
         data={chatUsers}
         renderItem={({ item }) => <UserListItem chatUser={item} user={user} />}
         refreshing={isLoading}
         onRefresh={fetchUsers}
       />
-    </View>
+    </>
   );
 }
 

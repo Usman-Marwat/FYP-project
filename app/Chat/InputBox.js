@@ -88,6 +88,7 @@ export const InputBox = () => {
       if (permission.status === "granted") {
         await Audio.setAudioModeAsync({
           allowsRecordingIOS: true,
+          playsInSilentModeIOS: true,
         });
         const { recording, status } = await Audio.Recording.createAsync(
           Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY,

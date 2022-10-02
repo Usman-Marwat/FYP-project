@@ -12,11 +12,12 @@ import niceColors from "nice-color-palettes";
 import { faker } from "@faker-js/faker";
 import { SharedElement } from "react-navigation-shared-element";
 
-import MenuFoldButton from "../../navigation/MenuFoldButton";
-import { translateMenuFold } from "../../navigation/navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
-import Screen from "../../components/Screen";
+import MenuFoldButton from "../../navigation/MenuFoldButton";
 import routes from "../../navigation/routes";
+import { translateMenuFold } from "../../navigation/navigationAnimations";
+import useNotifications from "../../hooks/useNotifications";
+import ActivityIndicator from "../../components/ActivityIndicator";
 
 faker.seed(1);
 const colors = niceColors[1];
@@ -56,17 +57,16 @@ const fakerData = data.map((item, index) => ({
   subCategories: faker.helpers.shuffle(data).slice(0, 3),
 }));
 
-const { height, width } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const ORANGE = "#FB9B06";
 const SPACING = 10;
 const CELL_WIDTH = width * 0.64;
-const CELL_HEIGHT = CELL_WIDTH * 1.4;
-const FULL_SIZE = CELL_WIDTH + SPACING * 2;
 
 const ReceivedContracts = ({ navigation }) => {
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { loading } = useNotifications();
 
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
@@ -84,6 +84,7 @@ const ReceivedContracts = ({ navigation }) => {
 
   return (
     <>
+      <ActivityIndicator visible={loading} />
       <MenuFoldButton translateX={translateX} navigation={navigation} />
       <View style={{ paddingTop: 50 }}>
         <View>
@@ -140,7 +141,9 @@ const ReceivedContracts = ({ navigation }) => {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate("RecievedContractDetails", { item });
+                    navigation.navigate(routes.RECEIVED_CONTRACT_DETAILS, {
+                      item,
+                    });
                   }}
                   style={styles.itemCell}
                 >
