@@ -63,12 +63,12 @@ export default function ChannelScreen({ navigation, route }) {
 
   if (channel === null) return <ActivityIndicator visible={true} />;
   const targetIds = _.pull(Object.keys(channel?.state.members), user.user_id);
-
+  const sender = channel._client._user.name;
   return (
     <Channel
       channel={channel}
       Card={VoiceMessageAttachment}
-      Input={() => <InputBox targetIds={targetIds} />}
+      Input={() => <InputBox targetIds={targetIds} sender={sender} />}
       InputGiphySearch={InputGiphySearch}
     >
       <MessageList />

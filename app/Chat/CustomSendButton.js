@@ -4,12 +4,17 @@ import { SendButton, useMessageInputContext } from "stream-chat-expo";
 import useApi from "../hooks/useApi";
 import messagesApi from "../api/messages";
 
-export const CustomSendButton = ({ targetIds }) => {
+export const CustomSendButton = ({ sender, targetIds }) => {
   const { sendMessage, text } = useMessageInputContext();
   const sendApi = useApi(messagesApi.send);
 
   const handleMessage = async () => {
-    await sendApi.request(targetIds[0], "SCC", "Check Message", text);
+    await sendApi.request(
+      targetIds[0],
+      "Chat Notification",
+      `From the sender ${sender}`,
+      text
+    );
     sendMessage();
   };
 
