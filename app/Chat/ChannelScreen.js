@@ -64,6 +64,10 @@ export default function ChannelScreen({ navigation, route }) {
   if (channel === null) return <ActivityIndicator visible={true} />;
   const targetIds = _.pull(Object.keys(channel?.state.members), user.user_id);
   const sender = channel._client._user.name;
+  const receiver = _.values(
+    ..._.values(_.omit(channel?.state.members, [user.user_id]))
+  )[1].name;
+
   return (
     <Channel
       channel={channel}
@@ -73,9 +77,15 @@ export default function ChannelScreen({ navigation, route }) {
     >
       <MessageList />
       <MessageInput />
+      {navigation.setOptions({ title: receiver })}
     </Channel>
   );
 }
+/*
 
-const uri =
-  "file:///var/mobile/Containers/Data/Application/A7232574-F208-41E7-BD32-F4DB2FDF19A1/Library/Caches/ExponentExperienceData/%2540snack%252Fsdk.46.0.0-PIkSclUjEu/AV/recording-24AAE54F-82BE-4A05-97F8-602BBB74DDDA.m4a";
+The reason I had to set navigation option in the middle of component UI is becasue of this error
+
+Warning: Cannot update a component (`StackNavigator`) while rendering a different component (`ChannelScreen`). 
+To locate the bad setState() call inside `ChannelScreen`, 
+follow the stack trace as described in  https://reactjs.org/link/setstate-in-render
+*/

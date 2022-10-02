@@ -1,10 +1,23 @@
-import { View, StyleSheet, ScrollView } from "react-native";
+import {
+  FlatList,
+  Image,
+  Animated,
+  Text,
+  View,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  SafeAreaView,
+} from "react-native";
 import React, { useContext } from "react";
 import RNBounceable from "@freakycoder/react-native-bounceable";
+import { AntDesign } from "@expo/vector-icons";
+import { faker } from "@faker-js/faker";
+import { StatusBar } from "expo-status-bar";
 
 import AppText from "../../components/AppTextGeneral";
 import ActivityIndicator from "../../components/ActivityIndicator";
-import Card from "../../components/Card";
 import colors from "../../config/colors";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import ListItem from "../../components/ListItem";
@@ -13,6 +26,54 @@ import routes from "../../navigation/routes";
 import Screen from "../../components/Screen";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import useNotifications from "../../hooks/useNotifications";
+
+const { width, height } = Dimensions.get("screen");
+const IMAGE_WIDTH = width * 0.65;
+const IMAGE_HEIGHT = IMAGE_WIDTH * 0.7;
+const SPACING = 20;
+
+const images = [
+  "https://images.pexels.com/photos/1799912/pexels-photo-1799912.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/1769524/pexels-photo-1769524.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/1758101/pexels-photo-1758101.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/1738434/pexels-photo-1738434.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/1698394/pexels-photo-1698394.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/1684429/pexels-photo-1684429.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/1690351/pexels-photo-1690351.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/1668211/pexels-photo-1668211.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/1647372/pexels-photo-1647372.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/1616164/pexels-photo-1616164.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/1799901/pexels-photo-1799901.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/1789968/pexels-photo-1789968.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/1774301/pexels-photo-1774301.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/1734364/pexels-photo-1734364.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  "https://images.pexels.com/photos/1724888/pexels-photo-1724888.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+];
+faker.seed(10);
+const DATA = [...Array(images.length).keys()].map((_, i) => {
+  return {
+    key: faker.datatype.uuid(),
+    image: images[i],
+    title: faker.commerce.productName(),
+    subtitle: faker.company.bs(),
+    price: faker.finance.amount(80, 200, 0),
+  };
+});
+
+const Content = ({ item }) => {
+  return (
+    <>
+      <Text style={styles.contentTitle} numberOfLines={1} adjustsFontSizeToFit>
+        {item.title}
+      </Text>
+      <Text style={{ fontSize: 12, opacity: 0.4 }}>{item.subtitle}</Text>
+      <View style={{ flexDirection: "row", marginTop: SPACING }}>
+        <Text style={styles.contentPrice}>{item.price}</Text>
+        <Text style={styles.contentCurrency}>USD</Text>
+      </View>
+    </>
+  );
+};
 
 const ContractScreen = ({ navigation }) => {
   const { animatedValue } = useContext(DrawerAnimationContext);
@@ -23,100 +84,95 @@ const ContractScreen = ({ navigation }) => {
     <>
       <ActivityIndicator visible={loading} />
       <MenuFoldButton navigation={navigation} translateX={translateX} />
-      <Screen>
-        <View style={styles.separator}>
-          <AppText>House Building</AppText>
-        </View>
-        <View>
-          <ScrollView
-            horizontal
-            contentContainerStyle={styles.contentContainer}
-            showsHorizontalScrollIndicator={false}
-          >
-            <RNBounceable>
-              <Card
-                cardStyle={styles.cardStyle}
-                heading="Premiuim"
-                imageUrl={imageUrl}
-                imageStyle={styles.imageStyle}
-                subTitle="200>"
-                title="Premiuim"
-                textAlign="center"
-                onPress={() => navigation.navigate(routes.MATERIAL)}
+
+      <View style={{ backgroundColor: "#A5F1FA", flex: 1 }}>
+        <StatusBar hidden />
+        <SafeAreaView style={{ marginTop: SPACING * 4 }}>
+          <View style={{ height: IMAGE_HEIGHT * 2.1 }}>
+            <FlatList
+              data={DATA}
+              keyExtractor={(item) => item.key}
+              horizontal
+              pagingEnabled
+              bounces={false}
+              style={{ flexGrow: 0 }}
+              contentContainerStyle={{
+                height: IMAGE_HEIGHT + SPACING * 2,
+                paddingHorizontal: SPACING * 2,
+              }}
+              showsHorizontalScrollIndicator={false}
+              renderItem={({ item, index }) => {
+                return (
+                  <View style={styles.imageContainer}>
+                    <Image source={{ uri: item.image }} style={styles.image} />
+                  </View>
+                );
+              }}
+            />
+            <View style={styles.contentContainer}>
+              <Content item={DATA[0]} />
+            </View>
+            <View style={styles.underlay} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={() => {}}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <AntDesign name="swapleft" size={42} color="black" />
+                <Text style={{ fontSize: 12, fontWeight: "800" }}>PREV</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {}}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={{ fontSize: 12, fontWeight: "800" }}>NEXT</Text>
+                <AntDesign name="swapright" size={42} color="black" />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </View>
+
+      {/* <ScrollView
+          contentContainerStyle={styles.contentContainer}
+          showsHorizontalScrollIndicator={false}
+          style={{ flex: 1 }}
+        >
+          <RNBounceable>
+            <View>
+              <ListItem
+                image={require("../../assets/pi.jpg")}
+                title="Usman Marwat"
+                subTitle="5 vitual shops"
               />
-            </RNBounceable>
-            <RNBounceable>
-              <Card
-                cardStyle={styles.cardStyle}
-                heading="Premiuim"
-                imageUrl={imageUrl}
-                imageStyle={styles.imageStyle}
-                subTitle="200>"
-                title="Premiuim"
-                textAlign="center"
+            </View>
+          </RNBounceable>
+          <RNBounceable>
+            <View>
+              <ListItem
+                image={require("../../assets/pi.jpg")}
+                title="Usman Marwat"
+                subTitle="5 vitual shops"
               />
-            </RNBounceable>
-            <RNBounceable>
-              <Card
-                cardStyle={styles.cardStyle}
-                heading="Premiuim"
-                imageUrl={imageUrl}
-                imageStyle={styles.imageStyle}
-                subTitle="200>"
-                title="Premiuim"
-                textAlign="center"
+            </View>
+          </RNBounceable>
+          <RNBounceable>
+            <View>
+              <ListItem
+                image={require("../../assets/pi.jpg")}
+                title="Usman Marwat"
+                subTitle="5 vitual shops"
               />
-            </RNBounceable>
-          </ScrollView>
-        </View>
-        <View style={styles.separator}>
-          <AppText>Renovation</AppText>
-        </View>
-        <View style={{ flex: 1 }}>
-          <ScrollView
-            contentContainerStyle={styles.contentContainer}
-            showsHorizontalScrollIndicator={false}
-            style={{ flex: 1 }}
-          >
-            <RNBounceable>
-              <View>
-                <ListItem
-                  image={require("../../assets/pi.jpg")}
-                  title="Usman Marwat"
-                  subTitle="5 vitual shops"
-                />
-              </View>
-            </RNBounceable>
-            <RNBounceable>
-              <View>
-                <ListItem
-                  image={require("../../assets/pi.jpg")}
-                  title="Usman Marwat"
-                  subTitle="5 vitual shops"
-                />
-              </View>
-            </RNBounceable>
-            <RNBounceable>
-              <View>
-                <ListItem
-                  image={require("../../assets/pi.jpg")}
-                  title="Usman Marwat"
-                  subTitle="5 vitual shops"
-                />
-              </View>
-            </RNBounceable>
-            <RNBounceable>
-              <View>
-                <ListItem
-                  image={require("../../assets/pi.jpg")}
-                  title="Usman Marwat"
-                  subTitle="5 vitual shops"
-                />
-              </View>
-            </RNBounceable>
-          </ScrollView>
-        </View>
-      </Screen>
+            </View>
+          </RNBounceable>
+          <RNBounceable>
+            <View>
+              <ListItem
+                image={require("../../assets/pi.jpg")}
+                title="Usman Marwat"
+                subTitle="5 vitual shops"
+              />
+            </View>
+          </RNBounceable>
+        </ScrollView> */}
     </>
   );
 };
@@ -124,47 +180,63 @@ const ContractScreen = ({ navigation }) => {
 export default ContractScreen;
 
 const styles = StyleSheet.create({
-  cardStyle: {
-    height: 220,
-    width: 170,
-    borderRadius: 30,
-    marginHorizontal: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    //shadowprops
-    overflow: "visible",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.17,
-    shadowRadius: 10,
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: IMAGE_WIDTH + SPACING * 4,
+    paddingHorizontal: SPACING,
+    paddingVertical: SPACING,
   },
-  container: {
-    marginHorizontal: 30,
+  contentTitle: {
+    textAlign: "center",
+    fontWeight: "800",
+    fontSize: 16,
+    textTransform: "uppercase",
+  },
+  contentPrice: {
+    fontSize: 42,
+    letterSpacing: 3,
+    fontWeight: "900",
+    marginRight: 8,
+  },
+  contentCurrency: {
+    fontSize: 16,
+    lineHeight: 36,
+    fontWeight: "800",
+    alignSelf: "flex-end",
   },
   contentContainer: {
-    paddingTop: 20,
+    width: IMAGE_WIDTH,
+    alignItems: "center",
+    paddingHorizontal: SPACING * 2,
+    marginLeft: SPACING * 2,
   },
-  imageStyle: {
-    height: 50,
-    width: 50,
-    borderRadius: 25,
-    marginVertical: 15,
-    backgroundColor: "red",
-    shadowColor: "red",
-    shadowOffset: { width: -1, height: 2 },
-    shadowOpacity: 0.7,
-    shadowRadius: 7,
+
+  imageContainer: {
+    width,
+    paddingVertical: SPACING,
   },
-  screen: {
-    backgroundColor: colors.light,
+  image: {
+    width: IMAGE_WIDTH,
+    height: IMAGE_HEIGHT,
+    resizeMode: "cover",
   },
-  separator: {
-    paddingLeft: 15,
-    paddingRight: 30,
-    marginTop: 20,
+  underlay: {
+    width: IMAGE_WIDTH + SPACING * 2,
+    position: "absolute",
+    backgroundColor: "white",
+    backfaceVisibility: true,
+    zIndex: -1,
+    top: SPACING * 2,
+    left: SPACING,
+    bottom: 0,
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowRadius: 24,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
   },
 });
 
