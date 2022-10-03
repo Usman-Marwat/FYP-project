@@ -18,13 +18,15 @@ const validationSchema = Yup.object().shape({
   address: Yup.string().required().min(4).label("Address"),
 });
 
-const Credentials = ({ navigation }) => {
+const Credentials = ({ navigation, route }) => {
+  const { contract } = route.params;
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
 
   const handleSubmit = async (credentials) => {
-    console.log(credentials);
-    navigation.navigate(routes.FIRMSLIST);
+    navigation.navigate(routes.FIRMSLIST, {
+      contract: { ...contract, ...credentials },
+    });
   };
 
   return (
@@ -42,7 +44,7 @@ const Credentials = ({ navigation }) => {
             icon="format-title"
             name="title"
             placeholder="Title"
-            width="50%"
+            width="70%"
           />
           <AppFormField
             autoCapitalize="none"

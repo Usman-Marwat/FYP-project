@@ -9,20 +9,22 @@ import {
   SafeAreaView,
   StatusBar,
 } from "react-native";
-import React, { useContext, useRef, useEffect } from "react";
+import React, { useContext, useRef, useEffect, useState } from "react";
 import niceColors from "nice-color-palettes";
 import { faker } from "@faker-js/faker";
-
 import { SharedElement } from "react-navigation-shared-element";
 
-import AppButton from "../../components/AppButton";
-import routes from "../../navigation/routes";
-import Header from "../../components/Header";
-import { translateMenuFold } from "../../navigation/navigationAnimations";
-import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
-import useApi from "../../hooks/useApi";
-import contractorsApi from "../../api/Customer/contractors";
+import AuthContext from "../../auth/context";
 import ActivityIndicator from "../../components/ActivityIndicator";
+import customerContractorsApi from "../../api/Customer/contractors";
+import customerContractApi from "../../api/Customer/contract";
+import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
+import Header from "../../components/Header";
+import messagesApi from "../../api/messages";
+import routes from "../../navigation/routes";
+import { translateMenuFold } from "../../navigation/navigationAnimations";
+import useApi from "../../hooks/useApi";
+import UploadScreen from "../UploadScreen";
 
 faker.seed(1);
 const colors = [
@@ -72,12 +74,14 @@ const SPACING = 10;
 const imageUri = "https://cdn-icons-png.flaticon.com/256/4105/4105448.png";
 
 const FirmsList = ({ navigation, route }) => {
-  // const { contract } = route.params;
-  // console.log(contract);
-  const { animatedValue } = useContext(DrawerAnimationContext);
-  const translateX = translateMenuFold(animatedValue);
+  const { contract } = route.params;
+  const { user } = useContext(AuthContext);
+  const [uploadVisible, setuploadVisible] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   const headerHeight = 60 * 2;
+  const { animatedValue } = useContext(DrawerAnimationContext);
+  const translateX = translateMenuFold(animatedValue);
   const scrollY = useRef(new Animated.Value(0));
   const translateYNumber = useRef();
   const scrollYClamped = Animated.diffClamp(scrollY.current, 0, headerHeight);
@@ -101,28 +105,44 @@ const FirmsList = ({ navigation, route }) => {
     }
   );
 
-  const {
-    data: contractors,
-    error,
-    loading,
-    request: loadContractors,
-  } = useApi(contractorsApi.getContractors);
+  const contractorsApi = useApi(customerContractorsApi.getContractors);
+  const sendApi = useApi(messagesApi.send);
 
   useEffect(() => {
-    loadContractors();
+    contractorsApi.request();
   }, []);
 
-  const sendContract = (id) => {
-    console.log(id);
+  const sendContract = async (contractor_id) => {
+    setProgress(0);
+    setuploadVisible(true);
+    const result = await customerContractApi.addContract(
+      { customer_id: user.actor_id, contractor_id, ...contract },
+      (prog) => setProgress(prog)
+    );
+    if (!result.ok) setuploadVisible(false);
+    sendNotification(contractor_id);
+  };
+
+  const sendNotification = async (contractor_id) => {
+    await sendApi.request(
+      contractor_id,
+      contract.title,
+      user.name,
+      "The contract is sent for bidding"
+    );
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <ActivityIndicator visible={loading} />
+      <UploadScreen
+        onDone={() => setuploadVisible(false)}
+        progress={progress}
+        visible={uploadVisible}
+      />
       <Animated.View style={{ zIndex: 1, transform: [{ translateY }] }}>
         <Header navigation={navigation} translateX={translateX} />
       </Animated.View>
-      {contractors.length > 0 && (
+      {contractorsApi.data.length > 0 && (
         <Animated.FlatList
           onScroll={handleScroll}
           contentContainerStyle={{ padding: SPACING }}
@@ -134,7 +154,7 @@ const FirmsList = ({ navigation, route }) => {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    sendContract(contractors[0]._id);
+                    sendContract(contractorsApi.data[0].user_id);
                   }}
                   style={styles.itemContainer}
                 >
@@ -149,11 +169,11 @@ const FirmsList = ({ navigation, route }) => {
                     </SharedElement>
                     <SharedElement id={`item.${item.key}.name`}>
                       <Text style={styles.name}>
-                        {contractors[0].firmProfile.name}
+                        {contractorsApi.data[0].firmProfile.name}
                       </Text>
                     </SharedElement>
                     <Text style={styles.jobTitle}>
-                      {contractors[0].firmProfile.tagline}
+                      {contractorsApi.data[0].firmProfile.tagline}
                     </Text>
                     <SharedElement
                       id={`item.${item.key}.image`}

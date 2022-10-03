@@ -6,9 +6,11 @@ const endpoint = "/customer/contract";
 
 export const addContract = (contract, onUploadProgress) => {
   const data = new FormData();
-  data.append("title", "Contract");
-  data.append("actor_id", contract.actor_id);
+  data.append("title", contract.title);
+  data.append("customer_id", contract.customer_id);
+  data.append("contractor_id", contract.contractor_id);
   data.append("keys", JSON.stringify(contract.keys));
+  data.append("location", JSON.stringify(contract.location));
   data.append("allValues", JSON.stringify(contract.allValues));
   data.append("descriptions", JSON.stringify(contract.descriptions));
   data.append("imagesUris", JSON.stringify(contract.imagesUris));

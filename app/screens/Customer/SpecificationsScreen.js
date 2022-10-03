@@ -13,7 +13,6 @@ import AuthContext from "../../auth/context";
 import AppTextInput from "../../components/AppTextInput";
 import colors from "../../config/colors";
 import ContractTable from "../../components/ContractTable";
-import customerContractApi from "../../api/Customer/contract";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import Header from "../../components/Header";
 import Icon from "../../components/Icon";
@@ -55,7 +54,6 @@ const SpecificationScreen = ({ navigation, route }) => {
   const [imagesUris, setImagesUris] = useState(route.params.imagesUris);
   const [keys, setKeys] = useState(route.params.keysValues);
   const [allValues, setAllValues] = useState(route.params.allValues);
-  const { user } = useContext(AuthContext);
 
   const ref = React.useRef();
   const scrollView = useRef();
@@ -125,18 +123,6 @@ const SpecificationScreen = ({ navigation, route }) => {
   //   console.log("The images URis are ");
   //   console.log(imagesUris);
   // }, [allValues, imagesUris]);
-
-  const sendData = async () => {
-    const contract = { keys, allValues, descriptions, imagesUris };
-    const result = await customerContractApi.addContract(
-      { actor_id: user.actor_id, ...contract },
-      (prog) => console.log(prog)
-    );
-    console.log(result.data);
-    if (!result.ok) {
-      return alert("Could not save the Contract");
-    }
-  };
 
   return (
     <>
