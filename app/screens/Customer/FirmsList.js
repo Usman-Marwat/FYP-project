@@ -66,6 +66,8 @@ const { height, width } = Dimensions.get("window");
 const ITEM_HEIGHT = height * 0.18;
 const SPACING = 10;
 
+const imageUri = "https://cdn-icons-png.flaticon.com/256/4105/4105448.png";
+
 const FirmsList = ({ navigation, route }) => {
   // const { contract } = route.params;
   // console.log(contract);
@@ -105,19 +107,47 @@ const FirmsList = ({ navigation, route }) => {
       <Animated.FlatList
         onScroll={handleScroll}
         contentContainerStyle={{ padding: SPACING }}
-        data={fakerData}
         style={{ paddingTop: 55 }}
+        data={fakerData}
         keyExtractor={(item) => item.key}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
+          if (index === 0)
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  console.log("hi");
+                }}
+                style={styles.itemContainer}
+              >
+                <View style={{ flex: 1, padding: SPACING }}>
+                  <SharedElement
+                    id={`item.${item.key}.bg`}
+                    style={StyleSheet.absoluteFillObject}
+                  >
+                    <View
+                      style={[styles.bg, { backgroundColor: colors[19] }]}
+                    />
+                  </SharedElement>
+                  <SharedElement id={`item.${item.key}.name`}>
+                    <Text style={styles.name}>Name</Text>
+                  </SharedElement>
+                  <Text style={styles.jobTitle}>jobTitle</Text>
+                  <SharedElement
+                    id={`item.${item.key}.image`}
+                    style={styles.image}
+                  >
+                    <Image source={{ uri: imageUri }} style={styles.image} />
+                  </SharedElement>
+                </View>
+              </TouchableOpacity>
+            );
+
           return (
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate(routes.FIRMSLISTDETAILS, { item });
               }}
-              style={{
-                marginBottom: SPACING,
-                height: ITEM_HEIGHT,
-              }}
+              style={styles.itemContainer}
             >
               <View style={{ flex: 1, padding: SPACING }}>
                 <SharedElement
@@ -166,6 +196,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     right: SPACING,
+  },
+  itemContainer: {
+    marginBottom: SPACING,
+    height: ITEM_HEIGHT,
   },
   jobTitle: {
     fontSize: 11,

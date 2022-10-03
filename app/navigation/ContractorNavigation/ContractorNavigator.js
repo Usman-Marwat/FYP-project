@@ -12,6 +12,7 @@ import OngoingContractsNavigator from "./OngoingContractsNavigator";
 import EmployeesList from "../../screens/Contractor/EmployeesList";
 import navigationTheme from "../navigationTheme";
 import RootNavigator from "../../Chat/RootNavigator";
+import FirmProfileNavigator from "./FirmProfileNavigator";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -21,21 +22,22 @@ const ContractorNavigator = () => {
   const [toCords] = useState({ x: width, y: 0 });
   const animatedValue = useRef(new Animated.ValueXY(fromCords)).current;
 
+  const customDrawerOptions = {
+    headerShown: false,
+    drawerStyle: {
+      backgroundColor: "transparent",
+      width: 0,
+    },
+    drawerType: "permanent",
+    overlayColor: "transparent",
+  };
   return (
     <DrawerAnimationContext.Provider
       value={{ fromCords, toCords, animatedValue }}
     >
       <NavigationContainer theme={navigationTheme}>
         <DrawerNavigator.Navigator
-          screenOptions={{
-            headerShown: false,
-            drawerStyle: {
-              backgroundColor: "transparent",
-              width: 0,
-            },
-            drawerType: "permanent",
-            overlayColor: "transparent",
-          }}
+          screenOptions={customDrawerOptions}
           drawerContent={(props) => {
             return (
               <CustomDrawer
@@ -57,6 +59,10 @@ const ContractorNavigator = () => {
             name="Ongoing"
             component={OngoingContractsNavigator}
           />
+          <DrawerNavigator.Screen
+            name="Profile"
+            component={FirmProfileNavigator}
+          />
           <DrawerNavigator.Screen name="Chat" component={RootNavigator} />
         </DrawerNavigator.Navigator>
       </NavigationContainer>
@@ -65,8 +71,6 @@ const ContractorNavigator = () => {
 };
 
 export default ContractorNavigator;
-
-const styles = StyleSheet.create({});
 
 function Check({ navigation }) {
   const { animatedValue } = useContext(DrawerAnimationContext);

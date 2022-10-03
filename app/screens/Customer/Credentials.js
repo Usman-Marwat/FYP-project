@@ -9,6 +9,7 @@ import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import Header from "../../components/Header";
 import AppFormDocumentPicker from "../../components/forms/AppFormDocumentPicker";
 import AppFormMap from "../../components/forms/AppFormMap";
+import routes from "../../navigation/routes";
 
 const width = Dimensions.get("screen").width;
 
@@ -23,6 +24,7 @@ const Credentials = ({ navigation }) => {
 
   const handleSubmit = async (credentials) => {
     console.log(credentials);
+    navigation.navigate(routes.FIRMSLIST);
   };
 
   return (

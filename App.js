@@ -16,11 +16,9 @@ const App = () => {
 
   const restoreUser = async () => {
     const user = await authStorage.getUser();
-    console.log(user);
     if (user) setUser(user);
     setAppIsReady(true);
   };
-
   useEffect(() => {
     restoreUser();
   }, []);
