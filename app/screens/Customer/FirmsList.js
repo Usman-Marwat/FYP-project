@@ -9,7 +9,7 @@ import {
   SafeAreaView,
   StatusBar,
 } from "react-native";
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useEffect } from "react";
 import niceColors from "nice-color-palettes";
 import { faker } from "@faker-js/faker";
 
@@ -20,6 +20,9 @@ import routes from "../../navigation/routes";
 import Header from "../../components/Header";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
+import useApi from "../../hooks/useApi";
+import contractorsApi from "../../api/Customer/contractors";
+import ActivityIndicator from "../../components/ActivityIndicator";
 
 faker.seed(1);
 const colors = [
@@ -36,7 +39,7 @@ const colors = [
   ...niceColors[75].slice(2, 4),
 ];
 
-const data = [
+const images = [
   { image: "https://cdn-icons-png.flaticon.com/512/8360/8360483.png" },
   { image: "https://cdn-icons-png.flaticon.com/512/8360/8360535.png" },
   { image: "https://cdn-icons-png.flaticon.com/512/5046/5046935.png" },
@@ -47,7 +50,7 @@ const data = [
   { image: "https://cdn-icons-png.flaticon.com/512/4982/4982394.png" },
 ];
 
-const fakerData = data.map((item, index) => ({
+const fakerData = images.map((item, index) => ({
   ...item,
   key: faker.datatype.uuid(),
   color: colors[index % colors.length],
@@ -76,12 +79,12 @@ const FirmsList = ({ navigation, route }) => {
 
   const headerHeight = 60 * 2;
   const scrollY = useRef(new Animated.Value(0));
+  const translateYNumber = useRef();
   const scrollYClamped = Animated.diffClamp(scrollY.current, 0, headerHeight);
   const translateY = scrollYClamped.interpolate({
     inputRange: [0, headerHeight],
     outputRange: [0, -headerHeight / 2],
   });
-  const translateYNumber = useRef();
   translateY.addListener(({ value }) => {
     translateYNumber.current = value;
   });
@@ -98,24 +101,74 @@ const FirmsList = ({ navigation, route }) => {
     }
   );
 
+  const {
+    data: contractors,
+    error,
+    loading,
+    request: loadContractors,
+  } = useApi(contractorsApi.getContractors);
+
+  useEffect(() => {
+    loadContractors();
+  }, []);
+
+  const sendContract = (id) => {
+    console.log(id);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
+      <ActivityIndicator visible={loading} />
       <Animated.View style={{ zIndex: 1, transform: [{ translateY }] }}>
         <Header navigation={navigation} translateX={translateX} />
       </Animated.View>
+      {contractors.length > 0 && (
+        <Animated.FlatList
+          onScroll={handleScroll}
+          contentContainerStyle={{ padding: SPACING }}
+          style={{ paddingTop: 55 }}
+          data={fakerData}
+          keyExtractor={(item) => item.key}
+          renderItem={({ item, index }) => {
+            if (index === 0)
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    sendContract(contractors[0]._id);
+                  }}
+                  style={styles.itemContainer}
+                >
+                  <View style={{ flex: 1, padding: SPACING }}>
+                    <SharedElement
+                      id={`item.${item.key}.bg`}
+                      style={StyleSheet.absoluteFillObject}
+                    >
+                      <View
+                        style={[styles.bg, { backgroundColor: colors[19] }]}
+                      />
+                    </SharedElement>
+                    <SharedElement id={`item.${item.key}.name`}>
+                      <Text style={styles.name}>
+                        {contractors[0].firmProfile.name}
+                      </Text>
+                    </SharedElement>
+                    <Text style={styles.jobTitle}>
+                      {contractors[0].firmProfile.tagline}
+                    </Text>
+                    <SharedElement
+                      id={`item.${item.key}.image`}
+                      style={styles.image}
+                    >
+                      <Image source={{ uri: imageUri }} style={styles.image} />
+                    </SharedElement>
+                  </View>
+                </TouchableOpacity>
+              );
 
-      <Animated.FlatList
-        onScroll={handleScroll}
-        contentContainerStyle={{ padding: SPACING }}
-        style={{ paddingTop: 55 }}
-        data={fakerData}
-        keyExtractor={(item) => item.key}
-        renderItem={({ item, index }) => {
-          if (index === 0)
             return (
               <TouchableOpacity
                 onPress={() => {
-                  console.log("hi");
+                  navigation.navigate(routes.FIRMSLISTDETAILS, { item });
                 }}
                 style={styles.itemContainer}
               >
@@ -125,52 +178,25 @@ const FirmsList = ({ navigation, route }) => {
                     style={StyleSheet.absoluteFillObject}
                   >
                     <View
-                      style={[styles.bg, { backgroundColor: colors[19] }]}
+                      style={[styles.bg, { backgroundColor: item.color }]}
                     />
                   </SharedElement>
                   <SharedElement id={`item.${item.key}.name`}>
-                    <Text style={styles.name}>Name</Text>
+                    <Text style={styles.name}>{item.name}</Text>
                   </SharedElement>
-                  <Text style={styles.jobTitle}>jobTitle</Text>
+                  <Text style={styles.jobTitle}>{item.jobTitle}</Text>
                   <SharedElement
                     id={`item.${item.key}.image`}
                     style={styles.image}
                   >
-                    <Image source={{ uri: imageUri }} style={styles.image} />
+                    <Image source={{ uri: item.image }} style={styles.image} />
                   </SharedElement>
                 </View>
               </TouchableOpacity>
             );
-
-          return (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate(routes.FIRMSLISTDETAILS, { item });
-              }}
-              style={styles.itemContainer}
-            >
-              <View style={{ flex: 1, padding: SPACING }}>
-                <SharedElement
-                  id={`item.${item.key}.bg`}
-                  style={StyleSheet.absoluteFillObject}
-                >
-                  <View style={[styles.bg, { backgroundColor: item.color }]} />
-                </SharedElement>
-                <SharedElement id={`item.${item.key}.name`}>
-                  <Text style={styles.name}>{item.name}</Text>
-                </SharedElement>
-                <Text style={styles.jobTitle}>{item.jobTitle}</Text>
-                <SharedElement
-                  id={`item.${item.key}.image`}
-                  style={styles.image}
-                >
-                  <Image source={{ uri: item.image }} style={styles.image} />
-                </SharedElement>
-              </View>
-            </TouchableOpacity>
-          );
-        }}
-      />
+          }}
+        />
+      )}
       <SharedElement id="general.bg">
         <View style={styles.overlay} />
       </SharedElement>
