@@ -93,7 +93,7 @@ const CustomDrawer = ({ navigation, selectedRoute, routes }) => {
             backgroundColor="transparent"
             iconColor="white"
             size={34}
-            antDesign={true}
+            family="antDesign"
           />
         </TouchableOpacity>
         <Animated.View

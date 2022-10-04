@@ -6,7 +6,6 @@ import { Chat, OverlayProvider } from "stream-chat-expo";
 
 import CustomerNavigator from "../navigation/CustomerNavigation/CustomerNavigatior";
 import ContractorNavigator from "../navigation/ContractorNavigation/ContractorNavigator";
-import authStorage from "../auth/storage";
 
 const Api_Key = "fnmp8yh8yfe2";
 const client = StreamChat.getInstance(Api_Key);
@@ -39,8 +38,6 @@ const AppStarter = ({ user }) => {
       </SafeAreaView>
     </OverlayProvider>
   );
-  // if (actor === "Customer") return <CustomerNavigator />;
-  // else if (actor === "Contractor") return null;
 };
 
 export default AppStarter;

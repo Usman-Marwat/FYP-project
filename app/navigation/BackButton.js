@@ -10,7 +10,7 @@ const BackButton = ({ navigation, iconName = "arrowleft", containerStyle }) => {
       style={containerStyle}
     >
       <Icon
-        antDesign={true}
+        family="antDesign"
         name={iconName}
         backgroundColor="white"
         size={35}

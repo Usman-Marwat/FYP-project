@@ -80,7 +80,7 @@ export default ContractTable = ({
           keyExtractor={() => Math.random().toString()}
           renderItem={({ item, index }) => {
             const currentColor = colorsPalette[index % colorsPalette.length];
-            if (item === undefined) {
+            if (item === undefined || item === null) {
               //This does not work with ternaru opeartors ???
               if (index === 0) return <MapHeadings />;
               else return null;
@@ -185,14 +185,15 @@ export default ContractTable = ({
                   >
                     {imageUris.length > 0 &&
                       imageUris[index] !== undefined &&
+                      imageUris[index] !== null &&
                       imageUris[index].length > 0 && (
                         <ScrollView
                           horizontal
                           showsHorizontalScrollIndicator={false}
                         >
-                          {imageUris[index].map((uri) => {
+                          {imageUris[index].map((uri, index) => {
                             return (
-                              <View key={uri} style={styles.imageContainer}>
+                              <View key={index} style={styles.imageContainer}>
                                 <Image source={{ uri }} style={styles.image} />
                               </View>
                             );

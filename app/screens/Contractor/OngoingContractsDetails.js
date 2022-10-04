@@ -288,7 +288,7 @@ const styles = StyleSheet.create({
       width: 2,
       height: 1,
     },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.1,
     shadowRadius: 10,
   },
   swatch: {

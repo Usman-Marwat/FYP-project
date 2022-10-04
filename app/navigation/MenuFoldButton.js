@@ -24,7 +24,7 @@ const MenuFoldButton = ({
       ]}
     >
       <Icon
-        antDesign={true}
+        family="antDesign"
         name="menufold"
         backgroundColor="white"
         size={34}

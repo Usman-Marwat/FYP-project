@@ -12,12 +12,14 @@ import niceColors from "nice-color-palettes";
 import { faker } from "@faker-js/faker";
 import { SharedElement } from "react-navigation-shared-element";
 
+import contractorContractsApi from "../../api/Contractor/contracts";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import MenuFoldButton from "../../navigation/MenuFoldButton";
 import routes from "../../navigation/routes";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import useNotifications from "../../hooks/useNotifications";
 import ActivityIndicator from "../../components/ActivityIndicator";
+import MyMap from "../../components/MyMap";
 
 faker.seed(1);
 const colors = niceColors[1];
@@ -62,11 +64,12 @@ const { width } = Dimensions.get("window");
 const ORANGE = "#FB9B06";
 const SPACING = 10;
 const CELL_WIDTH = width * 0.64;
+const imageUri = "https://cdn-icons-png.flaticon.com/256/4105/4105448.png";
 
 const ReceivedContracts = ({ navigation }) => {
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const { loading } = useNotifications();
+  // const { loading } = useNotifications();
 
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
@@ -78,13 +81,15 @@ const ReceivedContracts = ({ navigation }) => {
     setCurrentIndex(index);
   };
 
+  const contractsApi = useApi(contractorContractsApi.getContracts);
+
   useEffect(() => {
-    console.log(currentIndex);
-  }, [currentIndex]);
+    contractsApi.request("63390ba766243cb0ff33ecd5");
+  }, []);
 
   return (
     <>
-      <ActivityIndicator visible={loading} />
+      <ActivityIndicator visible={contractsApi.loading} />
       <MenuFoldButton translateX={translateX} navigation={navigation} />
       <View style={{ paddingTop: 50 }}>
         <View>
@@ -122,90 +127,129 @@ const ReceivedContracts = ({ navigation }) => {
             }}
           />
         </View>
-        <View>
-          <FlatList
-            data={fakerData}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={(item) => item.key}
-            decelerationRate="fast"
-            pagingEnabled
-            onMomentumScrollEnd={(e) => {
-              const index = Math.floor(
-                Math.floor(e.nativeEvent.contentOffset.x) /
-                  Math.floor(e.nativeEvent.layoutMeasurement.width)
-              );
-              handleCurentIndex(index);
-            }}
-            renderItem={({ item }) => {
-              return (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate(routes.RECEIVED_CONTRACT_DETAILS, {
-                      item,
-                    });
-                  }}
-                  style={styles.itemCell}
-                >
-                  <View style={styles.itemContainer}>
-                    <SharedElement
-                      id={`item.${item.key}.bg`}
-                      style={[StyleSheet.absoluteFillObject]}
+        {contractsApi.data.length > 0 && (
+          <>
+            <View>
+              <FlatList
+                data={fakerData}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                keyExtractor={(item) => item.key}
+                decelerationRate="fast"
+                pagingEnabled
+                onMomentumScrollEnd={(e) => {
+                  const index = Math.floor(
+                    Math.floor(e.nativeEvent.contentOffset.x) /
+                      Math.floor(e.nativeEvent.layoutMeasurement.width)
+                  );
+                  handleCurentIndex(index);
+                }}
+                renderItem={({ item, index }) => {
+                  if (index === 0) {
+                    const contract = contractsApi.data[0];
+                    return (
+                      <>
+                        <TouchableOpacity
+                          onPress={() => {
+                            navigation.navigate(
+                              routes.RECEIVED_CONTRACT_DETAILS,
+                              {
+                                item: contractsApi.data[0],
+                                DB: true,
+                                imageUri,
+                              }
+                            );
+                          }}
+                          style={styles.itemCell}
+                        >
+                          <View style={styles.itemContainer}>
+                            <SharedElement
+                              id={`item.${item.key}.bg`}
+                              style={[StyleSheet.absoluteFillObject]}
+                            >
+                              <View
+                                style={[
+                                  StyleSheet.absoluteFillObject,
+                                  {
+                                    backgroundColor: "#C1CEE077",
+                                    borderRadius: 16,
+                                  },
+                                ]}
+                              />
+                            </SharedElement>
+                            <SharedElement
+                              id={`item.${item.key}.meta`}
+                              style={StyleSheet.absoluteFillObject}
+                            >
+                              <View style={styles.textContainer}>
+                                <Text style={styles.type}>
+                                  {contract.title}
+                                </Text>
+                                <Text style={styles.subType}>SubType</Text>
+                              </View>
+                            </SharedElement>
+                            <SharedElement
+                              id={`item.${item.key}.image`}
+                              style={styles.image}
+                            >
+                              <Image
+                                source={{ uri: imageUri }}
+                                style={styles.image}
+                              />
+                            </SharedElement>
+                          </View>
+                        </TouchableOpacity>
+                      </>
+                    );
+                  }
+                  return (
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate(routes.RECEIVED_CONTRACT_DETAILS, {
+                          item,
+                        });
+                      }}
+                      style={styles.itemCell}
                     >
-                      <View
-                        style={[
-                          StyleSheet.absoluteFillObject,
-                          { backgroundColor: item.color, borderRadius: 16 },
-                        ]}
-                      />
-                    </SharedElement>
-                    <SharedElement
-                      id={`item.${item.key}.meta`}
-                      style={StyleSheet.absoluteFillObject}
-                    >
-                      <View style={styles.textContainer}>
-                        <Text style={styles.type}>{item.type}</Text>
-                        <Text style={styles.subType}>{item.subType}</Text>
+                      <View style={styles.itemContainer}>
+                        <SharedElement
+                          id={`item.${item.key}.bg`}
+                          style={[StyleSheet.absoluteFillObject]}
+                        >
+                          <View
+                            style={[
+                              StyleSheet.absoluteFillObject,
+                              { backgroundColor: item.color, borderRadius: 16 },
+                            ]}
+                          />
+                        </SharedElement>
+                        <SharedElement
+                          id={`item.${item.key}.meta`}
+                          style={StyleSheet.absoluteFillObject}
+                        >
+                          <View style={styles.textContainer}>
+                            <Text style={styles.type}>{item.type}</Text>
+                            <Text style={styles.subType}>{item.subType}</Text>
+                          </View>
+                        </SharedElement>
+                        <SharedElement
+                          id={`item.${item.key}.image`}
+                          style={styles.image}
+                        >
+                          <Image
+                            source={{ uri: item.image }}
+                            style={styles.image}
+                          />
+                        </SharedElement>
                       </View>
-                    </SharedElement>
-                    <SharedElement
-                      id={`item.${item.key}.image`}
-                      style={styles.image}
-                    >
-                      <Image
-                        source={{ uri: item.image }}
-                        style={styles.image}
-                      />
-                    </SharedElement>
-                  </View>
-                </TouchableOpacity>
-              );
-            }}
-          />
-        </View>
-        <View>
-          <FlatList
-            data={[...Array(20).keys()]}
-            keyExtractor={(item) => item}
-            showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => {
-              return (
-                <View
-                  style={{
-                    height: 50,
-                    width: "80%",
-                    marginVertical: 3,
-                    backgroundColor: "coral",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Text>{item}</Text>
-                </View>
-              );
-            }}
-          />
-        </View>
+                    </TouchableOpacity>
+                  );
+                }}
+              />
+            </View>
+            <MyMap style={{ width: 400, height: 300 }} />
+          </>
+        )}
       </View>
     </>
   );

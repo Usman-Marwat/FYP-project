@@ -1,10 +1,18 @@
-import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useState } from "react";
 import * as Animatable from "react-native-animatable";
 
 import { SharedElement } from "react-navigation-shared-element";
 
-import Screen from "../../components/Screen";
+import Icon from "../../components/Icon";
+import ContractTable from "../../components/ContractTable";
 
 const { height, width } = Dimensions.get("window");
 const SPACING = 10;
@@ -25,9 +33,93 @@ const animations = [
   createAnimation(-100),
 ];
 
+const detailsIcons = [
+  { color: "#9FD7F1", icon: "chatbox-outline", family: "ionicons" },
+  { color: "#F3B000", icon: "grid", family: "ionicons" },
+  { color: "#F2988F", icon: "account", family: "mci" },
+];
 const ReceivedContractDetails = ({ navigation, route }) => {
-  const { item } = route.params;
+  const { item, DB, imageUri } = route.params;
+  const [isTableVisible, setIsTableVisible] = useState(false);
 
+  const handleIconPress = (detail) => {
+    if (detail.icon === "grid") setIsTableVisible(true);
+  };
+
+  if (DB)
+    return (
+      <View>
+        <SharedElement
+          id={`item.${item.key}.bg`}
+          style={[
+            StyleSheet.absoluteFillObject,
+            { backgroundColor: "#C1CEE077", borderRadius: 16 },
+          ]}
+        >
+          <View style={[StyleSheet.absoluteFillObject]} />
+        </SharedElement>
+        <SharedElement id={`item.${item.key}.meta`}>
+          <View style={styles.textContainer}>
+            <Text style={styles.type}>{item.title}</Text>
+            <Text style={styles.subType}>subType</Text>
+          </View>
+        </SharedElement>
+        <View style={{ marginTop: height * 0.1 }}>
+          <SharedElement id={`item.${item.key}.image`} style={styles.image}>
+            <Image source={{ uri: imageUri }} style={styles.image} />
+          </SharedElement>
+          <View style={styles.iconImageContainer}>
+            {detailsIcons.map((detail, index) => {
+              return (
+                <Animatable.View
+                  animation={animations[index]}
+                  delay={DURATION}
+                  useNativeDriver
+                  key={index}
+                >
+                  <TouchableOpacity onPress={() => handleIconPress(detail)}>
+                    <Icon
+                      size={64}
+                      backgroundColor={detail.color}
+                      name={detail.icon}
+                      family={detail.family}
+                    />
+                  </TouchableOpacity>
+                </Animatable.View>
+              );
+            })}
+          </View>
+        </View>
+        <View style={{ padding: SPACING }}>
+          <Animatable.Text
+            useNativeDriver
+            animation={animation}
+            delay={DURATION + 300}
+            style={styles.price}
+          >
+            $4.3027
+          </Animatable.Text>
+          <Animatable.Text
+            useNativeDriver
+            animation={animation}
+            delay={DURATION + 400}
+            style={styles.description}
+          >
+            Some Description that is presented by the Customer to the Contractor
+          </Animatable.Text>
+        </View>
+        <ContractTable
+          allValues={item.allValues}
+          descriptions={item.descriptions}
+          imageUris={item.images}
+          keys={item.keys}
+          isVisible={isTableVisible}
+          onModalVisible={() => setIsTableVisible(false)}
+        />
+      </View>
+    );
+
+  //--------------------------------------------------------------------------
   return (
     <View>
       <SharedElement
@@ -56,7 +148,6 @@ const ReceivedContractDetails = ({ navigation, route }) => {
                 animation={animations[index]}
                 delay={DURATION}
                 useNativeDriver
-                iterationCount={3}
                 key={index}
                 style={{
                   backgroundColor: "white",
