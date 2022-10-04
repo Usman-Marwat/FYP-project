@@ -1,6 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { StyleSheet } from "react-native";
+import React from "react";
 import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 
 import ContractScreen from "../../screens/Customer/ContractScreen";

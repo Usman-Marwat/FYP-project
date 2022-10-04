@@ -3,17 +3,16 @@ import React, { useState, useRef, useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
+import AppButton from "../../components/AppButton";
+import BidsNavigator from "./BidsNavigator";
 import ContractNavigator from "./ContractNavigator";
 import CustomDrawer from "../CustomDrawer";
-import MenuFoldButton from "../MenuFoldButton";
-import { translateMenuFold } from "../navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
-import AppButton from "../../components/AppButton";
-import useAuth from "../../auth/useAuth";
-import BottomTabNavigator from "../../Chat/BottomTabNavigator";
+import MenuFoldButton from "../MenuFoldButton";
 import navigationTheme from "../navigationTheme";
-import SavedContractsNavigator from "./SavedContractsNavigator";
 import RootNavigator from "../../Chat/RootNavigator";
+import { translateMenuFold } from "../navigationAnimations";
+import useAuth from "../../auth/useAuth";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -58,10 +57,7 @@ const CustomerNavigator = () => {
             component={ContractNavigator}
           />
 
-          <DrawerNavigator.Screen
-            name="SavedContracts"
-            component={SavedContractsNavigator}
-          />
+          <DrawerNavigator.Screen name="Bids" component={BidsNavigator} />
           <DrawerNavigator.Screen name="Chat" component={RootNavigator} />
         </DrawerNavigator.Navigator>
       </NavigationContainer>
