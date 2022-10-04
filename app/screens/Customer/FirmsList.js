@@ -15,7 +15,6 @@ import { faker } from "@faker-js/faker";
 import { SharedElement } from "react-navigation-shared-element";
 
 import AuthContext from "../../auth/context";
-import ActivityIndicator from "../../components/ActivityIndicator";
 import customerContractorsApi from "../../api/Customer/contractors";
 import customerContractApi from "../../api/Customer/contract";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
@@ -125,8 +124,9 @@ const FirmsList = ({ navigation, route }) => {
 
   const sendNotification = async (contractor_id) => {
     await sendApi.request(
+      "Contractor",
       contractor_id,
-      contract.title,
+      `Contract Name: ${contract.title}`,
       user.name,
       "The contract is sent for bidding"
     );

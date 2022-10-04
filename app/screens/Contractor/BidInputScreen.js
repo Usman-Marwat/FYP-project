@@ -1,62 +1,57 @@
 import { StyleSheet, Text, ScrollView, View } from "react-native";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { AppForm, AppFormField, SubmitButton } from "../../components/forms";
 import * as Yup from "yup";
 import { DataTable } from "react-native-paper";
 import { Provider as PaperProvider } from "react-native-paper";
-import { FieldArray } from "formik";
 
+import ActivityIndicator from "../../components/ActivityIndicator";
+import AppTextInput from "../../components/AppTextInput";
+import AuthContext from "../../auth/context";
+import contractorContractsApi from "../../api/Contractor/contracts";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
+import Header from "../../components/Header";
+import messagesApi from "../../api/messages";
 import Screen from "../../components/Screen";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
-import Header from "../../components/Header";
-import AppTextInput from "../../components/AppTextInput";
 
 const validationSchema = Yup.object().shape({
-  lumpsumbid: Yup.string().required().min(7).label("Lump Sum Bid"),
+  lumpsumbid: Yup.string().required().min(5).label("Lump Sum Bid"),
 });
-const numberOfItemsPerPageList = [2, 3, 4];
 
 const BidInputScreen = ({ navigation, route }) => {
-  const { bidType, contract_id } = route.params;
+  const { bidType, title, contract_id, customer_id } = route.params;
+  const { user } = useContext(AuthContext);
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
 
-  const [page, setPage] = useState(0);
-  const [numberOfItemsPerPage, onItemsPerPageChange] = useState(
-    numberOfItemsPerPageList[0]
-  );
-  const [tableHead, setTableHead] = useState([]);
-  const [tableData, setTableData] = useState([]);
-  const [currentPageData, setCurrentPageData] = useState([[]]);
-
-  const from = page * numberOfItemsPerPage;
-  const to = Math.min((page + 1) * numberOfItemsPerPage, 4);
-
-  React.useEffect(() => {
-    setPage(0);
-  }, [numberOfItemsPerPage]);
+  const bidApi = useApi(contractorContractsApi.patchBid);
+  const sendApi = useApi(messagesApi.send);
 
   const handleSubmit = async (bid) => {
-    console.log(bid);
-    // const result = await firmProfileApi.register({
-    //   ...profile,
-    //   actor_id: "63390ba866243cb0ff33ecd7",
-    // });
-    // if (!result.ok) {
-    //   setuploadVisible(false);
-    //   return alert("Could not save the listings");
-    // }
+    const result = await bidApi.request(contract_id, bid);
+    if (result.ok) sendNotification();
   };
+  const sendNotification = async () => {
+    await sendApi.request(
+      "Customer",
+      customer_id,
+      `Contract Name: ${title}`,
+      user.name,
+      `Bid sent from Contractor`
+    );
+  };
+
   return (
     <>
+      <ActivityIndicator visible={bidApi.loading} />
       <Header translateX={translateX} navigation={navigation} />
       <Screen style={styles.container}>
         <View style={{ height: 90 }} />
         {bidType === "Lump sum bid" && (
           <AppForm
             initialValues={{
-              friends: ["jared", "ian", "brent"],
+              lumpsumbid: "",
             }}
             onSubmit={handleSubmit}
             validationSchema={validationSchema}

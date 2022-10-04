@@ -62,7 +62,7 @@ const ReceivedContractDetails = ({ navigation, route }) => {
           </SharedElement>
           <SharedElement id={`item.${item.key}.meta`}>
             <View style={styles.textContainer}>
-              <Text style={styles.type}>{item.title}</Text>
+              <Text style={styles.type}>{item.contract.title}</Text>
               <Text style={styles.subType}>subType</Text>
             </View>
           </SharedElement>
@@ -112,10 +112,10 @@ const ReceivedContractDetails = ({ navigation, route }) => {
             </Animatable.Text>
           </View>
           <ContractTable
-            allValues={item.allValues}
-            descriptions={item.descriptions}
-            imageUris={item.images}
-            keys={item.keys}
+            allValues={item.contract.allValues}
+            descriptions={item.contract.descriptions}
+            imageUris={item.contract.images}
+            keys={item.contract.keys}
             isVisible={isTableVisible}
             onModalVisible={() => setIsTableVisible(false)}
           />
@@ -132,6 +132,8 @@ const ReceivedContractDetails = ({ navigation, route }) => {
                 text={text}
                 navigation={navigation}
                 contract_id={item._id}
+                customer_id={item.customer_id}
+                title={item.contract.title}
               />
             </Animatable.View>
           );
@@ -249,8 +251,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const RowButton = ({ text, navigation, contract_id }) => {
-  const obj = { contract_id, bidType: text };
+const RowButton = ({ text, navigation, contract_id, customer_id, title }) => {
+  const obj = { contract_id, customer_id, title, bidType: text };
   const handlePress = () => {
     navigation.navigate("BidInputScreen", { ...obj });
   };

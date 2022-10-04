@@ -231,7 +231,12 @@ const SpecificationScreen = ({ navigation, route }) => {
               style={[styles.shadow, { shadowColor: colors.medium }]}
               onPress={() => setIsVisible(!isVisible)}
             >
-              <Icon name="plus" size={55} backgroundColor={colors.medium} />
+              <Icon
+                family="mci"
+                name="plus"
+                size={55}
+                backgroundColor={colors.medium}
+              />
             </TouchableOpacity>
           </View>
           <TouchableOpacity style={[styles.cardContainer]}></TouchableOpacity>
@@ -241,6 +246,7 @@ const SpecificationScreen = ({ navigation, route }) => {
       <View style={styles.row}>
         <TouchableOpacity style={[styles.shadow, { alignItems: "center" }]}>
           <Icon
+            family="mci"
             name="bookmark"
             iconColor="#222"
             size={35}
@@ -253,6 +259,7 @@ const SpecificationScreen = ({ navigation, route }) => {
           onPress={() => setIsTableVisible(true)}
         >
           <Icon
+            family="mci"
             name="grid"
             iconColor="#222"
             size={50}
@@ -270,6 +277,7 @@ const SpecificationScreen = ({ navigation, route }) => {
           }
         >
           <Icon
+            family="mci"
             name="arrow-right"
             size={35}
             iconColor="#222"

@@ -244,6 +244,7 @@ const MaterialScreen = ({ navigation }) => {
             <Icon
               backgroundColor={colors.medium}
               name="check"
+              family="mci"
               size={20}
               style={{ marginRight: 9.5 }}
             />
@@ -252,6 +253,7 @@ const MaterialScreen = ({ navigation }) => {
             <Icon
               backgroundColor={colors.silver}
               name="chevron-down"
+              family="mci"
               iconColor={colors.medium}
               size={42}
             />
@@ -260,6 +262,7 @@ const MaterialScreen = ({ navigation }) => {
             <Icon
               backgroundColor={colors.silver}
               name="chevron-up"
+              family="mci"
               iconColor="black"
               size={42}
             />
@@ -276,7 +279,12 @@ const MaterialScreen = ({ navigation }) => {
           })
         }
       >
-        <Icon name="check" size={45} backgroundColor={colors.primary} />
+        <Icon
+          family="mci"
+          name="check"
+          size={45}
+          backgroundColor={colors.primary}
+        />
       </TouchableOpacity>
     </View>
   );

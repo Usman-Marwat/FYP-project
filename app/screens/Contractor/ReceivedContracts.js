@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ScrollView,
 } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 import niceColors from "nice-color-palettes";
@@ -87,7 +88,6 @@ const ReceivedContracts = ({ navigation }) => {
     contractsApi.request("63390ba766243cb0ff33ecd5");
   }, []);
 
-  console.log(contractsApi?.data);
   return (
     <>
       <ActivityIndicator visible={contractsApi.loading} />
@@ -146,8 +146,8 @@ const ReceivedContracts = ({ navigation }) => {
                   handleCurentIndex(index);
                 }}
                 renderItem={({ item, index }) => {
-                  if (index === 0) {
-                    const contract = contractsApi.data[0];
+                  if (index < contractsApi.data.length) {
+                    const contract = contractsApi.data[index].contract;
                     return (
                       <>
                         <TouchableOpacity
@@ -155,7 +155,7 @@ const ReceivedContracts = ({ navigation }) => {
                             navigation.navigate(
                               routes.RECEIVED_CONTRACT_DETAILS,
                               {
-                                item: contractsApi.data[0],
+                                item: contractsApi.data[index],
                                 DB: true,
                                 imageUri,
                               }
@@ -248,7 +248,37 @@ const ReceivedContracts = ({ navigation }) => {
                 }}
               />
             </View>
-            <MyMap style={{ width: 400, height: 300 }} />
+            {currentIndex < contractsApi.data.length && (
+              <View>
+                <ScrollView>
+                  <Text>{currentIndex}</Text>
+                  <Text>bchasjbchjas</Text>
+                  <Text>bchasjbchjas</Text>
+                  <Text>bchasjbchjas</Text>
+                  <Text>bchasjbchjas</Text>
+                  <Text>bchasjbchjas</Text>
+                  <Text>bchasjbchjas</Text>
+                  <Text>bchasjbchjas</Text>
+                  <Text>bchasjbchjas</Text>
+                  <Text>bchasjbchjas</Text>
+                  <Text>bchasjbchjas</Text>
+                  <Text>bchasjbchjas</Text>
+                  <Text>bchasjbchjas</Text>
+                  <Text>bchasjbchjas</Text>
+                  <Text>bchasjbchjas</Text>
+                  <Text>bchasjbchjas</Text>
+                  <MyMap
+                    style={styles.map}
+                    region={{
+                      ...contractsApi.data[currentIndex].contract.location,
+                      latitudeDelta: 0.017,
+                      longitudeDelta: 0.017,
+                    }}
+                  />
+                  <View style={{ height: 700 }} />
+                </ScrollView>
+              </View>
+            )}
           </>
         )}
       </View>
@@ -277,6 +307,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 7,
     bottom: 20,
+  },
+  map: {
+    width: 350,
+    height: 300,
   },
   pill: {
     paddingHorizontal: SPACING,

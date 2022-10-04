@@ -68,7 +68,12 @@ export default ContractTable = ({
           style={styles.modalCloseButton}
           onPress={onModalVisible}
         >
-          <Icon name="close" size={35} backgroundColor="transparent" />
+          <Icon
+            family="mci"
+            name="close"
+            size={35}
+            backgroundColor="transparent"
+          />
         </TouchableOpacity>
 
         <FlatList

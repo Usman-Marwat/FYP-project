@@ -1,8 +1,8 @@
 import client from "./client";
 
-const send = (user_id, title, subtitle, body) =>
-  client.post("/messages", {
-    user_id,
+const send = (actor, id, title, subtitle, body) =>
+  client.post(`/messages/${actor}`, {
+    id,
     title,
     subtitle,
     body,

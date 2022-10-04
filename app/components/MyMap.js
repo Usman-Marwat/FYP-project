@@ -5,13 +5,11 @@ import useLocations from "../hooks/useLocations";
 
 const { width, height } = Dimensions.get("window");
 
-const MyMap = ({ initialRegion = null, onAddlocation, style }) => {
+const MyMap = ({ region = null, onAddlocation, style }) => {
   const { latitude, longitude } = useLocations();
   const defaultRegion = {
     latitude,
     longitude,
-    latitudeDelta: 0.017,
-    longitudeDelta: 0.017,
   };
 
   return (
@@ -20,7 +18,7 @@ const MyMap = ({ initialRegion = null, onAddlocation, style }) => {
         <MapView
           provider={PROVIDER_GOOGLE}
           style={styles.map}
-          initialRegion={initialRegion ? initialRegion : defaultRegion}
+          region={region ? region : defaultRegion}
         >
           <Marker
             draggable
