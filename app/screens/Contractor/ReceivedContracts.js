@@ -87,6 +87,7 @@ const ReceivedContracts = ({ navigation }) => {
     contractsApi.request("63390ba766243cb0ff33ecd5");
   }, []);
 
+  console.log(contractsApi?.data);
   return (
     <>
       <ActivityIndicator visible={contractsApi.loading} />

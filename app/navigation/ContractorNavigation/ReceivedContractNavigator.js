@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 import ReceivedContracts from "../../screens/Contractor/ReceivedContracts";
 import ReceivedContractDetails from "../../screens/Contractor/ReceivedContractDetails";
+import BidInputScreen from "../../screens/Contractor/BidInputScreen";
 
 const Stack = createSharedElementStackNavigator();
 
@@ -22,6 +23,7 @@ export default function ReceivedContractNavigator() {
           ];
         }}
       />
+      <Stack.Screen name="BidInputScreen" component={BidInputScreen} />
     </Stack.Navigator>
   );
 }

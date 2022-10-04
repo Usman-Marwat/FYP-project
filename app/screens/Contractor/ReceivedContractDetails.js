@@ -17,6 +17,7 @@ import ContractTable from "../../components/ContractTable";
 const { height, width } = Dimensions.get("window");
 const SPACING = 10;
 const CELL_WIDTH = width * 0.64;
+const buttons = ["Lump sum bid", "Per square foot bid"];
 
 const DURATION = 400;
 const animation = {
@@ -48,75 +49,94 @@ const ReceivedContractDetails = ({ navigation, route }) => {
 
   if (DB)
     return (
-      <View>
-        <SharedElement
-          id={`item.${item.key}.bg`}
-          style={[
-            StyleSheet.absoluteFillObject,
-            { backgroundColor: "#C1CEE077", borderRadius: 16 },
-          ]}
-        >
-          <View style={[StyleSheet.absoluteFillObject]} />
-        </SharedElement>
-        <SharedElement id={`item.${item.key}.meta`}>
-          <View style={styles.textContainer}>
-            <Text style={styles.type}>{item.title}</Text>
-            <Text style={styles.subType}>subType</Text>
-          </View>
-        </SharedElement>
-        <View style={{ marginTop: height * 0.1 }}>
-          <SharedElement id={`item.${item.key}.image`} style={styles.image}>
-            <Image source={{ uri: imageUri }} style={styles.image} />
+      <>
+        <View>
+          <SharedElement
+            id={`item.${item.key}.bg`}
+            style={[
+              StyleSheet.absoluteFillObject,
+              { backgroundColor: "#C1CEE077", borderRadius: 16 },
+            ]}
+          >
+            <View style={[StyleSheet.absoluteFillObject]} />
           </SharedElement>
-          <View style={styles.iconImageContainer}>
-            {detailsIcons.map((detail, index) => {
-              return (
-                <Animatable.View
-                  animation={animations[index]}
-                  delay={DURATION}
-                  useNativeDriver
-                  key={index}
-                >
-                  <TouchableOpacity onPress={() => handleIconPress(detail)}>
-                    <Icon
-                      size={64}
-                      backgroundColor={detail.color}
-                      name={detail.icon}
-                      family={detail.family}
-                    />
-                  </TouchableOpacity>
-                </Animatable.View>
-              );
-            })}
+          <SharedElement id={`item.${item.key}.meta`}>
+            <View style={styles.textContainer}>
+              <Text style={styles.type}>{item.title}</Text>
+              <Text style={styles.subType}>subType</Text>
+            </View>
+          </SharedElement>
+          <View style={{ marginTop: height * 0.1 }}>
+            <SharedElement id={`item.${item.key}.image`} style={styles.image}>
+              <Image source={{ uri: imageUri }} style={styles.image} />
+            </SharedElement>
+            <View style={styles.iconImageContainer}>
+              {detailsIcons.map((detail, index) => {
+                return (
+                  <Animatable.View
+                    animation={animations[index]}
+                    delay={DURATION}
+                    useNativeDriver
+                    key={index}
+                  >
+                    <TouchableOpacity onPress={() => handleIconPress(detail)}>
+                      <Icon
+                        size={64}
+                        backgroundColor={detail.color}
+                        name={detail.icon}
+                        family={detail.family}
+                      />
+                    </TouchableOpacity>
+                  </Animatable.View>
+                );
+              })}
+            </View>
           </View>
+          <View style={{ padding: SPACING }}>
+            <Animatable.Text
+              useNativeDriver
+              animation={animation}
+              delay={DURATION + 300}
+              style={styles.price}
+            >
+              $4.3027
+            </Animatable.Text>
+            <Animatable.Text
+              useNativeDriver
+              animation={animation}
+              delay={DURATION + 400}
+              style={styles.description}
+            >
+              Some Description that is presented by the Customer to the
+              Contractor
+            </Animatable.Text>
+          </View>
+          <ContractTable
+            allValues={item.allValues}
+            descriptions={item.descriptions}
+            imageUris={item.images}
+            keys={item.keys}
+            isVisible={isTableVisible}
+            onModalVisible={() => setIsTableVisible(false)}
+          />
         </View>
-        <View style={{ padding: SPACING }}>
-          <Animatable.Text
-            useNativeDriver
-            animation={animation}
-            delay={DURATION + 300}
-            style={styles.price}
-          >
-            $4.3027
-          </Animatable.Text>
-          <Animatable.Text
-            useNativeDriver
-            animation={animation}
-            delay={DURATION + 400}
-            style={styles.description}
-          >
-            Some Description that is presented by the Customer to the Contractor
-          </Animatable.Text>
-        </View>
-        <ContractTable
-          allValues={item.allValues}
-          descriptions={item.descriptions}
-          imageUris={item.images}
-          keys={item.keys}
-          isVisible={isTableVisible}
-          onModalVisible={() => setIsTableVisible(false)}
-        />
-      </View>
+        {buttons.map((text, index) => {
+          return (
+            <Animatable.View
+              useNativeDriver
+              animation={animation}
+              delay={300 + (index + 1) * 100}
+              key={index}
+            >
+              <RowButton
+                text={text}
+                navigation={navigation}
+                contract_id={item._id}
+              />
+            </Animatable.View>
+          );
+        })}
+      </>
     );
 
   //--------------------------------------------------------------------------
@@ -228,3 +248,32 @@ const styles = StyleSheet.create({
     top: SPACING * 4,
   },
 });
+
+const RowButton = ({ text, navigation, contract_id }) => {
+  const obj = { contract_id, bidType: text };
+  const handlePress = () => {
+    navigation.navigate("BidInputScreen", { ...obj });
+  };
+  return (
+    <TouchableOpacity onPress={handlePress}>
+      <View
+        style={{
+          flexDirection: "row",
+          padding: SPACING * 2,
+          justifyContent: "space-between",
+          borderColor: "rgba(0,0,0,0.1)",
+          borderBottomWidth: 1,
+          borderTopWidth: 1,
+        }}
+      >
+        <Text style={{ fontSize: 14 }}>{text}</Text>
+        <Icon
+          family="antDesign"
+          name="arrowright"
+          color="rgba(0,0,0,0.8)"
+          size={17}
+        />
+      </View>
+    </TouchableOpacity>
+  );
+};
