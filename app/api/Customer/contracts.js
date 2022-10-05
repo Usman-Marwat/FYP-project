@@ -1,6 +1,6 @@
 import client from "../client";
 
-const endpoint = "/contractor/contracts";
+const endpoint = "/customer/contracts";
 
 const getBidContracts = (customer_id) =>
   client.get(`${endpoint}/${customer_id}`);

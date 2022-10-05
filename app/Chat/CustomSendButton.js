@@ -10,6 +10,7 @@ export const CustomSendButton = ({ sender, targetIds }) => {
 
   const handleMessage = async () => {
     await sendApi.request(
+      "Chat",
       targetIds[0],
       "Chat Notification",
       `From the sender ${sender}`,

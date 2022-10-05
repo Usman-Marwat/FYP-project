@@ -1,32 +1,40 @@
 import { StyleSheet, Text, View, Image, Button } from "react-native";
-import React, { useContext, useState, useRef } from "react";
-import SignatureScreen from "react-native-signature-canvas";
+import React, { useContext, useState } from "react";
 import Signature from "react-native-signature-canvas";
 
 import Header from "../../components/Header";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 
-const BidsDetailsScreen = ({ navigation }) => {
+import customerContractsApi from "../../api/Customer/contracts";
+import messagesApi from "../../api/messages";
+import useApi from "../../hooks/useApi";
+import AppButton from "../../components/AppButton";
+
+const BidsDetailsScreen = ({ navigation, route }) => {
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
-  const ref = useRef();
+  const { title, contractor_id, contract_id, customerName } = route.params;
   const [signature, setSign] = useState(null);
 
-  const handleOK = (signature) => {
-    console.log(signature);
-    setSign(signature);
+  const signatureApi = useApi(customerContractsApi.patchSignature);
+  const sendApi = useApi(messagesApi.send);
+
+  const handleSignaturePatch = async () => {
+    const result = await signatureApi.request(contract_id, signature);
+    if (result.ok) sendNotification();
   };
 
-  const handleEmpty = () => {
-    console.log("Empty");
+  const sendNotification = async () => {
+    await sendApi.request(
+      "Contractor",
+      contractor_id,
+      `Contract Name: ${title}`,
+      customerName,
+      `Contract signed by Customer`
+    );
   };
 
-  const style = `.m-signature-pad--footer
-    .button {
-      background-color: red;
-      color: #FFF;
-    }`;
   return (
     <>
       <Header navigation={navigation} translateX={translateX} />
@@ -41,14 +49,14 @@ const BidsDetailsScreen = ({ navigation }) => {
           ) : null}
         </View>
         <Signature
-          onOK={handleOK}
-          onEmpty={handleEmpty}
+          onOK={setSign}
           descriptionText="Sign"
           clearText="Clear"
           confirmText="Save"
           webStyle={style}
         />
       </View>
+      <AppButton title="Send" onPress={handleSignaturePatch} />
     </>
   );
 };
@@ -93,3 +101,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
+
+const style = `.m-signature-pad--footer
+    .button {
+      background-color: red;
+      color: #FFF;
+    }`;
