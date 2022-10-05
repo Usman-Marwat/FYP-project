@@ -14,7 +14,10 @@ const AppFormMap = ({ name }) => {
 
   return (
     <>
-      <MyMap onAddlocation={handleAddLocation} style={{ height: 400 }} />
+      <MyMap
+        onAddlocation={handleAddLocation}
+        style={{ height: 350, marginBottom: 30 }}
+      />
       <ErrorMessage error={errors[name]} visible={touched[name]} />
     </>
   );

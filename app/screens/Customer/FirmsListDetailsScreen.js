@@ -69,6 +69,7 @@ const FirmsListDetailsScreen = ({ navigation, route }) => {
                     key={`${detail.icon}-${index}`}
                   >
                     <Icon
+                      family="mci"
                       size={64}
                       backgroundColor={detail.color}
                       name={detail.icon}

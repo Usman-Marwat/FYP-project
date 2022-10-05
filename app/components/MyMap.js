@@ -10,6 +10,8 @@ const MyMap = ({ region = null, onAddlocation, style }) => {
   const defaultRegion = {
     latitude,
     longitude,
+    latitudeDelta: 0.017,
+    longitudeDelta: 0.017,
   };
 
   return (

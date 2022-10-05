@@ -85,7 +85,7 @@ const ReceivedContracts = ({ navigation }) => {
   const contractsApi = useApi(contractorContractsApi.getContracts);
 
   useEffect(() => {
-    contractsApi.request("63390ba766243cb0ff33ecd5");
+    contractsApi.request("63390ba866243cb0ff33ecd7");
   }, []);
 
   return (

@@ -154,7 +154,7 @@ const FirmsList = ({ navigation, route }) => {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    sendContract(contractorsApi.data[0].user_id);
+                    sendContract(contractorsApi.data[0]._id);
                   }}
                   style={styles.itemContainer}
                 >
