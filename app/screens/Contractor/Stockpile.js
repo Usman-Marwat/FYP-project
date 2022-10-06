@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import React, { useCallback, useContext, useRef, useState } from "react";
 import { SharedElement } from "react-navigation-shared-element";
+import { StatusBar } from "expo-status-bar";
 
 import MenuFoldButton from "../../navigation/MenuFoldButton";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
@@ -50,8 +51,6 @@ const data = [
 ];
 
 const { width } = Dimensions.get("screen");
-const SIZE = 64;
-const ICON_SIZE = SIZE * 0.6;
 const SPACING = 12;
 const s = width * 0.68;
 const ITEM_WIDTH = s;
@@ -66,7 +65,6 @@ const Stockpile = ({ navigation }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
 
   const onViewableItemsChanged = useCallback(({ viewableItems, changed }) => {
-    // console.log("Visible items are", viewableItems);
     setCurrentIndex(viewableItems[0]?.index);
   }, []);
 
@@ -76,7 +74,7 @@ const Stockpile = ({ navigation }) => {
   const viewabilityConfigCallbackPairs = useRef([
     { viewabilityConfig, onViewableItemsChanged },
   ]);
-  console.log(currentIndex);
+
   return (
     <>
       <MenuFoldButton translateX={translateX} navigation={navigation} />
@@ -146,13 +144,15 @@ const Stockpile = ({ navigation }) => {
 
                 <View style={styles.shopsNumberContainer}>
                   <Text style={styles.shopsValue}>{item.numberOfShops}</Text>
-                  <Text style={styles.shopsLabel}>days</Text>
+                  <Text style={styles.shopsLabel}>shops</Text>
                 </View>
               </TouchableOpacity>
             );
           }}
         />
       </View>
+
+      <StatusBar hidden />
     </>
   );
 };
