@@ -177,7 +177,7 @@ const StockpileDetails = ({ navigation, route }) => {
             />
             <BottomSheetScrollView>
               {shops.map((shop, index) => (
-                <View style={{ marginLeft: 40 }}>
+                <View key={index} style={{ marginLeft: 40 }}>
                   <Text style={styles.subTitle}>Material {index}</Text>
                   {[...Array(3).keys()].map((_, i) => (
                     <View style={styles.list} key={i}>

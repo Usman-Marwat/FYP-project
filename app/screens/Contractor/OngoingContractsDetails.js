@@ -10,14 +10,14 @@ import {
 import React, { useState } from "react";
 import * as Animatable from "react-native-animatable";
 import CircularProgress from "react-native-circular-progress-indicator";
-import DropDownPicker from "react-native-dropdown-picker";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import niceColors from "nice-color-palettes";
 import { SharedElement } from "react-navigation-shared-element";
 
 import { combineData } from "../../utility/dataHelper";
 import TaskInfo from "../../components/TaskInfo";
 import CreateTask from "../../components/CreateTask";
+import Icon from "../../components/Icon";
+import colors from "../../config/colors";
 
 const AnimatableScrollview = Animatable.createAnimatableComponent(ScrollView);
 const animation = {
@@ -27,7 +27,6 @@ const animation = {
 
 const { width } = Dimensions.get("window");
 const SPACING = 10;
-const colors = [...niceColors[1], ...niceColors[2]];
 
 const dataImages = [
   { image: "https://cdn-icons-png.flaticon.com/512/8360/8360483.png" },
@@ -47,36 +46,9 @@ const OngoingContractsDetails = ({ navigation, route }) => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const tabs = ["Task List", "File", "Comments"];
-
   const [data, setData] = useState({
     activeTab: "Task List",
   });
-  //the states below are used for dropdown picker
-
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: "All Tasks", value: "All Tasks" },
-    { label: "Ongoing", value: "Ongoing" },
-    { label: "Completed", value: "Completed" },
-  ]);
-
-  const getTasks = () => {
-    let tasksToRender = [];
-    if (!value || value === "All Tasks") {
-      tasksToRender = tasks;
-    } else if (value === "Ongoing") {
-      tasksToRender = tasks.filter((task) => task.progress < 100) || [];
-    } else if (value === "Completed") {
-      tasksToRender = tasks.filter((task) => task.progress === 100) || [];
-    }
-
-    return tasksToRender;
-  };
-
-  const handleBackButton = () => {
-    navigation?.goBack();
-  };
 
   const toggleTab = (tab) => {
     setData(combineData(data, { activeTab: tab }));
@@ -92,20 +64,21 @@ const OngoingContractsDetails = ({ navigation, route }) => {
   };
 
   return (
-    <View>
-      <View style={styles.projectCard}>
-        <SharedElement id={`item.${item.key}.image`} style={styles.image}>
-          <View style={styles.progressContainer}>
-            <CircularProgress
-              value={70}
-              inActiveStrokeColor={"#9b59b6"}
-              inActiveStrokeOpacity={0.4}
-              radius={70}
-              inActiveStrokeWidth={25}
-              activeStrokeWidth={20}
-              progressValueStyle={{ fontWeight: "100", color: "grey" }}
-            />
-          </View>
+    <>
+      <View style={{}}>
+        <SharedElement
+          id={`item.${item.key}.image`}
+          style={styles.progressContainer}
+        >
+          <CircularProgress
+            value={70}
+            radius={70}
+            inActiveStrokeColor={"#9b59b6"}
+            inActiveStrokeOpacity={0.4}
+            inActiveStrokeWidth={25}
+            activeStrokeWidth={20}
+            progressValueStyle={{ fontWeight: "100", color: "grey" }}
+          />
         </SharedElement>
         <View style={styles.meta}>
           <SharedElement id={`item.${item.key}.modal`}>
@@ -117,47 +90,24 @@ const OngoingContractsDetails = ({ navigation, route }) => {
             <Text style={styles.description}>{item.description}</Text>
           </SharedElement>
         </View>
-      </View>
-      <SharedElement id={`item.${item.key}.team`}>
-        <View style={{ bottom: 120, left: 30 }}>
-          <Text style={styles.projectTeamTitle}>Team</Text>
-          <View style={styles.projectTeamWrapper}>
-            {dataImages.map((member) => (
-              <Image
-                key={Math.random().toString()}
-                style={styles.projectMemberPhoto}
-                source={{ uri: member.image }}
-              />
-            ))}
-            <TouchableOpacity style={styles.plusBtnContainer}>
-              <MaterialCommunityIcons
-                name="plus"
-                size={22}
-                color={colors.primary}
-              />
-            </TouchableOpacity>
+        <SharedElement
+          id={`item.${item.key}.team`}
+          style={{ bottom: 120, left: 30 }}
+        >
+          <View>
+            <Text style={styles.projectTeamTitle}>Team</Text>
+            <View style={styles.projectTeamWrapper}>
+              {dataImages.map((member) => (
+                <Image
+                  key={Math.random().toString()}
+                  style={styles.projectMemberPhoto}
+                  source={{ uri: member.image }}
+                />
+              ))}
+            </View>
           </View>
-        </View>
-      </SharedElement>
-
-      <AnimatableScrollview
-        useNativeDriver
-        animation={animation}
-        delay={400}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ padding: SPACING }}
-        style={{ flexGrow: 0 }}
-      >
-        {colors.map((color, index) => {
-          return (
-            <View
-              key={index}
-              style={[styles.swatch, { backgroundColor: color }]}
-            ></View>
-          );
-        })}
-      </AnimatableScrollview>
+        </SharedElement>
+      </View>
 
       <Animatable.View
         useNativeDriver
@@ -168,10 +118,7 @@ const OngoingContractsDetails = ({ navigation, route }) => {
         <View style={styles.projectTabs}>
           {tabs?.map((tab) => (
             <TouchableOpacity
-              style={[
-                styles.projectTab,
-                isActiveTab(tab) ? styles.activeProjectTab : null,
-              ]}
+              style={[styles.projectTab]}
               onPress={() => toggleTab(tab)}
               key={Math.random().toString()}
             >
@@ -190,54 +137,30 @@ const OngoingContractsDetails = ({ navigation, route }) => {
         </View>
         {data?.activeTab === "Task List" ? (
           <>
-            <View style={styles.tasksHeader}>
-              <TouchableOpacity
-                style={styles.tasksRow}
-                onPress={() => handleCreateTask()}
-              >
-                <Text style={styles.tasksLeftText}>Add Task</Text>
-                <View style={styles.plusBtnContainer2}>
-                  <MaterialCommunityIcons name="plus" size={19} color="#fff" />
-                </View>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ alignItems: "center" }}
+            >
+              <View>
+                {tasks.map((task) => (
+                  <TaskInfo
+                    task={task}
+                    key={Math.random().toString()}
+                    navigation={navigation}
+                    // taskId={task.id}
+                    // getDataJ={getData}
+                  />
+                ))}
+              </View>
+              <TouchableOpacity onPress={() => handleCreateTask()}>
+                <Icon
+                  family="mci"
+                  name="plus"
+                  size={26}
+                  backgroundColor={colors.medium}
+                />
               </TouchableOpacity>
-              <DropDownPicker
-                placeholder="All Tasks"
-                placeholderStyle={{ fontSize: 15 }}
-                open={open}
-                value={value}
-                items={items}
-                setOpen={setOpen}
-                setValue={setValue}
-                setItems={setItems}
-                containerStyle={{ width: 130 }}
-                style={{
-                  borderColor: "transparent",
-                  backgroundColor: "transparent",
-                }}
-                dropDownContainerStyle={{
-                  backgroundColor: "#fff",
-                  borderColor: "transparent",
-                }}
-                labelStyle={{
-                  fontSize: 15,
-                }}
-              />
-            </View>
-            <View style={styles.bottomContainer}>
-              <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.bottomContent}>
-                  {tasks.map((task) => (
-                    <TaskInfo
-                      task={task}
-                      key={Math.random().toString()}
-                      navigation={navigation}
-                      // taskId={task.id}
-                      // getDataJ={getData}
-                    />
-                  ))}
-                </View>
-              </ScrollView>
-            </View>
+            </ScrollView>
           </>
         ) : data?.activeTab === "File" ? (
           <></>
@@ -249,23 +172,28 @@ const OngoingContractsDetails = ({ navigation, route }) => {
         // ProjectId={ProjectId}
         // getDataP={getData}
       />
-    </View>
+    </>
   );
 };
 
 export default OngoingContractsDetails;
 
 const styles = StyleSheet.create({
+  activeProjectTabText: {
+    color: "#fff",
+    backgroundColor: "silver",
+  },
   description: {
     fontSize: 12,
     opacity: 0.7,
     position: "absolute",
     top: SPACING + 30,
   },
-  image: {
-    width: width * 2.1,
-    height: width * 0.7,
+
+  inActiveProjectTabText: {
+    color: colors.medium,
   },
+
   meta: {
     position: "absolute",
     top: SPACING * 4,
@@ -273,29 +201,9 @@ const styles = StyleSheet.create({
     width: width * 0.6,
   },
   model: {
-    fontSize: 32,
+    fontSize: 25,
     fontWeight: "700",
     position: "absolute",
-  },
-  progressContainer: {
-    position: "absolute",
-    bottom: 80,
-    left: 250,
-  },
-  projectCard: {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 2,
-      height: 1,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-  },
-  swatch: {
-    height: 56,
-    width: 56,
-    borderRadius: 16,
-    marginRight: SPACING,
   },
 
   projectTeamTitle: {
@@ -314,22 +222,10 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginLeft: -17,
   },
-  plusBtnContainer: {
-    backgroundColor: colors.primary,
-    height: 40,
-    width: 40,
-    borderRadius: 50,
-    marginLeft: -10,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
 
   projectBody: {
     paddingTop: 20,
     paddingHorizontal: 16,
-    paddingBottom: 120,
   },
   projectTabs: {
     backgroundColor: "#fff",
@@ -345,22 +241,22 @@ const styles = StyleSheet.create({
     width: "30%",
     borderRadius: 7,
   },
-  activeProjectTab: {
-    backgroundColor: colors.medium,
+  projectTabText: {
+    fontSize: 16,
+    paddingVertical: 7,
+    textAlign: "center",
   },
-  projectTabText: { fontSize: 16, paddingVertical: 7, textAlign: "center" },
-  activeProjectTabText: {
-    color: "#fff",
+  progressContainer: {
+    width: width * 2.1,
+    height: width * 0.7,
+    top: 80,
+    left: 250,
   },
-  inActiveProjectTabText: {
-    color: colors.medium,
-  },
-
-  bottomContainer: {
-    height: "65%",
-  },
-  bottomContent: {
-    paddingBottom: 200,
+  swatch: {
+    height: 56,
+    width: 56,
+    borderRadius: 16,
+    marginRight: SPACING,
   },
   tasksHeader: {
     display: "flex",
@@ -379,16 +275,5 @@ const styles = StyleSheet.create({
     marginRight: 7,
     fontWeight: "bold",
     fontSize: 15,
-  },
-  plusBtnContainer2: {
-    backgroundColor: colors.primary,
-    height: 30,
-    width: 30,
-    borderRadius: 50,
-    marginLeft: 5,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
   },
 });

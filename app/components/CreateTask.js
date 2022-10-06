@@ -8,11 +8,14 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+
 import AppButton from "./AppButton";
 import AppTextInput from "./AppTextInput";
 import colors from "../config/colors";
 import { combineData } from "../utility/dataHelper";
+import membersApi from "../api/members";
+import tasksApi from "../api/tasks";
 
 const dataImages = [
   { image: "https://cdn-icons-png.flaticon.com/512/8360/8360483.png" },
@@ -34,18 +37,15 @@ const CreateTask = ({ modalVisible, setModalVisible, ProjectId, getDataP }) => {
     },
   });
 
-  //   const getData = async () => {
-  //     try {
-  //       let membersDb = await membersApi.getMembers();
-  //       setMembers(membersDb.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  const getData = async () => {
+    let result = await membersApi.getMembers();
+    if (result.ok) setMembers(result.data);
+    console.log(result.data);
+  };
 
-  //   useEffect(() => {
-  //     getData();
-  //   }, []);
+  useEffect(() => {
+    getData();
+  }, []);
 
   const handleSetValue = (field, value) => {
     //component will not re render when we are modifying newTask
@@ -112,14 +112,12 @@ const CreateTask = ({ modalVisible, setModalVisible, ProjectId, getDataP }) => {
             <Text style={styles2.boldText}>Create Task</Text>
             <AppTextInput placeholder="Title" />
             <AppTextInput placeholder="Description" />
-            <View style={styles2.teamTextWrapper}>
-              <Text style={styles2.teamText}>Select Members</Text>
-            </View>
 
+            <Text style={styles2.teamText}>Select Members</Text>
             <View style={styles2.teamSection}>
               <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles2.teamWrapper}>
-                  {dataImages?.map((member) => (
+                  {members?.map((member) => (
                     <TouchableOpacity
                       key={Math.random().toString()}
                       style={[
@@ -132,7 +130,7 @@ const CreateTask = ({ modalVisible, setModalVisible, ProjectId, getDataP }) => {
                     >
                       <Image
                         style={styles2.memberPhoto}
-                        source={{ uri: member?.image }}
+                        source={{ uri: member?.profile_image.small }}
                       />
                       <Text
                         style={[
@@ -144,7 +142,7 @@ const CreateTask = ({ modalVisible, setModalVisible, ProjectId, getDataP }) => {
                         numberOfLines={2}
                         ellipsizeMode="tail"
                       >
-                        name
+                        {member.name}
                       </Text>
                     </TouchableOpacity>
                   ))}
@@ -163,10 +161,6 @@ const CreateTask = ({ modalVisible, setModalVisible, ProjectId, getDataP }) => {
 export default CreateTask;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fafafa",
-  },
   closeButton: {
     height: 7,
     width: 80,
@@ -204,12 +198,6 @@ const styles = StyleSheet.create({
 });
 
 const styles2 = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fafafa",
-    display: "flex",
-    alignItems: "center",
-  },
   boldText: {
     fontWeight: "bold",
     fontSize: 18,
@@ -217,23 +205,13 @@ const styles2 = StyleSheet.create({
     marginRight: "auto",
     marginBottom: 40,
   },
-  textInput: {
-    height: 40,
-    width: "90%",
-    borderRadius: 5,
-    borderColor: colors.light,
-    borderWidth: 1,
-    marginBottom: 20,
-    fontSize: 16,
-    paddingVertical: 5,
-    paddingHorizontal: 7,
-  },
-  teamTextWrapper: { width: "90%", marginBottom: 10 },
+
   teamText: {
     fontSize: 17,
-    color: "gray",
+    textAlign: "center",
+    color: colors.medium,
     paddingLeft: 7,
-    marginTop: 20,
+    marginVertical: 20,
   },
   btnWrapper: {
     height: 35,
@@ -252,7 +230,6 @@ const styles2 = StyleSheet.create({
   },
   teamSection: { height: 180, width: "90%" },
   teamWrapper: {
-    display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
   },

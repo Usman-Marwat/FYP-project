@@ -9,6 +9,7 @@ import React from "react";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 
 import colors from "../config/colors";
+import Icon from "./Icon";
 const data = [
   { image: "https://cdn-icons-png.flaticon.com/512/8360/8360483.png" },
   { image: "https://cdn-icons-png.flaticon.com/512/8360/8360535.png" },
@@ -22,11 +23,13 @@ const TaskInfo = ({ task, navigation, taskId, getDataJ }) => {
       onPress={() => navigation.navigate("TaskView", { taskId, getDataJ })}
     >
       <View style={styles.container}>
-        <AntDesign
+        <Icon
+          family="antDesign"
           name="checksquareo"
-          size={20}
+          backgroundColor="#fff"
+          iconColor={colors.medium}
+          size={24}
           color={task?.progress === 100 ? colors.primary : colors.medium}
-          style={styles.taskProgressIndicator}
         />
         <View style={styles.taskMiddleColumn}>
           <Text style={styles.taskTitle} numberOfLines={1} ellipsizeMode="tail">
@@ -47,10 +50,11 @@ const TaskInfo = ({ task, navigation, taskId, getDataJ }) => {
             />
           ))}
         </View>
-        <MaterialIcons
-          name="keyboard-arrow-right"
-          size={25}
-          color={colors.medium}
+        <Icon
+          family="mci"
+          backgroundColor="#fff"
+          name="chevron-right"
+          iconColor={colors.medium}
         />
       </View>
     </TouchableWithoutFeedback>
@@ -75,8 +79,9 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    width: "97%",
   },
-  taskProgressIndicator: { marginRight: 10 },
+
   taskMiddleColumn: { width: "50%", marginRight: "auto" },
   taskTitle: {
     fontWeight: "bold",

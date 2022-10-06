@@ -17,6 +17,7 @@ import MenuFoldButton from "../../navigation/MenuFoldButton";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import colors from "../../config/colors";
+import Icon from "../../components/Icon";
 
 faker.seed(1);
 
@@ -44,7 +45,7 @@ const OngoingContracts = ({ navigation }) => {
   const translateX = translateMenuFold(animatedValue);
 
   return (
-    <View>
+    <>
       <MenuFoldButton translateX={translateX} navigation={navigation} />
 
       <FlatList
@@ -56,76 +57,73 @@ const OngoingContracts = ({ navigation }) => {
           return (
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate(routes.ONGOING_CONTRACTS_DETAILS, { item })
+                navigation.navigate(routes.ONGOING_CONTRACTS_DETAILS, {
+                  item,
+                })
               }
+              style={styles.item}
             >
-              <View style={styles.item}>
-                <View>
-                  <SharedElement id={`item.${item.key}.modal`}>
-                    <Text style={styles.model}>{item.model}</Text>
-                  </SharedElement>
-                  <SharedElement id={`item.${item.key}.description`}>
-                    <Text style={styles.description}>{item.description}</Text>
-                  </SharedElement>
+              <View>
+                <SharedElement id={`item.${item.key}.modal`}>
+                  <Text style={styles.model}>{item.model}</Text>
+                </SharedElement>
+                <SharedElement id={`item.${item.key}.description`}>
+                  <Text style={styles.description}>{item.description}</Text>
+                </SharedElement>
+              </View>
+              <SharedElement id={`item.${item.key}.image`} style={styles.image}>
+                <CircularProgress
+                  value={70}
+                  inActiveStrokeColor={"#9b59b6"}
+                  inActiveStrokeOpacity={0.4}
+                  inActiveStrokeWidth={25}
+                  activeStrokeWidth={20}
+                  progressValueStyle={{ fontWeight: "100", color: "grey" }}
+                />
+              </SharedElement>
+              <SharedElement id={`item.${item.key}.team`}>
+                <View style={{ top: 80, left: 25 }}>
+                  <Text style={styles.projectTeamTitle}>Team</Text>
+                  <View style={styles.projectTeamWrapper}>
+                    {data.map((member) => (
+                      <Image
+                        key={Math.random().toString()}
+                        style={styles.projectMemberPhoto}
+                        source={{ uri: member?.image }}
+                      />
+                    ))}
+                    <Icon
+                      family="mci"
+                      name="plus"
+                      size={26}
+                      style={{ marginLeft: -10 }}
+                    />
+                  </View>
                 </View>
-                <SharedElement
-                  id={`item.${item.key}.image`}
-                  style={styles.image}
-                >
-                  <CircularProgress
-                    value={70}
-                    inActiveStrokeColor={"#9b59b6"}
-                    inActiveStrokeOpacity={0.4}
-                    inActiveStrokeWidth={25}
-                    activeStrokeWidth={20}
-                    progressValueStyle={{ fontWeight: "100", color: "grey" }}
+              </SharedElement>
+              <View style={styles.rowJustifyBetween}>
+                <View style={styles.flexRow}>
+                  <MaterialCommunityIcons
+                    name="calendar-month-outline"
+                    size={20}
+                    color={colors.medium}
                   />
-                </SharedElement>
-                <SharedElement id={`item.${item.key}.team`}>
-                  <View style={{ top: 80, left: 25 }}>
-                    <Text style={styles.projectTeamTitle}>Team</Text>
-                    <View style={styles.projectTeamWrapper}>
-                      {data.map((member) => (
-                        <Image
-                          key={Math.random().toString()}
-                          style={styles.projectMemberPhoto}
-                          source={{ uri: member?.image }}
-                        />
-                      ))}
-                      <TouchableOpacity style={styles.plusBtnContainer}>
-                        <MaterialCommunityIcons
-                          name="plus"
-                          size={22}
-                          color="#fff"
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </SharedElement>
-                <View style={styles.rowJustifyBetween}>
-                  <View style={styles.flexRow}>
-                    <MaterialCommunityIcons
-                      name="calendar-month-outline"
-                      size={20}
-                      color={colors.medium}
-                    />
-                    <Text style={styles.projectBottomText}>12 10 2020</Text>
-                  </View>
-                  <View style={styles.flexRow}>
-                    <MaterialCommunityIcons
-                      name="checkbox-marked"
-                      size={20}
-                      color={colors.medium}
-                    />
-                    <Text style={styles.projectBottomText}>Tasks</Text>
-                  </View>
+                  <Text style={styles.projectBottomText}>12 10 2020</Text>
+                </View>
+                <View style={styles.flexRow}>
+                  <MaterialCommunityIcons
+                    name="checkbox-marked"
+                    size={20}
+                    color={colors.medium}
+                  />
+                  <Text style={styles.projectBottomText}>Tasks</Text>
                 </View>
               </View>
             </TouchableOpacity>
           );
         }}
       />
-    </View>
+    </>
   );
 };
 
@@ -146,6 +144,12 @@ const styles = StyleSheet.create({
     backgroundColor: BG_COLOR,
     overflow: "hidden",
   },
+
+  flexRow: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
   image: {
     height: ITEM_SIZE * 1.2,
     width: "100%",
@@ -154,21 +158,9 @@ const styles = StyleSheet.create({
     right: "-60%",
   },
   model: {
-    fontSize: 18,
+    fontSize: 25,
     fontWeight: "700",
     position: "absolute",
-  },
-  rowJustifyBetween: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    top: 170,
-  },
-  flexRow: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
   },
   projectBottomText: {
     marginLeft: 5,
@@ -204,5 +196,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+  },
+  rowJustifyBetween: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    top: 170,
   },
 });
