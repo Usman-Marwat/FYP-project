@@ -19,14 +19,15 @@ function ListItem({
   IconComponent,
   onPress,
   renderRightActions,
+  style,
 }) {
   return (
     <Swipeable renderRightActions={renderRightActions}>
       <TouchableHighlight underlayColor={colors.light} onPress={onPress}>
-        <View style={styles.container}>
+        <View style={[styles.container, style]}>
           {/* Either Icon Or Image is gonna show up */}
           {IconComponent}
-          {image && <Image style={styles.image} source={image} />}
+          {image && <Image style={styles.image} source={{ uri: image }} />}
           <View style={styles.detailsContainer}>
             <AppText numberOfLines={1} style={styles.title}>
               {title}

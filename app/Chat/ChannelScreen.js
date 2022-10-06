@@ -77,7 +77,6 @@ export default function ChannelScreen({ navigation, route }) {
     >
       <MessageList />
       <MessageInput />
-      {navigation.setOptions({ title: receiver })}
     </Channel>
   );
 }

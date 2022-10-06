@@ -1,6 +1,5 @@
-import { Animated, Dimensions, StyleSheet, Text, View } from "react-native";
-import React, { useState, useRef } from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { StyleSheet } from "react-native";
+import React from "react";
 import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 
 import OngoingContracts from "../../screens/Contractor/OngoingContracts";

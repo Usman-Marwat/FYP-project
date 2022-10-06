@@ -4,15 +4,16 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import CustomDrawer from "../CustomDrawer";
-import MenuFoldButton from "../MenuFoldButton";
-import { translateMenuFold } from "../navigationAnimations";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
-import ReceivedContractNavigator from "./ReceivedContractNavigator";
-import OngoingContractsNavigator from "./OngoingContractsNavigator";
-import EmployeesList from "../../screens/Contractor/EmployeesList";
-import navigationTheme from "../navigationTheme";
-import RootNavigator from "../../Chat/RootNavigator";
 import FirmProfileNavigator from "./FirmProfileNavigator";
+import EmployeesList from "../../screens/Contractor/EmployeesList";
+import MenuFoldButton from "../MenuFoldButton";
+import OngoingContractsNavigator from "./OngoingContractsNavigator";
+import navigationTheme from "../navigationTheme";
+import StockpileNavigator from "./StockpileNavigator";
+import ReceivedContractNavigator from "./ReceivedContractNavigator";
+import { translateMenuFold } from "../navigationAnimations";
+import RootNavigator from "../../Chat/RootNavigator";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -58,6 +59,10 @@ const ContractorNavigator = () => {
           <DrawerNavigator.Screen
             name="Ongoing"
             component={OngoingContractsNavigator}
+          />
+          <DrawerNavigator.Screen
+            name="Stockpile"
+            component={StockpileNavigator}
           />
           <DrawerNavigator.Screen
             name="Profile"

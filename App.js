@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import * as SplashScreen from "expo-splash-screen";
 
 import AuthNavigator from "./app/navigation/AuthNavigator";
@@ -23,8 +24,6 @@ const App = () => {
     restoreUser();
   }, []);
 
-  console.log(appIsReady);
-
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) await SplashScreen.hideAsync();
   }, [appIsReady]);
@@ -32,10 +31,12 @@ const App = () => {
   if (!appIsReady) return null;
   return (
     <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
-      <AuthContext.Provider value={{ user, setUser }}>
-        <OfflineNotice />
-        {user ? <AppStarter user={user} /> : <AuthNavigator />}
-      </AuthContext.Provider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <AuthContext.Provider value={{ user, setUser }}>
+          <OfflineNotice />
+          {user ? <AppStarter user={user} /> : <AuthNavigator />}
+        </AuthContext.Provider>
+      </GestureHandlerRootView>
     </View>
   );
 };

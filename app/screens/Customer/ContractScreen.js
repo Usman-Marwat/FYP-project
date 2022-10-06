@@ -23,10 +23,10 @@ import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import ListItem from "../../components/ListItem";
 import MenuFoldButton from "../../navigation/MenuFoldButton";
 import routes from "../../navigation/routes";
-import Screen from "../../components/Screen";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import useNotifications from "../../hooks/useNotifications";
 import { useNavigation } from "@react-navigation/native";
+import Icon from "../../components/Icon";
 
 const { width, height } = Dimensions.get("screen");
 const IMAGE_WIDTH = width * 0.65;
@@ -39,25 +39,33 @@ const images = [
   "https://images.pexels.com/photos/1758101/pexels-photo-1758101.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
   "https://images.pexels.com/photos/1738434/pexels-photo-1738434.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
   "https://images.pexels.com/photos/1698394/pexels-photo-1698394.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  "https://images.pexels.com/photos/1684429/pexels-photo-1684429.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  "https://images.pexels.com/photos/1690351/pexels-photo-1690351.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  "https://images.pexels.com/photos/1668211/pexels-photo-1668211.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  "https://images.pexels.com/photos/1647372/pexels-photo-1647372.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  "https://images.pexels.com/photos/1616164/pexels-photo-1616164.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  "https://images.pexels.com/photos/1799901/pexels-photo-1799901.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  "https://images.pexels.com/photos/1789968/pexels-photo-1789968.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  "https://images.pexels.com/photos/1774301/pexels-photo-1774301.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  "https://images.pexels.com/photos/1734364/pexels-photo-1734364.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  "https://images.pexels.com/photos/1724888/pexels-photo-1724888.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  // "https://images.pexels.com/photos/1684429/pexels-photo-1684429.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  // "https://images.pexels.com/photos/1690351/pexels-photo-1690351.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  // "https://images.pexels.com/photos/1668211/pexels-photo-1668211.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  // "https://images.pexels.com/photos/1647372/pexels-photo-1647372.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  // "https://images.pexels.com/photos/1616164/pexels-photo-1616164.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  // "https://images.pexels.com/photos/1799901/pexels-photo-1799901.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  // "https://images.pexels.com/photos/1789968/pexels-photo-1789968.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  // "https://images.pexels.com/photos/1774301/pexels-photo-1774301.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  // "https://images.pexels.com/photos/1734364/pexels-photo-1734364.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  // "https://images.pexels.com/photos/1724888/pexels-photo-1724888.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+];
+
+const titles = [
+  "Mansions",
+  " Bungalow",
+  "Apartment",
+  "Cottage",
+  "Semi-Detached Home",
 ];
 faker.seed(10);
 const DATA = [...Array(images.length).keys()].map((_, i) => {
   return {
     key: faker.datatype.uuid(),
     image: images[i],
-    title: faker.commerce.productName(),
+    title: titles[i],
     subtitle: faker.company.bs(),
-    price: faker.finance.amount(80, 200, 0),
+    price: faker.finance.amount(700, 1700, 0),
   };
 });
 
@@ -226,6 +234,7 @@ const ContractScreen = ({ navigation }) => {
               ]}
             />
           </View>
+
           {/* <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={() => {}}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -241,64 +250,28 @@ const ContractScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View> */}
         </View>
-        <FlatList
-          data={renovation}
-          keyExtractor={(item) => item.category}
-          numColumns={2}
-          renderItem={({ item, index }) => {
-            return (
-              <View
-                style={{
-                  backgroundColor: "rgba(255,255,255,0.7)",
-                  margin: 10,
-                  borderRadius: 30,
-                }}
-              >
-                <Image
-                  source={{ uri: item.image }}
-                  style={{ width: width / 3, height: width / 3 }}
+        <View style={{ flex: 1 }}>
+          <FlatList
+            data={renovation}
+            keyExtractor={(item) => item.category}
+            renderItem={({ item, index }) => {
+              return (
+                <ListItem
+                  image={item.image}
+                  title={item.category}
+                  subTitle="Renovation"
+                  style={{
+                    marginBottom: 1,
+                    marginHorizontal: 10,
+                    borderRadius: 20,
+                    height: 100,
+                  }}
                 />
-              </View>
-            );
-          }}
-        />
+              );
+            }}
+          />
+        </View>
       </View>
-      {/* 
-      <View style={{ flex: 1, marginTop: 100 }}>
-        <ScrollView
-          contentContainerStyle={{}}
-          showsHorizontalScrollIndicator={false}
-          style={{ flex: 1 }}
-        >
-          <RNBounceable>
-            <View>
-              <ListItem
-                image={require("../../assets/pi.jpg")}
-                title="Usman Marwat"
-                subTitle="5 vitual shops"
-              />
-            </View>
-          </RNBounceable>
-          <RNBounceable>
-            <View>
-              <ListItem
-                image={require("../../assets/pi.jpg")}
-                title="Usman Marwat"
-                subTitle="5 vitual shops"
-              />
-            </View>
-          </RNBounceable>
-          <RNBounceable>
-            <View>
-              <ListItem
-                image={require("../../assets/pi.jpg")}
-                title="Usman Marwat"
-                subTitle="5 vitual shops"
-              />
-            </View>
-          </RNBounceable>
-        </ScrollView>
-      </View> */}
     </>
   );
 };

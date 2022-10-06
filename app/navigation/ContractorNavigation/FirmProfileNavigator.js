@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import {} from "react-native";
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -17,5 +17,3 @@ const FirmProfileNavigator = () => {
 };
 
 export default FirmProfileNavigator;
-
-const styles = StyleSheet.create({});
