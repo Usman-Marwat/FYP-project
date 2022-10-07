@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import {
   AttachButton,
-  SendButton,
   useChatContext,
   useMessageInputContext,
   useMessagesContext,
@@ -87,7 +86,12 @@ export const InputBox = ({ sender, targetIds }) => {
       const permission = await Audio.requestPermissionsAsync();
       if (permission.status === "granted") {
         await Audio.setAudioModeAsync({
-          allowsRecordingIOS: true,
+          staysActiveInBackground: true,
+          interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+          shouldDuckAndroid: true,
+          playThroughEarpieceAndroid: true,
+          allowsRecordingIOS: false,
+          interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
           playsInSilentModeIOS: true,
         });
         const { recording, status } = await Audio.Recording.createAsync(

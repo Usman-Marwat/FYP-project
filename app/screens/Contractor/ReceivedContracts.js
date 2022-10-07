@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
     bottom: 20,
   },
   map: {
-    width: 350,
+    width: "100%",
     height: 300,
   },
   pill: {

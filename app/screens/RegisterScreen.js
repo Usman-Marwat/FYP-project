@@ -85,9 +85,9 @@ function RegisterScreen({ route }) {
 
   return (
     <>
+      {/* <Button title="open" onPress={() => setOtpVisible(!otpVisible)} /> */}
       <ActivityIndicator visible={registerApi.loading || otpApi.loading} />
-      <Screen style={styles.container}>
-        {/* <Button title="open" onPress={() => setOtpVisible(!otpVisible)} /> */}
+      <View style={styles.container}>
         <View style={styles.headingConatiner}>
           <SharedElement id={`item.${item.key}.image`}>
             <Image source={{ uri: item.image }} style={styles.image} />
@@ -136,7 +136,7 @@ function RegisterScreen({ route }) {
           onOtpVisible={(v) => setOtpVisible(v)}
           onSendOtp={handleOtp}
         />
-      </Screen>
+      </View>
     </>
   );
 }
@@ -144,7 +144,7 @@ function RegisterScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    paddingTop: 0,
+    paddingTop: 10,
   },
   headingConatiner: {
     alignItems: "center",

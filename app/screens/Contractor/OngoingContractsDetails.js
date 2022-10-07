@@ -136,32 +136,29 @@ const OngoingContractsDetails = ({ navigation, route }) => {
           ))}
         </View>
         {data?.activeTab === "Task List" ? (
-          <>
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ alignItems: "center" }}
-            >
-              <View>
-                {tasks.map((task) => (
-                  <TaskInfo
-                    task={task}
-                    key={Math.random().toString()}
-                    navigation={navigation}
-                    // taskId={task.id}
-                    // getDataJ={getData}
-                  />
-                ))}
-              </View>
-              <TouchableOpacity onPress={() => handleCreateTask()}>
-                <Icon
-                  family="mci"
-                  name="plus"
-                  size={42}
-                  backgroundColor={colors.medium}
-                />
-              </TouchableOpacity>
-            </ScrollView>
-          </>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ alignItems: "center" }}
+          >
+            {tasks.map((task) => (
+              <TaskInfo
+                task={task}
+                key={Math.random().toString()}
+                navigation={navigation}
+                // taskId={task.id}
+                // getDataJ={getData}
+              />
+            ))}
+
+            <TouchableOpacity onPress={() => handleCreateTask()}>
+              <Icon
+                family="mci"
+                name="plus"
+                size={42}
+                backgroundColor={colors.medium}
+              />
+            </TouchableOpacity>
+          </ScrollView>
         ) : data?.activeTab === "File" ? (
           <></>
         ) : null}

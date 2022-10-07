@@ -40,7 +40,7 @@ function LoginScreen({ route }) {
   return (
     <>
       <ActivityIndicator visible={loginApi.loading} />
-      <Screen style={styles.container}>
+      <View style={styles.container}>
         <View style={styles.headingConatiner}>
           <SharedElement id={`item.${item.key}.image`}>
             <Image source={{ uri: item.image }} style={styles.image} />
@@ -77,7 +77,7 @@ function LoginScreen({ route }) {
             <SubmitButton title="Login" />
           </AppForm>
         </Animatable.View>
-      </Screen>
+      </View>
     </>
   );
 }
@@ -85,7 +85,7 @@ function LoginScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    paddingTop: 0,
+    paddingTop: 10,
   },
   headingConatiner: {
     alignItems: "center",

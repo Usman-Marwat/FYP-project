@@ -10,6 +10,7 @@ import Header from "../../components/Header";
 import AppFormDocumentPicker from "../../components/forms/AppFormDocumentPicker";
 import AppFormMap from "../../components/forms/AppFormMap";
 import routes from "../../navigation/routes";
+import MyMap from "../../components/MyMap";
 
 const width = Dimensions.get("screen").width;
 

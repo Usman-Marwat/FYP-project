@@ -14,6 +14,8 @@ import StockpileNavigator from "./StockpileNavigator";
 import ReceivedContractNavigator from "./ReceivedContractNavigator";
 import { translateMenuFold } from "../navigationAnimations";
 import RootNavigator from "../../Chat/RootNavigator";
+import AppButton from "../../components/AppButton";
+import useAuth from "../../auth/useAuth";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -80,14 +82,19 @@ export default ContractorNavigator;
 function Check({ navigation }) {
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
+  const { logOut } = useAuth();
 
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <>
       <MenuFoldButton translateX={translateX} navigation={navigation} />
-      <View>
-        <Text>Check 1</Text>
+      <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
+        <AppButton
+          title="Logout"
+          onPress={() => logOut()}
+          style={{ width: 150 }}
+        />
       </View>
-    </View>
+    </>
   );
 }
 
