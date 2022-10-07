@@ -156,7 +156,7 @@ const OngoingContractsDetails = ({ navigation, route }) => {
                 <Icon
                   family="mci"
                   name="plus"
-                  size={26}
+                  size={42}
                   backgroundColor={colors.medium}
                 />
               </TouchableOpacity>

@@ -8,14 +8,16 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import AppButton from "./AppButton";
+import AuthContext from "../auth/context";
 import AppTextInput from "./AppTextInput";
 import colors from "../config/colors";
-import { combineData } from "../utility/dataHelper";
 import membersApi from "../api/members";
+import messagesApi from "../api/messages";
 import tasksApi from "../api/tasks";
+import useApi from "../hooks/useApi";
 
 const dataImages = [
   { image: "https://cdn-icons-png.flaticon.com/512/8360/8360483.png" },
@@ -26,21 +28,20 @@ const dataImages = [
 
 const CreateTask = ({ modalVisible, setModalVisible, ProjectId, getDataP }) => {
   const [members, setMembers] = useState([]);
-  const [data, setData] = useState({
-    newTask: {
-      ProjectId,
-      id: Math.random().toString(),
-      title: "",
-      description: "",
-      selectedMembers: [],
-      progress: Math.floor(Math.random() * 100) + 1,
-    },
+  const [newTask, setNewTask] = useState({
+    ProjectId,
+    id: Math.random().toString(),
+    title: "",
+    description: "",
+    selectedMembers: [],
+    progress: Math.floor(Math.random() * 100) + 1,
   });
+  const { user } = useContext(AuthContext);
+  const sendApi = useApi(messagesApi.send);
 
   const getData = async () => {
     let result = await membersApi.getMembers();
     if (result.ok) setMembers(result.data);
-    console.log(result.data);
   };
 
   useEffect(() => {
@@ -48,48 +49,43 @@ const CreateTask = ({ modalVisible, setModalVisible, ProjectId, getDataP }) => {
   }, []);
 
   const handleSetValue = (field, value) => {
-    //component will not re render when we are modifying newTask
-    //because this newTask variable is a new variable
-    let { newTask } = data;
+    let task = { ...newTask };
     if (field === "selectedMembers") {
-      let { selectedMembers } = newTask;
+      let { selectedMembers } = task;
       const foundIndex = selectedMembers?.findIndex((a) => a?.id === value?.id);
-      if (foundIndex === -1) {
-        selectedMembers.push(value);
-      } else {
-        selectedMembers = selectedMembers.filter((a) => a?.id !== value?.id);
-      }
-      newTask["selectedMembers"] = selectedMembers;
-    } else {
-      newTask[field] = value;
-    }
-
-    setData(
-      combineData(data, {
-        newTask,
-      })
-    );
+      if (foundIndex === -1) selectedMembers.push(value);
+      else selectedMembers = selectedMembers.filter((a) => a?.id !== value?.id);
+      task["selectedMembers"] = selectedMembers;
+    } else task[field] = value;
+    setNewTask(task);
   };
 
   const isSelectedMember = (member) => {
-    let value;
-    let { selectedMembers } = data?.newTask;
+    let { selectedMembers } = newTask;
     const foundIndex = selectedMembers?.findIndex(
       (a) => a?.id?.toLowerCase() == member?.id?.toLowerCase()
     );
-    if (foundIndex > -1) {
-      value = true;
-    }
-    return value;
+    if (foundIndex > -1) return true;
   };
 
   const handleTaskAssign = () => {
+    console.log("---------------------------------------------------");
+    console.log(newTask);
     console.log("--------------------------------------------");
-    console.log(data.newTask);
-    console.log("--------------------------------------------");
-    tasksApi.addTask(data.newTask);
+    // tasksApi.addTask(data.newTask);
     setModalVisible(!modalVisible);
-    getDataP();
+    sendNotification();
+    // getDataP();
+  };
+
+  const sendNotification = async () => {
+    await sendApi.request(
+      "Contractor",
+      user.actor_id,
+      `Contractor Name: ${user.name}`,
+      user.name,
+      `Task Assigned`
+    );
   };
 
   return (
@@ -228,7 +224,10 @@ const styles2 = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
   },
-  teamSection: { height: 180, width: "90%" },
+  teamSection: {
+    height: 180,
+    width: "90%",
+  },
   teamWrapper: {
     flexDirection: "row",
     flexWrap: "wrap",
