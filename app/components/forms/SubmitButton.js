@@ -3,11 +3,15 @@ import { useFormikContext } from "formik";
 
 import AppButton from "../AppButton";
 
-function SubmitButton({ title }) {
+function SubmitButton({ title, bg }) {
   const { handleSubmit } = useFormikContext();
 
   return (
-    <AppButton title={title} onPress={handleSubmit} style={{ marginTop: 10 }} />
+    <AppButton
+      title={title}
+      onPress={handleSubmit}
+      style={{ marginTop: 10, backgroundColor: bg }}
+    />
   );
 }
 

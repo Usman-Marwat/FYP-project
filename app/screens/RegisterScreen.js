@@ -47,7 +47,7 @@ const schemaFunction = (isValid) => {
 };
 
 function RegisterScreen({ route }) {
-  const { item } = route.params;
+  const { item, bg } = route.params;
   const [otpVisible, setOtpVisible] = useState(false);
   const [isValid, setIsValid] = useState(false);
   const [formData, setFormData] = useState({ actor: item.actor });
@@ -95,6 +95,20 @@ function RegisterScreen({ route }) {
           <Animatable.View animation="bounceIn" delay={DURATION / 2}>
             <Text style={styles.title}>{item.actor}</Text>
           </Animatable.View>
+
+          <Animatable.View
+            animation="fadeIn"
+            delay={DURATION}
+            style={[
+              StyleSheet.absoluteFillObject,
+              styles.backdrop,
+              { backgroundColor: bg },
+            ]}
+          >
+            <View />
+          </Animatable.View>
+
+          <View style={styles.square} />
         </View>
         <Animatable.View animation="fadeInUp" delay={DURATION}>
           <Form
@@ -128,7 +142,7 @@ function RegisterScreen({ route }) {
               textContentType="password"
             />
             <AppPhoneInput name="phone" onCheck={(val) => setIsValid(val)} />
-            <SubmitButton title="Register" />
+            <SubmitButton title="Register" bg={bg} />
           </Form>
         </Animatable.View>
         <OtpInput
@@ -142,6 +156,12 @@ function RegisterScreen({ route }) {
 }
 
 const styles = StyleSheet.create({
+  backdrop: {
+    backgroundColor: "#ff355e",
+    zIndex: -5,
+    borderBottomEndRadius: 30,
+    borderBottomLeftRadius: 30,
+  },
   container: {
     padding: 10,
     paddingTop: 10,
@@ -153,7 +173,7 @@ const styles = StyleSheet.create({
   image: {
     width: width / 2,
     height: width / 2.5,
-    marginTop: 30,
+    marginTop: 10,
     marginBottom: 30,
     resizeMode: "contain",
     zIndex: 1,
@@ -161,20 +181,21 @@ const styles = StyleSheet.create({
   square: {
     width: height,
     height: height,
-    borderColor: "pink",
-    borderWidth: 3,
-
-    borderRadius: 50,
+    backgroundColor: "#fff",
+    borderRadius: 86,
     position: "absolute",
-    top: -height * 0.65,
+    top: -height * 0.87,
     left: -height * 0.3,
-    zIndex: 0,
-    transform: [{ rotateX: "40deg" }, { rotateZ: "0.685398rad" }],
+    zIndex: -1,
+    transform: [{ rotate: "35deg" }],
   },
   title: {
     fontWeight: "800",
     fontSize: 32,
     textTransform: "uppercase",
+    color: "#fff",
+    marginTop: 20,
+    marginBottom: 20,
   },
 });
 

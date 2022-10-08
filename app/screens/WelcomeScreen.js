@@ -155,7 +155,9 @@ export default function WelcomeScreen({ navigation }) {
                 </SharedElement>
               </View>
               <View style={{ flex: 0.3 }}>
-                <Text style={styles.title}>{item.actor}</Text>
+                <SharedElement id="actor_title">
+                  <Text style={styles.title}>{item.actor}</Text>
+                </SharedElement>
                 <Text style={styles.tagline}>{item.title}</Text>
                 <View style={styles.description}>
                   <Text>{item.description}</Text>
@@ -174,6 +176,7 @@ export default function WelcomeScreen({ navigation }) {
           onPress={() =>
             navigation.navigate(routes.REGISTER, {
               item: DATA[currentIndex],
+              bg: bgs[currentIndex],
             })
           }
         />

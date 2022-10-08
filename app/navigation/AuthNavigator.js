@@ -22,6 +22,7 @@ const AuthNavigator = () => (
           return [
             { id: `item.${item.key}.image`, animation: "fade" },
             { id: `item.${item.key}.actor`, animation: "fade-out" },
+            { id: "actor_title" },
           ];
         }}
       />
