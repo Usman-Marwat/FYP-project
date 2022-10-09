@@ -8,6 +8,7 @@ import AuthContext from "./app/auth/context";
 import authStorage from "./app/auth/storage";
 import OfflineNotice from "./app/components/OfflineNotice";
 import AppStarter from "./app/start/AppStarter";
+import { StatusBar } from "expo-status-bar";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -37,6 +38,7 @@ const App = () => {
           {user ? <AppStarter user={user} /> : <AuthNavigator />}
         </AuthContext.Provider>
       </GestureHandlerRootView>
+      <StatusBar hidden />
     </View>
   );
 };

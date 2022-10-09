@@ -1,12 +1,5 @@
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import React, { useContext } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity } from "react-native";
+import React from "react";
 import { useChatContext } from "stream-chat-expo";
 import { useNavigation } from "@react-navigation/native";
 
@@ -26,7 +19,7 @@ export default function UserListItem({ chatUser, user }) {
 
   return (
     <TouchableOpacity onPress={handlePress} style={styles.root}>
-      <Image style={styles.image} source={{ uri: user.image }}></Image>
+      <Image style={styles.image} source={{ uri: chatUser.image }}></Image>
       <Text>{chatUser.name}</Text>
     </TouchableOpacity>
   );
@@ -36,7 +29,6 @@ const styles = StyleSheet.create({
   image: {
     width: 50,
     height: 50,
-    backgroundColor: "coral",
     borderRadius: 50,
     marginRight: 10,
   },

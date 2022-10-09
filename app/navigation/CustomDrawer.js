@@ -150,7 +150,10 @@ const CustomDrawer = ({ navigation, selectedRoute, routes }) => {
 export default CustomDrawer;
 
 const styles = StyleSheet.create({
-  button: { padding: 0, alignItems: "flex-start" },
+  button: {
+    padding: 0,
+    alignItems: "flex-start",
+  },
   buttonTitle: {
     fontSize: 34,
     lineHeight: 34 * 1.5,

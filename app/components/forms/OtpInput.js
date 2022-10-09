@@ -1,19 +1,12 @@
-import React, { useState, useRef } from "react";
-import {
-  Button,
-  Modal,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import React, { useState } from "react";
+import { Button, Modal, StyleSheet, Text, View } from "react-native";
 import OTPTextInput from "react-native-otp-textinput";
 import colors from "../../config/colors";
 import AppButton from "../AppButton";
 
 const otpLength = 6;
 
-const OtpInput = ({ otpVisible, onOtpVisible, onSendOtp }) => {
+const OtpInput = ({ otpVisible, onOtpVisible, onSendOtp, color }) => {
   const [disabled, setDisabled] = useState(true);
   const [otp, setOtp] = useState("");
 
@@ -30,26 +23,26 @@ const OtpInput = ({ otpVisible, onOtpVisible, onSendOtp }) => {
       style={{ backgroundColor: "red", flex: 1 }}
     >
       <Button title="Close" onPress={() => onOtpVisible(!otpVisible)} />
-      <SafeAreaView style={styles.modalContainer}>
-        <Text style={styles.text}>Enter Email Otp</Text>
-        <View style={styles.wrapper}>
+      <View style={[styles.modalContainer]}>
+        <View style={[styles.wrapper, { backgroundColor: color }]}>
+          <Text style={[styles.text]}>Enter Email Otp</Text>
           <OTPTextInput
             textInputStyle={styles.textInput}
             handleTextChange={handleInputText}
             inputCount={6}
-            tintColor="#ff355e"
+            tintColor={color}
           />
           <AppButton
             disabled={disabled}
             title="Send"
-            titleStyle={{ color: colors.primary }}
+            titleStyle={{ color }}
             style={styles.buttonStyle}
             onPress={() => {
               onSendOtp(otp);
             }}
           />
         </View>
-      </SafeAreaView>
+      </View>
     </Modal>
   );
 };
@@ -65,26 +58,25 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.07)",
+    top: 270,
+    backgroundColor: "rgba(0,0,0,0)",
   },
   text: {
-    // color: colors.white,
+    color: "white",
     fontWeight: "700",
-    fontSize: 25,
+    fontSize: 30,
     textTransform: "uppercase",
   },
   textInput: {
     marginHorizontal: 7,
+    marginTop: 20,
     borderWidth: 1,
     backgroundColor: "white",
   },
   wrapper: {
-    // backgroundColor: colors.light,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 20,
+    paddingVertical: 10,
     marginHorizontal: 2,
     marginVertical: 10,
     borderRadius: 10,

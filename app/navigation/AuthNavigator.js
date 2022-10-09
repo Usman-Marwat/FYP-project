@@ -1,14 +1,34 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import { Easing } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 
 import LoginScreen from "../screens/LoginScreen";
+import navigationTheme from "./navigationTheme";
 import RegisterScreen from "../screens/RegisterScreen";
 import WelcomeScreen from "../screens/WelcomeScreen";
-import navigationTheme from "./navigationTheme";
 
 const Stack = createSharedElementStackNavigator();
+
+const options = () => ({
+  gestureEnabled: false,
+  headerBackTitleVisible: false,
+  transitionSpec: {
+    open: {
+      animation: "timing",
+      config: { duration: 300, easing: Easing.inOut(Easing.ease) },
+    },
+    close: {
+      animation: "timing",
+      config: { duration: 300, easing: Easing.inOut(Easing.ease) },
+    },
+  },
+  // cardStyleInterpolator: ({ current: { progress } }) => {
+  //   return {
+  //     cardStyle: { opacity: progress },
+  //   };
+  // },
+});
 
 const AuthNavigator = () => (
   <NavigationContainer theme={navigationTheme}>
@@ -25,6 +45,7 @@ const AuthNavigator = () => (
             { id: "actor_title" },
           ];
         }}
+        options={options}
       />
       <Stack.Screen
         name="Login"
@@ -33,6 +54,7 @@ const AuthNavigator = () => (
           const { item } = route.params;
           return [{ id: `item.${item.key}.image` }];
         }}
+        options={options}
       />
     </Stack.Navigator>
   </NavigationContainer>
