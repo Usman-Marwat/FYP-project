@@ -101,6 +101,7 @@ const SpecificationScreen = ({ navigation, route }) => {
     });
     return { inputRange, opcaityInputRange, scale, opacity };
   };
+
   const addMaterial = (MaterialData) => {
     const newAllValues = _.cloneDeep(allValues);
     const newKeys = _.cloneDeep(keys);
@@ -114,15 +115,6 @@ const SpecificationScreen = ({ navigation, route }) => {
     setKeys(newKeys);
     setAllValues(newAllValues);
   };
-
-  // useEffect(() => {
-  //   console.log("hi");
-  // });
-
-  // useEffect(() => {
-  //   console.log("The images URis are ");
-  //   console.log(imagesUris);
-  // }, [allValues, imagesUris]);
 
   return (
     <>

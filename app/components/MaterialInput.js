@@ -15,7 +15,6 @@ import * as Yup from "yup";
 import {
   AppForm as Form,
   AppFormField,
-  AppFormPicker,
   SubmitButton,
 } from "../components/forms";
 import FormImagePicker from "./forms/FormImagePicker";

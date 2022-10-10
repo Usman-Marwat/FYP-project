@@ -12,7 +12,7 @@ const Pagination = ({
   style,
 }) => {
   return (
-    <View style={[styles.container, { style }]}>
+    <View style={[styles.container, style]}>
       <PaginationDot
         activeDotColor={activeDotColor}
         curPage={curPage}

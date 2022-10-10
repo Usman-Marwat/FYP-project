@@ -1,11 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  Dimensions,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Text,
-} from "react-native";
+import { Dimensions, StyleSheet, View, TouchableOpacity } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import DropDownPicker from "react-native-dropdown-picker";
 import _ from "lodash";
@@ -19,8 +13,9 @@ import routes from "../../navigation/routes";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import Tagline from "../../components/Tagline";
+import MaterialDetails from "../../components/MaterialDetails";
 
-const width = Dimensions.get("window").width;
+const { width, height } = Dimensions.get("window");
 const shadow = {
   shadowColor: "#000",
   shadowOffset: {
@@ -41,25 +36,20 @@ const badgeDotColors = [
 ];
 const keys = [
   {
-    name: "Cement",
+    name: "Masonry",
     imageUrl:
-      "https://images.unsplash.com/photo-1560435650-7ec2e17ba926?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
+      "https://plus.unsplash.com/premium_photo-1663127083499-815166fe60ad?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8bWFzb25yeXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60",
   },
   {
-    name: "Bricks",
+    name: "Mortar",
     imageUrl:
-      "https://images.unsplash.com/photo-1633821051688-fc558b716185?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8YnJpY2tzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
+      "https://images.unsplash.com/photo-1567404469884-75c0620d0912?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8bW9ydGFyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60",
   },
   {
-    name: "Steel",
+    name: "Rebar",
     imageUrl:
       "https://images.unsplash.com/photo-1530863506128-dc9eb5c3e0fc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDF8fGNvbnN0cnVjdGlvbiUyMHN0ZWVsfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
   },
-  // {
-  //   name: "Wires",
-  //   imageUrl:
-  //     "https://images.unsplash.com/photo-1518181835702-6eef8b4b2113?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
-  // },
   {
     name: "Doors",
     imageUrl:
@@ -70,10 +60,18 @@ const material = [
   [
     { label: "Lakki", value: "lakki" },
     { label: "Fauji", value: "fauji" },
-    { label: "Barcelona", value: "barcelona" },
-    { label: "s", value: "s" },
-    { label: "d", value: "d" },
-    { label: "a", value: "a" },
+
+    { label: "Washroom Doors", value: "washroomDoors", disabled: "disabled" },
+    {
+      label: "Door3",
+      value: { name: "Door3", parent: "Washroom Doors" },
+      parent: "washroomDoors",
+    },
+    {
+      label: "Door4",
+      value: { name: "Door4", parent: "Washroom Doors" },
+      parent: "washroomDoors",
+    },
   ],
   [
     { label: "Brick1", value: "brick1" },
@@ -113,12 +111,13 @@ const material = [
   ],
 ];
 
-const MaterialScreen = ({ navigation }) => {
+const MaterialScreen = ({ navigation, route }) => {
   const [allValues, setAllValues] = useState([["lakki"]]);
   const [keysValues, setKeysValues] = useState([]);
   const [imagesUris, setImagesUris] = useState([]);
 
   const [index, setIndex] = useState(0);
+  const [detailsVisible, setDetailsVisible] = useState(false);
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(allValues[0]);
@@ -211,13 +210,29 @@ const MaterialScreen = ({ navigation }) => {
               cardStyle={styles.cardStyle}
               imageUrl={keys[index].imageUrl}
               imageStyle={styles.imageStyle}
-              subTitle="200>"
               title={keys[index].name}
-              textAlign="center"
+              contentStyle={{ alignItems: "center" }}
+              IconComponent={
+                <TouchableOpacity
+                  onPress={() => setDetailsVisible(!detailsVisible)}
+                >
+                  <Icon
+                    family="mci"
+                    name="details"
+                    backgroundColor="#fff"
+                    iconColor="black"
+                    size={52}
+                  />
+                </TouchableOpacity>
+              }
             />
           )}
         />
-        <Pagination curPage={index} maxPage={keys.length} />
+        <Pagination
+          curPage={index}
+          maxPage={keys.length}
+          style={{ bottom: 20 }}
+        />
       </View>
 
       <View style={[styles.row, shadow]}>
@@ -270,7 +285,7 @@ const MaterialScreen = ({ navigation }) => {
         />
       </View>
       <TouchableOpacity
-        style={{ alignItems: "center", top: 175 }}
+        style={{ alignItems: "center", top: height * 0.27 }}
         onPress={() =>
           navigation.navigate(routes.SPECIFICATIONS, {
             allValues,
@@ -286,6 +301,11 @@ const MaterialScreen = ({ navigation }) => {
           backgroundColor={colors.primary}
         />
       </TouchableOpacity>
+      <MaterialDetails
+        modalVisible={detailsVisible}
+        onModalVisible={() => setDetailsVisible(!detailsVisible)}
+        index={index}
+      />
     </View>
   );
 };

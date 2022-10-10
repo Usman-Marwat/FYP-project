@@ -9,11 +9,12 @@ function Card({
   title,
   subTitle,
   imageUrl,
+  IconComponent,
   onPress,
   thumbnailUrl,
   ...extraProps
 }) {
-  const { cardStyle, imageStyle, textAlign, heading } = extraProps;
+  const { cardStyle, imageStyle, contentStyle, heading } = extraProps;
 
   return (
     <TouchableWithoutFeedback onPress={onPress}>
@@ -29,9 +30,10 @@ function Card({
           preview={{ uri: thumbnailUrl }}
           uri={imageUrl}
         />
-        <View style={styles.detailsContainer}>
-          <AppText style={[styles.title, { textAlign }]}>{title}</AppText>
-          <AppText style={[styles.subTitle, { textAlign }]}>{subTitle}</AppText>
+        <View style={[styles.detailsContainer, contentStyle]}>
+          <AppText style={[styles.title]}>{title}</AppText>
+          {subTitle && <AppText style={[styles.subTitle]}>{subTitle}</AppText>}
+          {IconComponent}
         </View>
       </View>
     </TouchableWithoutFeedback>
@@ -59,6 +61,9 @@ const styles = StyleSheet.create({
   },
   title: {
     marginBottom: 7,
+    color: "black",
+    fontSize: 20,
+    fontWeight: "700",
   },
 });
 
