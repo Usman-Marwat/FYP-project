@@ -9,7 +9,6 @@ import {
 import { Transition, Transitioning } from "react-native-reanimated";
 import niceColors from "nice-color-palettes";
 
-import AuthContext from "../../auth/context";
 import AppTextInput from "../../components/AppTextInput";
 import colors from "../../config/colors";
 import ContractTable from "../../components/ContractTable";
@@ -50,7 +49,7 @@ const SpecificationScreen = ({ navigation, route }) => {
   const [currentIndex, setCurrentIndex] = useState(null);
   const [isTableVisible, setIsTableVisible] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [descriptions, setDescriptions] = useState(["", "", "", ""]);
+  const [descriptions, setDescriptions] = useState(["", "", "", "", ""]);
   const [imagesUris, setImagesUris] = useState(route.params.imagesUris);
   const [keys, setKeys] = useState(route.params.keysValues);
   const [allValues, setAllValues] = useState(route.params.allValues);

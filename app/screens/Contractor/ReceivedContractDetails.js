@@ -114,7 +114,7 @@ const ReceivedContractDetails = ({ navigation, route }) => {
           <ContractTable
             allValues={item.contract.allValues}
             descriptions={item.contract.descriptions}
-            imageUris={item.contract.images}
+            imageUris={item.contract.imagesNames}
             keys={item.contract.keys}
             isVisible={isTableVisible}
             onModalVisible={() => setIsTableVisible(false)}

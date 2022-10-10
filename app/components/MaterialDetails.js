@@ -5,10 +5,12 @@ import {
   Modal,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from "react-native";
 import React from "react";
+import colors from "../config/colors";
 
-const MaterialDetails = ({ modalVisible, onModalVisible, index }) => {
+const MaterialDetails = ({ modalVisible, onModalVisible, data }) => {
   return (
     <Modal
       animationType="slide"
@@ -24,11 +26,16 @@ const MaterialDetails = ({ modalVisible, onModalVisible, index }) => {
           onPress={() => onModalVisible(!modalVisible)}
         ></TouchableOpacity>
         <View style={styles.setModalDimensions("75%", "100%")}>
-          <Text style={styles.boldText}>Material Details</Text>
+          <Text style={styles.boldText}>{data.name} details</Text>
           <ScrollView showsVerticalScrollIndicator={false}>
-            {[...Array(60).keys()].map((_, i) => (
-              <View style={styles.list} key={i}>
-                <Text>{index}</Text>
+            {data.items?.map((item, i) => (
+              <View key={i}>
+                <View style={styles.list}>
+                  <View style={[styles.listItemDot]} />
+                  <Text style={styles.itemName}>{item?.name}</Text>
+                </View>
+                <Text>{item.description}</Text>
+                <Image source={{ uri: item?.image }} style={styles.image} />
               </View>
             ))}
           </ScrollView>
@@ -46,7 +53,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginLeft: "auto",
     marginRight: "auto",
-    marginBottom: 40,
+    marginBottom: 10,
   },
 
   container: {
@@ -61,6 +68,28 @@ const styles = StyleSheet.create({
     marginRight: "auto",
     marginBottom: 10,
     borderRadius: 20,
+  },
+  itemName: {
+    fontSize: 15,
+    fontWeight: "500",
+    marginVertical: 20,
+  },
+  image: {
+    width: "100%",
+    height: 200,
+    marginTop: 10,
+    borderRadius: 20,
+  },
+  list: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  listItemDot: {
+    height: 8,
+    width: 8,
+    borderRadius: 4,
+    marginRight: 10,
+    backgroundColor: colors.dark,
   },
   modalContainer: {
     flex: 1,

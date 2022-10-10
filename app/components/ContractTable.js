@@ -188,7 +188,7 @@ export default ContractTable = ({
                       { borderColor: currentColor, marginRight: 45 },
                     ]}
                   >
-                    {imageUris.length > 0 &&
+                    {imageUris?.length > 0 &&
                       imageUris[index] !== undefined &&
                       imageUris[index] !== null &&
                       imageUris[index].length > 0 && (
