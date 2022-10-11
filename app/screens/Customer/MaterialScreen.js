@@ -461,7 +461,7 @@ const material = [
 ];
 
 const MaterialScreen = ({ navigation, route }) => {
-  const [allValues, setAllValues] = useState([]);
+  const [allValues, setAllValues] = useState([[]]);
   const [keysValues, setKeysValues] = useState([]);
   const [imagesUris, setImagesUris] = useState([]);
 

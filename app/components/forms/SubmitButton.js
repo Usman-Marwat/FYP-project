@@ -2,8 +2,9 @@ import React from "react";
 import { useFormikContext } from "formik";
 
 import AppButton from "../AppButton";
+import colors from "../../config/colors";
 
-function SubmitButton({ title, bg }) {
+function SubmitButton({ title, bg = colors.primary }) {
   const { handleSubmit } = useFormikContext();
 
   return (

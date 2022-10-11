@@ -79,7 +79,6 @@ export default ContractTable = ({
         <FlatList
           style={{ padding: 20 }}
           contentContainerStyle={{ alignSelf: "flex-start" }}
-          decelerationRate="fast"
           numColumns={1}
           data={keys}
           keyExtractor={() => Math.random().toString()}
@@ -199,17 +198,28 @@ export default ContractTable = ({
                           {imageUris[index].map((uri, index) => {
                             return (
                               <View key={index} style={styles.imageContainer}>
-                                <Image source={{ uri }} style={styles.image} />
+                                {uri.url ? (
+                                  <Image
+                                    source={{ uri: uri.url }}
+                                    style={styles.image}
+                                  />
+                                ) : (
+                                  <Image
+                                    source={{ uri }}
+                                    style={styles.image}
+                                  />
+                                )}
                               </View>
                             );
                           })}
                         </ScrollView>
                       )}
-                    {imageUris[index] === undefined && (
-                      <View style={styles.empty}>
-                        <Text style={styles.emptyText}>Images Chosen</Text>
-                      </View>
-                    )}
+                    {imageUris[index] === undefined ||
+                      (imageUris[index] === null && (
+                        <View style={styles.empty}>
+                          <Text style={styles.emptyText}>Images Chosen</Text>
+                        </View>
+                      ))}
                   </View>
                 </View>
               </>
