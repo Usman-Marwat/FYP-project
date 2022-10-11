@@ -26,7 +26,7 @@ export default function UsersScreen() {
   }, []);
 
   return (
-    <>
+    <View style={{ paddingTop: 30 }}>
       <ActivityIndicator visible={!chatUsers} />
       <FlatList
         data={chatUsers}
@@ -34,7 +34,7 @@ export default function UsersScreen() {
         refreshing={isLoading}
         onRefresh={fetchUsers}
       />
-    </>
+    </View>
   );
 }
 

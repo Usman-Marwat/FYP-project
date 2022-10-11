@@ -76,5 +76,6 @@ export default function ChannelListScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 50,
   },
 });

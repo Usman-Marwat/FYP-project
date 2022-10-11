@@ -30,5 +30,6 @@ export const addListing = (listing, onUploadProgress) => {
 
 export default {
   addListing,
+
   getListings,
 };

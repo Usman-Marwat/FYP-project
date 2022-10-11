@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Easing, StyleSheet } from "react-native";
 import React from "react";
 import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 
@@ -12,6 +12,25 @@ import Credentials from "../../screens/Customer/Credentials";
 const Stack = createSharedElementStackNavigator();
 
 export default function ContractNavigator() {
+  const options = () => ({
+    gestureEnabled: false,
+    headerBackTitleVisible: false,
+    transitionSpec: {
+      open: {
+        animation: "timing",
+        config: { duration: 300, easing: Easing.inOut(Easing.ease) },
+      },
+      close: {
+        animation: "timing",
+        config: { duration: 300, easing: Easing.inOut(Easing.ease) },
+      },
+    },
+    cardStyleInterpolator: ({ current: { progress } }) => {
+      return {
+        cardStyle: { opacity: progress },
+      };
+    },
+  });
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Contract" component={ContractScreen} />
@@ -31,6 +50,7 @@ export default function ContractNavigator() {
             { id: "general.bg" },
           ];
         }}
+        options={options}
       />
     </Stack.Navigator>
   );

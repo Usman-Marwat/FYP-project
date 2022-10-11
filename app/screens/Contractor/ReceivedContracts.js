@@ -70,7 +70,7 @@ const imageUri = "https://cdn-icons-png.flaticon.com/256/4105/4105448.png";
 const ReceivedContracts = ({ navigation }) => {
   const [selectedTab, setSelectedTab] = useState(tabs[0]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  // const { loading } = useNotifications();
+  const { loading } = useNotifications();
 
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
@@ -90,7 +90,7 @@ const ReceivedContracts = ({ navigation }) => {
 
   return (
     <>
-      <ActivityIndicator visible={contractsApi.loading} />
+      <ActivityIndicator visible={contractsApi.loading || loading} />
       <MenuFoldButton translateX={translateX} navigation={navigation} />
       <View style={{ paddingTop: 50 }}>
         <View>
@@ -251,22 +251,13 @@ const ReceivedContracts = ({ navigation }) => {
             {currentIndex < contractsApi.data.length && (
               <View>
                 <ScrollView>
-                  <Text>{currentIndex}</Text>
-                  <Text>bchasjbchjas</Text>
-                  <Text>bchasjbchjas</Text>
-                  <Text>bchasjbchjas</Text>
-                  <Text>bchasjbchjas</Text>
-                  <Text>bchasjbchjas</Text>
-                  <Text>bchasjbchjas</Text>
-                  <Text>bchasjbchjas</Text>
-                  <Text>bchasjbchjas</Text>
-                  <Text>bchasjbchjas</Text>
-                  <Text>bchasjbchjas</Text>
-                  <Text>bchasjbchjas</Text>
-                  <Text>bchasjbchjas</Text>
-                  <Text>bchasjbchjas</Text>
-                  <Text>bchasjbchjas</Text>
-                  <Text>bchasjbchjas</Text>
+                  <View style={{ margin: 20 }}>
+                    <Text style={{ fontWeight: "700", marginBottom: 10 }}>
+                      This is a Contract send from Customer ({currentIndex})
+                    </Text>
+                    <Text>Address: House 70 street 3</Text>
+                  </View>
+
                   <MyMap
                     style={styles.map}
                     region={{

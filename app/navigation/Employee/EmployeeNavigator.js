@@ -11,6 +11,7 @@ import navigationTheme from "../navigationTheme";
 import RootNavigator from "../../Chat/RootNavigator";
 import { translateMenuFold } from "../navigationAnimations";
 import useAuth from "../../auth/useAuth";
+import useNotifications from "../../hooks/useNotifications";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -63,10 +64,12 @@ function Check({ navigation }) {
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
   const { logOut } = useAuth();
+  const { loading } = useNotifications();
 
   return (
     <>
       <MenuFoldButton translateX={translateX} navigation={navigation} />
+
       <View
         style={{
           alignItems: "center",

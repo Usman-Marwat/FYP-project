@@ -7,27 +7,20 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
   TouchableWithoutFeedback,
 } from "react-native";
 import React, { useContext, useRef, useState } from "react";
-import RNBounceable from "@freakycoder/react-native-bounceable";
 import { AntDesign } from "@expo/vector-icons";
 import { faker } from "@faker-js/faker";
 import { StatusBar } from "expo-status-bar";
 
-import AppText from "../../components/AppTextGeneral";
 import ActivityIndicator from "../../components/ActivityIndicator";
-import colors from "../../config/colors";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import ListItem from "../../components/ListItem";
 import MenuFoldButton from "../../navigation/MenuFoldButton";
 import routes from "../../navigation/routes";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import useNotifications from "../../hooks/useNotifications";
-import { useNavigation } from "@react-navigation/native";
-import Icon from "../../components/Icon";
 
 const { width, height } = Dimensions.get("screen");
 const IMAGE_WIDTH = width * 0.65;

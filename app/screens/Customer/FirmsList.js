@@ -24,6 +24,7 @@ import routes from "../../navigation/routes";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import useApi from "../../hooks/useApi";
 import UploadScreen from "../UploadScreen";
+import ActivityIndicator from "../../components/ActivityIndicator";
 
 faker.seed(1);
 const colors = [
@@ -57,11 +58,11 @@ const fakerData = images.map((item, index) => ({
   color: colors[index % colors.length],
   name: faker.name.firstName(),
   jobTitle: faker.name.jobTitle(),
-  categories: [...Array(3).keys()].map(() => {
+  categories: [...Array(2).keys()].map(() => {
     return {
       key: faker.datatype.uuid(),
       title: faker.name.jobType(),
-      subcats: [...Array(5).keys()].map(faker.name.jobType),
+      subcats: [...Array(3).keys()].map(faker.name.jobType),
     };
   }),
 }));
@@ -134,6 +135,7 @@ const FirmsList = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ActivityIndicator visible={contractorsApi.loading} />
       <UploadScreen
         onDone={() => setuploadVisible(false)}
         progress={progress}

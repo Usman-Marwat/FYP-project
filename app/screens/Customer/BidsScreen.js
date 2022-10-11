@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import customerContractsApi from "../../api/Customer/contracts";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
@@ -26,6 +26,7 @@ const BidsScreen = ({ navigation }) => {
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
 
+  const [refreshing, setRefreshing] = useState(false);
   const { user } = useContext(AuthContext);
 
   const {
@@ -68,6 +69,8 @@ const BidsScreen = ({ navigation }) => {
             </TouchableOpacity>
           );
         }}
+        refreshing={refreshing}
+        onRefresh={() => loadContracts(user.actor_id)}
       />
     </>
   );

@@ -78,33 +78,32 @@ const FirmsListDetailsScreen = ({ navigation, route }) => {
                 );
               })}
             </View>
-            <View style={{ flex: 1 }}>
-              {item.categories.map((category, index) => {
-                return (
-                  <Animatable.View
-                    animation="fadeInUp"
-                    delay={DURATION * 2 + index * 200}
-                    key={category.key}
-                    style={{ marginVertical: SPACING }}
-                  >
-                    <Text style={styles.title}>{category.title}</Text>
-                    {category.subcats.map((subcat, index) => {
-                      return (
-                        <View style={styles.list} key={index}>
-                          <View
-                            style={[
-                              styles.listItemDot,
-                              { backgroundColor: item.color },
-                            ]}
-                          />
-                          <Text style={styles.subTitle}>{subcat}</Text>
-                        </View>
-                      );
-                    })}
-                  </Animatable.View>
-                );
-              })}
-            </View>
+
+            {item.categories.map((category, index) => {
+              return (
+                <Animatable.View
+                  animation="fadeInUp"
+                  delay={DURATION * 2 + index * 200}
+                  key={category.key}
+                  style={{ marginVertical: SPACING }}
+                >
+                  <Text style={styles.title}>{category.title}</Text>
+                  {category.subcats.map((subcat, index) => {
+                    return (
+                      <View style={styles.list} key={index}>
+                        <View
+                          style={[
+                            styles.listItemDot,
+                            { backgroundColor: item.color },
+                          ]}
+                        />
+                        <Text style={styles.subTitle}>{subcat}</Text>
+                      </View>
+                    );
+                  })}
+                </Animatable.View>
+              );
+            })}
           </ScrollView>
         </View>
       </SharedElement>
