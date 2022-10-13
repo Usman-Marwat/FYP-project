@@ -80,8 +80,8 @@ const CreateTask = ({ modalVisible, setModalVisible, ProjectId, getDataP }) => {
 
   const sendNotification = async () => {
     await sendApi.request(
-      "Contractor",
-      user.actor_id,
+      "Employee",
+      "6342be186f0cc9835d9de5e0",
       `Contractor Name: ${user.name}`,
       user.name,
       `Task Assigned`

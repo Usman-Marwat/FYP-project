@@ -55,6 +55,7 @@ const Credentials = ({ navigation, route }) => {
             placeholder="Address"
           />
           <AppFormDocumentPicker name="files" />
+
           <AppFormMap name="location" />
           <SubmitButton title="Send" />
         </AppForm>

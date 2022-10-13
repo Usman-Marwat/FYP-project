@@ -11,6 +11,8 @@ import navigationTheme from "../navigationTheme";
 import RootNavigator from "../../Chat/RootNavigator";
 import { translateMenuFold } from "../navigationAnimations";
 import useAuth from "../../auth/useAuth";
+import useNotifications from "../../hooks/useNotifications";
+import AppNavigator from "./AppNavigator";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -19,7 +21,7 @@ const SupplierNavigator = () => {
   const [fromCords] = useState({ x: 0, y: height });
   const [toCords] = useState({ x: width, y: 0 });
   const animatedValue = useRef(new Animated.ValueXY(fromCords)).current;
-
+  const { loading } = useNotifications();
   return (
     <DrawerAnimationContext.Provider
       value={{ fromCords, toCords, animatedValue }}
@@ -50,6 +52,7 @@ const SupplierNavigator = () => {
             {(props) => <Check {...props} />}
           </DrawerNavigator.Screen>
           <DrawerNavigator.Screen name="Chat" component={RootNavigator} />
+          <DrawerNavigator.Screen name="AppNav" component={AppNavigator} />
         </DrawerNavigator.Navigator>
       </NavigationContainer>
     </DrawerAnimationContext.Provider>

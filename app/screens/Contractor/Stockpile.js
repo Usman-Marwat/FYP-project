@@ -18,7 +18,7 @@ import { translateMenuFold } from "../../navigation/navigationAnimations";
 const data = [
   {
     key: "1",
-    shopName: "Krabi Thailand",
+    shopName: "Masonry",
     numberOfShops: 9,
     image:
       "https://images.unsplash.com/photo-1550379469-5a14b2ae1244?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
@@ -26,7 +26,7 @@ const data = [
   },
   {
     key: "2",
-    shopName: "Bucharest Romania",
+    shopName: "Steel",
     numberOfShops: 6,
     image:
       "https://images.unsplash.com/photo-1507486076008-3c60cfcce36f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDh8fHN0ZWVsfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
@@ -34,7 +34,7 @@ const data = [
   },
   {
     key: "3",
-    shopName: "Iceland",
+    shopName: "Mortar",
     numberOfShops: 5,
     image:
       "https://images.unsplash.com/photo-1564483335100-3413b45dbd37?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NjN8fGNvbnN0cnVjdGlvbnxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60",
@@ -42,7 +42,7 @@ const data = [
   },
   {
     key: "4",
-    shopName: "Iceland",
+    shopName: "Others",
     numberOfShops: 7,
     image:
       "https://img.freepik.com/free-psd/construction-helmet-mockup_47987-2963.jpg?w=1800&t=st=1665042664~exp=1665043264~hmac=0a4f9f9e3ea7d1becfb09903d881ca94a396ed835cd4e877d51765481db048cb",

@@ -12,13 +12,13 @@ function MessagesScreen(props) {
       id: 1,
       title: "T1  This is title do you love it? I do if you ask",
       description: "D1 This is subttitle do you love it? I do if you ask ",
-      image: require("../assets/jacket.jpg"),
+      image: "https://cdn-icons-png.flaticon.com/512/8360/8360483.png",
     },
     {
       id: 2,
       title: "T2",
       description: "D2",
-      image: require("../assets/mosh.jpg"),
+      image: "https://cdn-icons-png.flaticon.com/512/8360/8360483.png",
     },
   ]);
   const [refreshing, setRefreshing] = useState(false);
@@ -51,7 +51,7 @@ function MessagesScreen(props) {
               id: 2,
               title: "T2",
               description: "D2",
-              image: require("../assets/mosh.jpg"),
+              image: "https://cdn-icons-png.flaticon.com/512/8360/8360483.png",
             },
           ]);
         }}

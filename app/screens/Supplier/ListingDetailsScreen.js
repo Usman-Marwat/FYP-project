@@ -36,7 +36,7 @@ function ListingDetailsScreen({ route }) {
         </AppText>
         <View style={styles.userContainer}>
           <ListItem
-            image={require("../assets/pi.jpg")}
+            image="https://cdn-icons-png.flaticon.com/512/8360/8360483.png"
             title="Usman Marwat"
             subTitle="5 vitual shops"
           />
