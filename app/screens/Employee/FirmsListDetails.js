@@ -5,6 +5,7 @@ import {
   View,
   Image,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import React from "react";
 import * as Animatable from "react-native-animatable";
@@ -19,9 +20,9 @@ const ITEM_HEIGHT = height * 0.18;
 const SPACING = 10;
 const TOP_HEADER_HEIGHT = height * 0.27;
 const detailsIcons = [
-  { color: "#F2988F", icon: "account-edit" },
-  { color: "#F3B000", icon: "trophy-outline" },
-  { color: "#9FD7F1", icon: "chat-outline" },
+  { color: "#F2988F", icon: "profile", family: "antDesign" },
+  { color: "#F3B000", icon: "trophy-outline", family: "ionicons" },
+  { color: "#9FD7F1", icon: "chat-outline", family: "mci" },
 ];
 const DURATION = 400;
 
@@ -61,12 +62,14 @@ const FirmsListDetailsScreen = ({ navigation, route }) => {
                     delay={DURATION + index * 100}
                     key={`${detail.icon}-${index}`}
                   >
-                    <Icon
-                      family="mci"
-                      size={64}
-                      backgroundColor={detail.color}
-                      name={detail.icon}
-                    ></Icon>
+                    <TouchableOpacity activeOpacity={0.5}>
+                      <Icon
+                        family={detail.family}
+                        size={64}
+                        backgroundColor={detail.color}
+                        name={detail.icon}
+                      />
+                    </TouchableOpacity>
                   </Animatable.View>
                 );
               })}
