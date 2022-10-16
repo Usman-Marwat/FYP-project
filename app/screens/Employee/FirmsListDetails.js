@@ -7,7 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import * as Animatable from "react-native-animatable";
 import { SharedElement } from "react-navigation-shared-element";
 
@@ -21,21 +21,32 @@ const ITEM_HEIGHT = height * 0.18;
 const SPACING = 10;
 const TOP_HEADER_HEIGHT = height * 0.27;
 const detailsIcons = [
-  { color: "#F2988F", icon: "profile", family: "antDesign" },
-  { color: "#F3B000", icon: "trophy-outline", family: "ionicons" },
-  { color: "#9FD7F1", icon: "chat-outline", family: "mci" },
+  { color: "#F2988F", icon: "profile", family: "antDesign", tab: "profile" },
+  { color: "#F3B000", icon: "trophy", family: "ionicons", tab: "services" },
+  { color: "#9FD7F1", icon: "chat-outline", family: "mci", tab: "chat" },
 ];
 const DURATION = 400;
 
 const FirmsListDetailsScreen = ({ navigation, route }) => {
-  const { item } = route.params;
-
+  const [tabs, setTabs] = useState({
+    profile: "",
+    services: "",
+    chat: "",
+  });
+  const { item, DB, bgColor } = route.params;
+  const firmProfile = item.firmProfile;
+  const userData = item.user_id;
   const sendApi = useApi(messagesApi.send);
+
+  const handleTabs = (name) => {
+    const tabsNew = { profile: "", services: "", chat: "" };
+    tabsNew[name] = true;
+    setTabs(tabsNew);
+  };
 
   const sendRequest = async (contractor_id) => {
     sendNotification(contractor_id);
   };
-
   const sendNotification = async (contractor_id) => {
     await sendApi.request(
       "Contractor",
@@ -46,12 +57,85 @@ const FirmsListDetailsScreen = ({ navigation, route }) => {
     );
   };
 
+  if (DB)
+    return (
+      <View style={styles.container}>
+        <BackButton
+          navigation={navigation}
+          containerStyle={styles.backButton}
+        />
+        <SharedElement
+          id={`item.${item._id}.bg`}
+          style={StyleSheet.absoluteFillObject}
+        >
+          <View style={[styles.bg, { backgroundColor: bgColor }]} />
+        </SharedElement>
+        <SharedElement
+          id={`item.${item._id}.name`}
+          style={{ alignItems: "flex-start" }}
+        >
+          <Text style={styles.name}>{firmProfile.name}</Text>
+        </SharedElement>
+        <SharedElement id={`item.${item._id}.image`}>
+          <Image source={{ uri: userData.image }} style={styles.image} />
+        </SharedElement>
+
+        <SharedElement id="general.bg">
+          <View style={styles.overlay}>
+            <ScrollView>
+              <View style={styles.iconRow}>
+                {detailsIcons.map((detail, index) => {
+                  return (
+                    <Animatable.View
+                      animation="bounceIn"
+                      delay={DURATION + index * 100}
+                      key={`${detail.icon}-${index}`}
+                    >
+                      <TouchableOpacity
+                        activeOpacity={0.5}
+                        onPress={() => handleTabs(detail.tab)}
+                      >
+                        <Icon
+                          family={detail.family}
+                          size={64}
+                          backgroundColor={detail.color}
+                          name={detail.icon}
+                        />
+                      </TouchableOpacity>
+                    </Animatable.View>
+                  );
+                })}
+              </View>
+
+              {tabs.services &&
+                firmProfile.services.map((service, index) => {
+                  return (
+                    <Animatable.View
+                      animation="fadeInUp"
+                      delay={DURATION * 2 + index * 200}
+                      key={index}
+                      style={{ marginVertical: SPACING }}
+                    >
+                      {index === 0 && (
+                        <Animatable.View style={styles.heading}>
+                          <Text style={styles.headingText}>
+                            We rovide the best sercices for:{" "}
+                          </Text>
+                        </Animatable.View>
+                      )}
+                      <Text style={styles.title}>{service}</Text>
+                    </Animatable.View>
+                  );
+                })}
+            </ScrollView>
+          </View>
+        </SharedElement>
+      </View>
+    );
+
   return (
     <View style={styles.container}>
-      <BackButton
-        navigation={navigation}
-        containerStyle={{ position: "absolute", top: 25, left: 10, zIndex: 1 }}
-      />
+      <BackButton navigation={navigation} containerStyle={styles.backButton} />
       <SharedElement
         id={`item.${item.key}.bg`}
         style={StyleSheet.absoluteFillObject}
@@ -133,8 +217,21 @@ const styles = StyleSheet.create({
     //applying height after making it absoluteFillObject
     height: TOP_HEADER_HEIGHT + 32,
   },
+  backButton: {
+    position: "absolute",
+    top: 25,
+    left: 10,
+    zIndex: 1,
+  },
   container: {
     flex: 1,
+  },
+  heading: {
+    alignSelf: "center",
+    marginBottom: 20,
+  },
+  headingText: {
+    fontSize: 20,
   },
   iconRow: {
     flexDirection: "row",

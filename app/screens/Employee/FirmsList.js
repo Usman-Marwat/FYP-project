@@ -75,60 +75,56 @@ const FirmsList = ({ navigation }) => {
     contractorsApi.request();
   }, []);
 
+  if (!contractorsApi.data) return null;
+
   return (
     <View style={styles.container}>
       <MenuFoldButton translateX={translateX} navigation={navigation} />
       <ActivityIndicator visible={contractorsApi.loading} />
 
-      {contractorsApi.data && (
-        <Animated.FlatList
-          contentContainerStyle={{ padding: SPACING }}
-          showsVerticalScrollIndicator={false}
-          style={{ paddingTop: 55, paddingBottom: 170 }}
-          data={contractorsApi.data}
-          keyExtractor={(item) => item._id}
-          renderItem={({ item, index }) => {
-            const firmProfile = item.firmProfile;
-            const userData = item.user_id;
-            return (
-              <View style={styles.itemContainer}>
-                <SharedElement
-                  id={`item.${item.key}.bg`}
-                  style={StyleSheet.absoluteFillObject}
-                >
-                  <View
-                    style={[styles.bg, { backgroundColor: colorsP[index] }]}
-                  />
-                </SharedElement>
-                <SharedElement id={`item.${item.key}.name`}>
-                  <Text style={styles.name}>{firmProfile.name}</Text>
-                </SharedElement>
-                <Text style={styles.jobTitle}>{firmProfile.tagline}</Text>
-
-                <AppButton
-                  title="Show more"
-                  color="dark"
-                  style={styles.button}
-                  titleStyle={styles.buttonTitle}
-                  onPress={() => {
-                    navigation.navigate(routes.FIRMSLISTDETAILS, { item });
-                  }}
+      <Animated.FlatList
+        contentContainerStyle={{ padding: SPACING }}
+        showsVerticalScrollIndicator={false}
+        style={{ paddingTop: 55, paddingBottom: 170 }}
+        data={contractorsApi.data}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item, index }) => {
+          const firmProfile = item.firmProfile;
+          const userData = item.user_id;
+          return (
+            <View style={styles.itemContainer}>
+              <SharedElement
+                id={`item.${item._id}.bg`}
+                style={StyleSheet.absoluteFillObject}
+              >
+                <View
+                  style={[styles.bg, { backgroundColor: colorsP[index] }]}
                 />
-
-                <SharedElement
-                  id={`item.${item.key}.image`}
-                  style={styles.image}
-                >
-                  <Image
-                    source={{ uri: userData.image }}
-                    style={styles.image}
-                  />
-                </SharedElement>
-              </View>
-            );
-          }}
-        />
-      )}
+              </SharedElement>
+              <SharedElement id={`item.${item._id}.name`}>
+                <Text style={styles.name}>{firmProfile.name}</Text>
+              </SharedElement>
+              <Text style={styles.jobTitle}>{firmProfile.tagline}</Text>
+              <AppButton
+                title="Show more"
+                color="dark"
+                style={styles.button}
+                titleStyle={styles.buttonTitle}
+                onPress={() => {
+                  navigation.navigate(routes.FIRMSLISTDETAILS, {
+                    item,
+                    DB: true,
+                    bgColor: colorsP[index],
+                  });
+                }}
+              />
+              <SharedElement id={`item.${item._id}.image`} style={styles.image}>
+                <Image source={{ uri: userData.image }} style={styles.image} />
+              </SharedElement>
+            </View>
+          );
+        }}
+      />
 
       <Animated.FlatList
         contentContainerStyle={{ padding: SPACING }}
