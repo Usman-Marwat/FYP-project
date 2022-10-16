@@ -15,7 +15,7 @@ import { faker } from "@faker-js/faker";
 import { SharedElement } from "react-navigation-shared-element";
 
 import AuthContext from "../../auth/context";
-import customerContractorsApi from "../../api/Customer/contractors";
+import customerContractorsApi from "../../api/Employee/contractors";
 import customerContractApi from "../../api/Customer/contract";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import Header from "../../components/Header";

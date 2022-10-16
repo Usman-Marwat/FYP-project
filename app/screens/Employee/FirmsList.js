@@ -12,7 +12,7 @@ import niceColors from "nice-color-palettes";
 import { faker } from "@faker-js/faker";
 import { SharedElement } from "react-navigation-shared-element";
 
-import customerContractorsApi from "../../api/Customer/contractors";
+import employeeContractorsApi from "../../api/Employee/contractors";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
 import routes from "../../navigation/routes";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
@@ -24,6 +24,7 @@ import AppButton from "../../components/AppButton";
 
 faker.seed(1);
 const colorsP = [
+  ...niceColors[66].slice(1, 2),
   ...niceColors[4].slice(3, 5),
   ...niceColors[47].slice(0, 4),
   ...niceColors[1].slice(2, 5),
@@ -31,7 +32,6 @@ const colorsP = [
   ...niceColors[63].slice(1, 4),
   ...niceColors[64].slice(2, 3),
   ...niceColors[65].slice(0, 2),
-  ...niceColors[66].slice(1, 2),
   ...niceColors[12].slice(0, 1),
   ...niceColors[70].slice(1, 3),
   ...niceColors[75].slice(2, 4),
@@ -69,7 +69,7 @@ const FirmsList = ({ navigation }) => {
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
 
-  const contractorsApi = useApi(customerContractorsApi.getContractors);
+  const contractorsApi = useApi(employeeContractorsApi.getContractors);
 
   useEffect(() => {
     contractorsApi.request();

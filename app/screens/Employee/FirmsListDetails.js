@@ -11,10 +11,13 @@ import React, { useState } from "react";
 import * as Animatable from "react-native-animatable";
 import { SharedElement } from "react-navigation-shared-element";
 
-import Icon from "../../components/Icon";
-import colors from "../../config/colors";
+import AppButton from "../../components/AppButton";
 import BackButton from "../../navigation/BackButton";
+import colors from "../../config/colors";
+import employeeContractorsApi from "../../api/Employee/contractors";
+import Icon from "../../components/Icon";
 import messagesApi from "../../api/messages";
+import useAuth from "../../auth/useAuth";
 
 const { height, width } = Dimensions.get("window");
 const ITEM_HEIGHT = height * 0.18;
@@ -29,13 +32,15 @@ const DURATION = 400;
 
 const FirmsListDetailsScreen = ({ navigation, route }) => {
   const [tabs, setTabs] = useState({
-    profile: "",
+    profile: true,
     services: "",
     chat: "",
   });
+  const { user } = useAuth();
   const { item, DB, bgColor } = route.params;
   const firmProfile = item.firmProfile;
   const userData = item.user_id;
+  const requestApi = useApi(employeeContractorsApi.patchRequest);
   const sendApi = useApi(messagesApi.send);
 
   const handleTabs = (name) => {
@@ -45,15 +50,17 @@ const FirmsListDetailsScreen = ({ navigation, route }) => {
   };
 
   const sendRequest = async (contractor_id) => {
-    sendNotification(contractor_id);
+    const result = await requestApi.request(contractor_id, user.actor_id);
+    console.log(result.data);
+    // sendNotification(contractor_id);
   };
   const sendNotification = async (contractor_id) => {
     await sendApi.request(
       "Contractor",
       contractor_id,
-      `Contract Name: ${contract.title}`,
-      user.name,
-      "The contract is sent for bidding"
+      `Employee Request`,
+      `My name is ${user.name}`,
+      "Accept my request"
     );
   };
 
@@ -90,6 +97,7 @@ const FirmsListDetailsScreen = ({ navigation, route }) => {
                       animation="bounceIn"
                       delay={DURATION + index * 100}
                       key={`${detail.icon}-${index}`}
+                      style={{ alignItems: "center" }}
                     >
                       <TouchableOpacity
                         activeOpacity={0.5}
@@ -102,34 +110,72 @@ const FirmsListDetailsScreen = ({ navigation, route }) => {
                           name={detail.icon}
                         />
                       </TouchableOpacity>
+                      {tabs[detail.tab] && <View style={styles.dot} />}
                     </Animatable.View>
                   );
                 })}
               </View>
 
+              {tabs.profile && (
+                <>
+                  <Animatable.View
+                    style={styles.heading}
+                    animation="bounceIn"
+                    delay={DURATION / 2}
+                  >
+                    <Text style={styles.headingText}>Firms Profile</Text>
+                  </Animatable.View>
+                  <Animatable.View
+                    animation="fadeInUp"
+                    delay={DURATION}
+                    style={{ marginVertical: SPACING }}
+                  >
+                    <Text style={styles.title}>{firmProfile.tagline}</Text>
+                    <Text>{firmProfile.aboutUs}</Text>
+                  </Animatable.View>
+                </>
+              )}
+
               {tabs.services &&
                 firmProfile.services.map((service, index) => {
                   return (
-                    <Animatable.View
-                      animation="fadeInUp"
-                      delay={DURATION * 2 + index * 200}
-                      key={index}
-                      style={{ marginVertical: SPACING }}
-                    >
+                    <View key={index}>
                       {index === 0 && (
-                        <Animatable.View style={styles.heading}>
+                        <Animatable.View
+                          style={styles.heading}
+                          animation="bounceIn"
+                          delay={DURATION / 2}
+                        >
                           <Text style={styles.headingText}>
-                            We rovide the best sercices for:{" "}
+                            We provide the best sercices for:{" "}
                           </Text>
                         </Animatable.View>
                       )}
-                      <Text style={styles.title}>{service}</Text>
-                    </Animatable.View>
+                      <Animatable.View
+                        animation="fadeInUp"
+                        delay={DURATION / 1.7 + index * 200}
+                        style={{ marginVertical: SPACING }}
+                      >
+                        <Text style={styles.title}>{service}</Text>
+                      </Animatable.View>
+                    </View>
                   );
                 })}
             </ScrollView>
           </View>
         </SharedElement>
+        <Animatable.View
+          style={[styles.sendButton, { backgroundColor: bgColor }]}
+          animation="fadeInUp"
+          delay={DURATION}
+        >
+          <AppButton
+            style={[{ backgroundColor: "transparent" }]}
+            titleStyle={{ color: colors.dark }}
+            title="Send Request"
+            onPress={() => sendRequest(item._id)}
+          ></AppButton>
+        </Animatable.View>
       </View>
     );
 
@@ -226,18 +272,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  dot: {
+    width: 7,
+    height: 7,
+    borderRadius: 3.5,
+    backgroundColor: colors.medium,
+    marginTop: 10,
+  },
   heading: {
     alignSelf: "center",
     marginBottom: 20,
   },
   headingText: {
     fontSize: 20,
+    color: colors.medium,
   },
   iconRow: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     marginTop: SPACING,
-    marginBottom: SPACING + 32,
+    marginBottom: SPACING * 2,
   },
   image: {
     width: ITEM_HEIGHT * 1.3,
@@ -286,8 +340,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     opacity: 0.8,
   },
+  sendButton: {
+    position: "absolute",
+    bottom: 7,
+    alignSelf: "center",
+    borderRadius: 25,
+    width: "50%",
+  },
   title: {
-    fontWeight: "700",
+    fontWeight: "500",
     fontSize: 20,
     marginBottom: SPACING,
   },
