@@ -12,12 +12,8 @@ import niceColors from "nice-color-palettes";
 import { faker } from "@faker-js/faker";
 import { SharedElement } from "react-navigation-shared-element";
 
-import AuthContext from "../../auth/context";
 import customerContractorsApi from "../../api/Customer/contractors";
-import customerContractApi from "../../api/Customer/contract";
 import DrawerAnimationContext from "../../contexts/drawerAnimationContext";
-import Header from "../../components/Header";
-import messagesApi from "../../api/messages";
 import routes from "../../navigation/routes";
 import { translateMenuFold } from "../../navigation/navigationAnimations";
 import useApi from "../../hooks/useApi";
@@ -27,7 +23,7 @@ import MenuFoldButton from "../../navigation/MenuFoldButton";
 import AppButton from "../../components/AppButton";
 
 faker.seed(1);
-const colors = [
+const colorsP = [
   ...niceColors[4].slice(3, 5),
   ...niceColors[47].slice(0, 4),
   ...niceColors[1].slice(2, 5),
@@ -53,7 +49,7 @@ const images = [
 const fakerData = images.map((item, index) => ({
   ...item,
   key: faker.datatype.uuid(),
-  color: colors[index % colors.length],
+  color: colorsP[index % colorsP.length],
   name: faker.name.firstName(),
   jobTitle: faker.name.jobTitle(),
   categories: [...Array(2).keys()].map(() => {
@@ -69,60 +65,45 @@ const { height, width } = Dimensions.get("window");
 const ITEM_HEIGHT = height * 0.28;
 const SPACING = 10;
 
-const FirmsList = ({ navigation, route }) => {
-  const { user } = useContext(AuthContext);
-
-  const headerHeight = 60 * 2;
+const FirmsList = ({ navigation }) => {
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
-  const scrollY = useRef(new Animated.Value(0));
-  const translateYNumber = useRef();
-  const scrollYClamped = Animated.diffClamp(scrollY.current, 0, headerHeight);
-  const translateY = scrollYClamped.interpolate({
-    inputRange: [0, headerHeight],
-    outputRange: [0, -headerHeight / 2],
-  });
-  translateY.addListener(({ value }) => {
-    translateYNumber.current = value;
-  });
-  const handleScroll = Animated.event(
-    [
-      {
-        nativeEvent: {
-          contentOffset: { y: scrollY.current },
-        },
-      },
-    ],
-    {
-      useNativeDriver: true,
-    }
-  );
+
+  const contractorsApi = useApi(customerContractorsApi.getContractors);
+
+  useEffect(() => {
+    contractorsApi.request();
+  }, []);
 
   return (
     <View style={styles.container}>
       <MenuFoldButton translateX={translateX} navigation={navigation} />
+      <ActivityIndicator visible={contractorsApi.loading} />
 
-      <Animated.FlatList
-        onScroll={handleScroll}
-        contentContainerStyle={{ padding: SPACING }}
-        showsVerticalScrollIndicator={false}
-        style={{ paddingTop: 55 }}
-        data={fakerData}
-        keyExtractor={(item) => item.key}
-        renderItem={({ item, index }) => {
-          return (
-            <View style={styles.itemContainer}>
-              <View style={{ flex: 1, padding: SPACING }}>
+      {contractorsApi.data && (
+        <Animated.FlatList
+          contentContainerStyle={{ padding: SPACING }}
+          showsVerticalScrollIndicator={false}
+          style={{ paddingTop: 55, paddingBottom: 170 }}
+          data={contractorsApi.data}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item, index }) => {
+            const firmProfile = item.firmProfile;
+            const userData = item.user_id;
+            return (
+              <View style={styles.itemContainer}>
                 <SharedElement
                   id={`item.${item.key}.bg`}
                   style={StyleSheet.absoluteFillObject}
                 >
-                  <View style={[styles.bg, { backgroundColor: item.color }]} />
+                  <View
+                    style={[styles.bg, { backgroundColor: colorsP[index] }]}
+                  />
                 </SharedElement>
                 <SharedElement id={`item.${item.key}.name`}>
-                  <Text style={styles.name}>{item.name}</Text>
+                  <Text style={styles.name}>{firmProfile.name}</Text>
                 </SharedElement>
-                <Text style={styles.jobTitle}>{item.jobTitle}</Text>
+                <Text style={styles.jobTitle}>{firmProfile.tagline}</Text>
 
                 <AppButton
                   title="Show more"
@@ -138,9 +119,49 @@ const FirmsList = ({ navigation, route }) => {
                   id={`item.${item.key}.image`}
                   style={styles.image}
                 >
-                  <Image source={{ uri: item.image }} style={styles.image} />
+                  <Image
+                    source={{ uri: userData.image }}
+                    style={styles.image}
+                  />
                 </SharedElement>
               </View>
+            );
+          }}
+        />
+      )}
+
+      <Animated.FlatList
+        contentContainerStyle={{ padding: SPACING }}
+        showsVerticalScrollIndicator={false}
+        data={fakerData}
+        keyExtractor={(item) => item.key}
+        renderItem={({ item, index }) => {
+          return (
+            <View style={styles.itemContainer}>
+              <SharedElement
+                id={`item.${item.key}.bg`}
+                style={StyleSheet.absoluteFillObject}
+              >
+                <View style={[styles.bg, { backgroundColor: item.color }]} />
+              </SharedElement>
+              <SharedElement id={`item.${item.key}.name`}>
+                <Text style={styles.name}>{item.name}</Text>
+              </SharedElement>
+              <Text style={styles.jobTitle}>{item.jobTitle}</Text>
+
+              <AppButton
+                title="Show more"
+                color="dark"
+                style={styles.button}
+                titleStyle={styles.buttonTitle}
+                onPress={() => {
+                  navigation.navigate(routes.FIRMSLISTDETAILS, { item });
+                }}
+              />
+
+              <SharedElement id={`item.${item.key}.image`} style={styles.image}>
+                <Image source={{ uri: item.image }} style={styles.image} />
+              </SharedElement>
             </View>
           );
         }}
@@ -173,7 +194,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
   },
   image: {
     width: ITEM_HEIGHT * 0.8,
@@ -186,6 +206,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     marginBottom: SPACING * 2,
     height: ITEM_HEIGHT,
+    marginHorizontal: 20,
   },
   jobTitle: {
     fontSize: 11,

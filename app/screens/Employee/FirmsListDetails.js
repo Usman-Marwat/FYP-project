@@ -14,6 +14,7 @@ import { SharedElement } from "react-navigation-shared-element";
 import Icon from "../../components/Icon";
 import colors from "../../config/colors";
 import BackButton from "../../navigation/BackButton";
+import messagesApi from "../../api/messages";
 
 const { height, width } = Dimensions.get("window");
 const ITEM_HEIGHT = height * 0.18;
@@ -28,6 +29,22 @@ const DURATION = 400;
 
 const FirmsListDetailsScreen = ({ navigation, route }) => {
   const { item } = route.params;
+
+  const sendApi = useApi(messagesApi.send);
+
+  const sendRequest = async (contractor_id) => {
+    sendNotification(contractor_id);
+  };
+
+  const sendNotification = async (contractor_id) => {
+    await sendApi.request(
+      "Contractor",
+      contractor_id,
+      `Contract Name: ${contract.title}`,
+      user.name,
+      "The contract is sent for bidding"
+    );
+  };
 
   return (
     <View style={styles.container}>
