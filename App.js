@@ -1,28 +1,40 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
 
 import AuthNavigator from "./app/navigation/AuthNavigator";
 import AuthContext from "./app/auth/context";
-import authStorage from "./app/auth/storage";
-import OfflineNotice from "./app/components/OfflineNotice";
 import AppStarter from "./app/start/AppStarter";
-import { StatusBar } from "expo-status-bar";
-import useBiometricAuth from "./app/extras/useBiometricAuth";
+import authStorage from "./app/auth/storage";
+import {
+  BiometricComponent,
+  doBiometricAuth,
+} from "./app/extras/biometricAuth";
+import OfflineNotice from "./app/components/OfflineNotice";
 
 SplashScreen.preventAutoHideAsync();
 
 const App = () => {
   const [user, setUser] = useState();
   const [appIsReady, setAppIsReady] = useState(false);
-  const { biometricAuth } = useBiometricAuth();
+  const [biometricAuth, setBiometricAuth] = useState(null);
 
   const restoreUser = async () => {
     const user = await authStorage.getUser();
-    if (user) setUser(user);
+    if (user) {
+      setUser(user);
+      handleBiometric();
+    }
     setAppIsReady(true);
   };
+
+  const handleBiometric = async () => {
+    const authResult = await doBiometricAuth();
+    setBiometricAuth(authResult);
+  };
+
   useEffect(() => {
     restoreUser();
   }, []);
@@ -41,9 +53,7 @@ const App = () => {
             biometricAuth?.success ? (
               <AppStarter user={user} />
             ) : (
-              <Text>
-                Please provide biometric auth or disable biometric feature
-              </Text>
+              <BiometricComponent onBiometric={handleBiometric} />
             )
           ) : (
             <AuthNavigator />
