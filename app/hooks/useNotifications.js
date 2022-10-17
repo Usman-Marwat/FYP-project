@@ -62,7 +62,7 @@ export default useNotifications = () => {
       }
       // console.log("permissions granted!");
       const token = await Notifications.getExpoPushTokenAsync();
-      patchToken(token);
+      // patchToken(token);
     } catch (error) {
       console.log("Error getting a push token", error);
     }

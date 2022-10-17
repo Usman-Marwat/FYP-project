@@ -18,7 +18,10 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "usesIcloudStorage": true
+      "usesIcloudStorage": true,
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "SCC needs to use Face ID / Touch ID to authenticate you."
+      }
     },
     "android": {
       "adaptiveIcon": {
