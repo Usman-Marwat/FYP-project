@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Dimensions,
@@ -11,6 +11,7 @@ import {
 import * as Yup from "yup";
 import { SharedElement } from "react-navigation-shared-element";
 import * as Animatable from "react-native-animatable";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import _ from "lodash";
 
 import authApi from "../api/auth";
@@ -133,11 +134,11 @@ function RegisterScreen({ navigation, route }) {
   const [isValid, setIsValid] = useState(false);
   const [formData, setFormData] = useState({ actor: item.actor });
   const [error, setError] = useState();
+  const { logIn } = useAuth();
 
   const registerApi = useApi(usersApi.register);
   const otpApi = useApi(usersApi.otp);
   const loginApi = useApi(authApi.login);
-  const { logIn } = useAuth();
 
   const handleSubmit = async (userInfo, { resetForm }) => {
     const result = await otpApi.request(userInfo);
@@ -171,83 +172,85 @@ function RegisterScreen({ navigation, route }) {
   return (
     <>
       <ActivityIndicator visible={registerApi.loading || otpApi.loading} />
-      <View style={styles.container}>
-        <View style={styles.headingConatiner}>
-          <SharedElement id={`item.${item.key}.image`}>
-            <Image source={{ uri: item.image }} style={styles.image} />
-          </SharedElement>
-          <Animatable.View animation="fadeInUp" delay={DURATION / 2}>
-            <Text style={styles.title}>{item.actor}</Text>
-          </Animatable.View>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <View style={styles.headingConatiner}>
+            <SharedElement id={`item.${item.key}.image`}>
+              <Image source={{ uri: item.image }} style={styles.image} />
+            </SharedElement>
+            <Animatable.View animation="fadeInUp" delay={DURATION / 2}>
+              <Text style={styles.title}>{item.actor}</Text>
+            </Animatable.View>
 
-          <Animatable.View
-            animation="fadeInUp"
-            delay={DURATION}
-            style={[
-              StyleSheet.absoluteFillObject,
-              styles.backdrop,
-              { backgroundColor: bg },
-            ]}
-          >
-            <View />
+            <Animatable.View
+              animation="fadeInUp"
+              delay={DURATION}
+              style={[
+                StyleSheet.absoluteFillObject,
+                styles.backdrop,
+                { backgroundColor: bg },
+              ]}
+            >
+              <View />
+            </Animatable.View>
+            <View style={styles.square} />
+          </View>
+          <Animatable.View animation="fadeInUp" delay={DURATION}>
+            <Form
+              initialValues={{ name: "", email: "", password: "", phone: "" }}
+              onSubmit={handleSubmit}
+              validationSchema={schemaFunction(isValid)}
+            >
+              <ErrorMessage error={error} visible={error} />
+              <FormField
+                autoCorrect={false}
+                icon="account"
+                name="name"
+                placeholder="Name"
+              />
+              <FormField
+                autoCapitalize="none"
+                autoCorrect={false}
+                icon="email"
+                keyboardType="email-address"
+                name="email"
+                placeholder="Email"
+                textContentType="emailAddress"
+              />
+              <FormField
+                autoCapitalize="none"
+                autoCorrect={false}
+                icon="lock"
+                name="password"
+                placeholder="Password"
+                secureTextEntry
+                textContentType="password"
+              />
+              <AppPhoneInput name="phone" onCheck={(val) => setIsValid(val)} />
+              <SubmitButton title="Register" bg={bg} />
+            </Form>
+            <TouchableOpacity
+              style={styles.backButton}
+              onPress={() => navigation.goBack()}
+            >
+              <Icon
+                family="mci"
+                name="keyboard-backspace"
+                backgroundColor="#fff"
+                iconColor={colors.medium}
+              />
+              <Text style={{ color: colors.medium }}>back</Text>
+            </TouchableOpacity>
           </Animatable.View>
-          <View style={styles.square} />
+          <OtpInput
+            otpVisible={otpVisible}
+            onOtpVisible={(v) => setOtpVisible(v)}
+            onSendOtp={handleOtp}
+            color={bg}
+          />
         </View>
-        <Animatable.View animation="fadeInUp" delay={DURATION}>
-          <Form
-            initialValues={{ name: "", email: "", password: "", phone: "" }}
-            onSubmit={handleSubmit}
-            validationSchema={schemaFunction(isValid)}
-          >
-            <ErrorMessage error={error} visible={error} />
-            <FormField
-              autoCorrect={false}
-              icon="account"
-              name="name"
-              placeholder="Name"
-            />
-            <FormField
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="email"
-              keyboardType="email-address"
-              name="email"
-              placeholder="Email"
-              textContentType="emailAddress"
-            />
-            <FormField
-              autoCapitalize="none"
-              autoCorrect={false}
-              icon="lock"
-              name="password"
-              placeholder="Password"
-              secureTextEntry
-              textContentType="password"
-            />
-            <AppPhoneInput name="phone" onCheck={(val) => setIsValid(val)} />
-            <SubmitButton title="Register" bg={bg} />
-          </Form>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Icon
-              family="mci"
-              name="keyboard-backspace"
-              backgroundColor="#fff"
-              iconColor={colors.medium}
-            />
-            <Text style={{ color: colors.medium }}>back</Text>
-          </TouchableOpacity>
-        </Animatable.View>
-        <OtpInput
-          otpVisible={otpVisible}
-          onOtpVisible={(v) => setOtpVisible(v)}
-          onSendOtp={handleOtp}
-          color={bg}
-        />
-      </View>
-      {/* <Button title="open" onPress={() => setOtpVisible(!otpVisible)} /> */}
+        {/* <Button title="open" onPress={() => setOtpVisible(!otpVisible)} /> */}
+      </KeyboardAwareScrollView>
     </>
   );
 }

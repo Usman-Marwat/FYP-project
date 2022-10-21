@@ -21,6 +21,7 @@ import UploadScreen from "../UploadScreen";
 import ActivityIndicator from "../../components/ActivityIndicator";
 import MenuFoldButton from "../../navigation/MenuFoldButton";
 import AppButton from "../../components/AppButton";
+import useNotifications from "../../hooks/useNotifications";
 
 faker.seed(1);
 const colorsP = [
@@ -68,6 +69,7 @@ const SPACING = 10;
 const FirmsList = ({ navigation }) => {
   const { animatedValue } = useContext(DrawerAnimationContext);
   const translateX = translateMenuFold(animatedValue);
+  const { loading } = useNotifications();
 
   const contractorsApi = useApi(employeeContractorsApi.getContractors);
 
@@ -80,7 +82,7 @@ const FirmsList = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <MenuFoldButton translateX={translateX} navigation={navigation} />
-      <ActivityIndicator visible={contractorsApi.loading} />
+      <ActivityIndicator visible={contractorsApi.loading || loading} />
 
       <Animated.FlatList
         contentContainerStyle={{ padding: SPACING }}

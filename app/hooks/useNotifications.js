@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState, useContext } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as Notifications from "expo-notifications";
 
 import navigation from "../navigation/Supplier/rootNavigation";
 
 import expoPushTokensApi from "../api/expoPushTokens";
-import AuthContext from "../auth/context";
+import authApi from "../api/auth";
+import useAuth from "../auth/useAuth";
 
 // Required
 Notifications.setNotificationHandler({
@@ -20,7 +21,7 @@ export default useNotifications = () => {
   const [loading, setLoading] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-  const { user, setUser } = useContext(AuthContext);
+  const { user, refreshUserToken } = useAuth();
 
   useEffect(() => {
     registerForPushNotifications();
@@ -62,7 +63,7 @@ export default useNotifications = () => {
       }
       // console.log("permissions granted!");
       const token = await Notifications.getExpoPushTokenAsync();
-      // patchToken(token);
+      patchToken(token);
     } catch (error) {
       console.log("Error getting a push token", error);
     }
@@ -71,10 +72,20 @@ export default useNotifications = () => {
   const patchToken = async (token) => {
     if (user.expoPushToken !== token.data) {
       setLoading(true);
-      const result = await expoPushTokensApi.register(user.user_id, token.data);
-      if (result.ok) setUser({ ...user, expoPushToken: result.data });
+      const result = await expoPushTokensApi.patchToken(
+        user.user_id,
+        token.data
+      );
+      if (result.ok) await refersh(result.data);
       setLoading(false);
     }
+  };
+  const refersh = async (expoPushToken) => {
+    const result = await authApi.refreshUserToken({
+      ...user,
+      expoPushToken,
+    });
+    refreshUserToken(result.data);
   };
 
   return { loading };

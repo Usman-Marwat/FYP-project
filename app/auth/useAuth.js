@@ -11,6 +11,7 @@ export default useAuth = () => {
   const { user, setUser } = useContext(AuthContext);
 
   const logIn = (authToken) => {
+    console.log("----------------Login Token-------------------------");
     console.log(authToken);
     const user = jwtDecode(authToken);
     setUser(user);
@@ -22,5 +23,14 @@ export default useAuth = () => {
     authStorage.removeToken();
   };
 
-  return { user, logIn, logOut };
+  const refreshUserToken = (authToken) => {
+    console.log("----------------Refersh Token-------------------------");
+    console.log(authToken);
+    const user = jwtDecode(authToken);
+    setUser(user);
+    authStorage.removeToken();
+    authStorage.storeToken(authToken);
+  };
+
+  return { user, logIn, logOut, refreshUserToken };
 };
