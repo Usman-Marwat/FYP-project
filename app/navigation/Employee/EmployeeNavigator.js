@@ -12,6 +12,7 @@ import RootNavigator from "../../Chat/RootNavigator";
 import { translateMenuFold } from "../navigationAnimations";
 import useAuth from "../../auth/useAuth";
 import useNotifications from "../../hooks/useNotifications";
+import FirmsNavigator from "./FirmsNavigator";
 
 const DrawerNavigator = createDrawerNavigator();
 const { width, height } = Dimensions.get("screen");
@@ -51,6 +52,7 @@ const EmployeeNavigator = () => {
           <DrawerNavigator.Screen name="Check-Employee">
             {(props) => <Check {...props} />}
           </DrawerNavigator.Screen>
+          <DrawerNavigator.Screen name="Firms" component={FirmsNavigator} />
           <DrawerNavigator.Screen name="Chat" component={RootNavigator} />
         </DrawerNavigator.Navigator>
       </NavigationContainer>
